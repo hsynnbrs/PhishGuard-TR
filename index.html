@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard-TR | Siber Tehdit Kalkanı v9</title>
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v11</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -36,1074 +37,719 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: background 0.4s, color 0.4s;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(0, 100, 255, 0.08) 0%, transparent 50%);
-            z-index: -2;
-        }
-
         #matrix {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: -1;
-            opacity: 0.04;
+            z-index: -1; opacity: 0.04;
         }
 
         /* GİRİŞ KAPISI */
         .gate {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: linear-gradient(135deg, #050510, #0a0a25, #050510);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            z-index: 9999; display: flex;
+            justify-content: center; align-items: center;
             padding: 20px;
             transition: opacity 0.5s, visibility 0.5s;
         }
-
         .gate.hidden { opacity: 0; visibility: hidden; }
-
         .gate-card {
             background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(30px);
             border: 2px solid var(--neon);
             border-radius: 24px;
-            padding: 45px 35px;
-            max-width: 450px;
-            width: 100%;
+            padding: 40px 32px;
+            max-width: 440px; width: 100%;
             box-shadow: 0 0 80px rgba(0, 255, 136, 0.2);
             text-align: center;
+            max-height: 90vh; overflow-y: auto;
         }
-
-        .gate-logo {
-            font-size: 70px;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 30px var(--neon));
-        }
-
+        .gate-logo { font-size: 60px; margin-bottom: 12px; filter: drop-shadow(0 0 30px var(--neon)); }
         .gate-title {
-            font-size: 32px;
-            font-weight: 900;
+            font-size: 28px; font-weight: 900;
             background: linear-gradient(135deg, var(--neon), #00ccff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
+            background-clip: text; margin-bottom: 6px;
         }
-
-        .gate-subtitle {
-            color: #888;
-            font-size: 13px;
-            margin-bottom: 30px;
-        }
-
+        .gate-subtitle { color: #888; font-size: 12px; margin-bottom: 24px; }
         .gate-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-            border-radius: 12px;
+            display: flex; gap: 5px; margin-bottom: 18px;
+            background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 12px;
         }
-
         .gate-tab {
-            flex: 1;
-            padding: 12px;
-            background: transparent;
-            border: none;
-            border-radius: 9px;
-            color: #888;
-            font-size: 14px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
+            flex: 1; padding: 11px; background: transparent;
+            border: none; border-radius: 9px;
+            color: #888; font-size: 13px; font-weight: 700;
+            font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s;
         }
-
-        .gate-tab.active {
-            background: rgba(0, 255, 136, 0.15);
-            color: var(--neon);
-        }
-
+        .gate-tab.active { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
         .gate-form input {
-            width: 100%;
-            padding: 15px 18px;
+            width: 100%; padding: 14px 16px;
             border: 2px solid rgba(0, 255, 136, 0.2);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            font-size: 14px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
-            transition: all 0.3s;
-            margin-bottom: 12px;
+            border-radius: 12px; background: rgba(0, 0, 0, 0.5);
+            color: #fff; font-size: 14px; font-family: 'Inter', sans-serif;
+            outline: none; transition: all 0.3s; margin-bottom: 11px;
         }
-
         .gate-form input:focus {
             border-color: var(--neon);
             box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1);
         }
-
         .gate-form input::placeholder { color: #555; }
-
         .gate-btn {
-            width: 100%;
-            padding: 15px;
+            width: 100%; padding: 14px;
             background: linear-gradient(135deg, var(--neon), var(--neon-dark));
-            border: none;
-            border-radius: 12px;
-            color: #050510;
-            font-size: 15px;
-            font-weight: 800;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 8px;
+            border: none; border-radius: 12px;
+            color: #050510; font-size: 14px; font-weight: 800;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-top: 6px;
         }
-
-        .gate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+        .gate-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4); }
+        .guest-btn {
+            width: 100%; padding: 14px;
+            background: transparent; border: 2px solid var(--neon);
+            border-radius: 12px; color: var(--neon);
+            font-size: 14px; font-weight: 800;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+            letter-spacing: 1.5px; margin-top: 15px;
         }
-
-        .gate-footer {
-            color: #555;
-            font-size: 11px;
-            margin-top: 20px;
-            line-height: 1.6;
-        }
+        .guest-btn:hover { background: var(--neon); color: #050510; transform: translateY(-2px); }
+        .gate-footer { color: #555; font-size: 10px; margin-top: 18px; line-height: 1.6; }
 
         /* ANA UYGULAMA */
         .app { display: none; }
         .app.active { display: block; }
-
         .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 25px 20px;
-            position: relative;
-            z-index: 1;
+            max-width: 1300px; margin: 0 auto;
+            padding: 20px; position: relative; z-index: 1;
         }
-
         .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 0 10px;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 18px;
+            padding: 0 8px; flex-wrap: wrap; gap: 10px;
         }
-
         .top-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: var(--text-dim);
-            font-size: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            flex-wrap: wrap;
+            display: flex; align-items: center; gap: 12px;
+            color: var(--text-dim); font-size: 11px;
+            font-family: 'JetBrains Mono', monospace; flex-wrap: wrap;
         }
-
         .live-dot {
-            width: 8px; height: 8px;
-            background: var(--neon);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+            width: 8px; height: 8px; background: var(--neon);
+            border-radius: 50%; animation: pulse 2s infinite;
         }
-
         @keyframes pulse {
             0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--neon); }
             50% { opacity: 0.5; box-shadow: 0 0 0 8px transparent; }
         }
-
-        .top-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .top-buttons { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
         .icon-btn {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px 14px;
-            color: var(--text);
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s;
+            border: 1px solid var(--border); border-radius: 10px;
+            padding: 8px 12px; color: var(--text); cursor: pointer;
+            font-size: 12px; transition: all 0.3s;
             font-family: 'Inter', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            display: flex; align-items: center; gap: 5px;
         }
-
-        .icon-btn:hover {
-            border-color: var(--neon);
-            transform: scale(1.05);
-        }
-
+        .icon-btn:hover { border-color: var(--neon); transform: scale(1.05); }
         .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--neon);
-            border-radius: 20px;
-            color: var(--neon);
-            font-size: 12px;
-            font-weight: 600;
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 12px; background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon); border-radius: 20px;
+            color: var(--neon); font-size: 11px; font-weight: 600;
         }
-
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
+        .user-badge.guest {
+            background: rgba(255, 170, 0, 0.1);
+            border-color: var(--warning); color: var(--warning);
         }
-
-        .logo {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 8px;
-        }
-
-        .logo-icon {
-            font-size: 48px;
-            filter: drop-shadow(0 0 20px var(--neon));
-        }
-
+        .header { text-align: center; margin-bottom: 22px; }
+        .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+        .logo-icon { font-size: 42px; filter: drop-shadow(0 0 20px var(--neon)); }
         .logo-text {
-            font-size: 40px;
-            font-weight: 900;
+            font-size: 36px; font-weight: 900;
             background: linear-gradient(135deg, var(--neon), #00ccff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
+            background-clip: text; letter-spacing: -1px;
         }
-
         .tagline {
-            color: var(--text-dim);
-            font-size: 13px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            color: var(--text-dim); font-size: 12px;
+            letter-spacing: 2px; text-transform: uppercase;
         }
 
-        .stats-panel {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 18px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--neon);
-        }
-
-        .stat-value {
-            font-size: 26px;
-            font-weight: 900;
-            color: var(--neon);
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 320px;
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 25px;
+        /* VIRUSTOTAL TARZI ARAMA */
+        .search-hero {
+            background: var(--bg-card); backdrop-filter: blur(20px);
+            border: 2px solid var(--border); border-radius: 22px;
+            padding: 30px; margin-bottom: 22px; text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative; overflow: hidden;
         }
-
-        .tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 5px;
-            border-radius: 14px;
-            flex-wrap: wrap;
+        .search-hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon), #00ccff, var(--neon));
+            animation: gradientMove 3s linear infinite;
         }
-
-        body.light-mode .tabs { background: rgba(0, 0, 0, 0.05); }
-
-        .tab {
-            flex: 1;
-            min-width: 80px;
-            padding: 11px 10px;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            color: var(--text-dim);
-            font-size: 12px;
-            font-weight: 600;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
+        .search-hero h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+        .search-hero p { color: var(--text-dim); font-size: 12px; margin-bottom: 22px; }
 
-        .tab.active {
+        .search-tabs {
+            display: flex; gap: 5px; margin-bottom: 18px;
+            background: rgba(0, 0, 0, 0.3); padding: 5px;
+            border-radius: 14px; max-width: 700px;
+            margin-left: auto; margin-right: auto; flex-wrap: wrap;
+        }
+        body.light-mode .search-tabs { background: rgba(0, 0, 0, 0.05); }
+        .search-tab {
+            flex: 1; min-width: 80px; padding: 11px;
+            background: transparent; border: none; border-radius: 10px;
+            color: var(--text-dim); font-size: 12px; font-weight: 600;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            transition: all 0.3s; display: flex;
+            align-items: center; justify-content: center; gap: 5px;
+        }
+        .search-tab.active {
             background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.1));
             color: var(--neon);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
         }
 
-        .tab:hover:not(.active) {
-            color: var(--text);
-            background: rgba(255, 255, 255, 0.05);
+        .search-input-group {
+            display: flex; gap: 8px; max-width: 780px; margin: 0 auto;
         }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .input-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--neon);
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        textarea, input[type="text"], input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 14px;
+        .search-input-group input,
+        .search-input-group textarea {
+            flex: 1; padding: 16px 20px;
             border: 2px solid rgba(0, 255, 136, 0.2);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.4);
-            color: var(--text);
-            font-size: 14px;
+            border-radius: 14px; background: rgba(0, 0, 0, 0.4);
+            color: var(--text); font-size: 14px;
             font-family: 'JetBrains Mono', monospace;
-            resize: vertical;
-            outline: none;
-            transition: all 0.3s;
-            margin-bottom: 12px;
+            outline: none; transition: all 0.3s; resize: none;
         }
-
-        body.light-mode textarea, body.light-mode input {
+        body.light-mode .search-input-group input,
+        body.light-mode .search-input-group textarea {
             background: rgba(255, 255, 255, 0.8);
         }
-
-        textarea { height: 120px; }
-
-        textarea:focus, input:focus {
+        .search-input-group input:focus,
+        .search-input-group textarea:focus {
             border-color: var(--neon);
             box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1);
         }
-
-        textarea::placeholder, input::placeholder { color: #555; }
-
-        .analyze-btn {
-            width: 100%;
-            padding: 15px;
-            margin-top: 8px;
+        .search-btn {
+            padding: 16px 28px;
             background: linear-gradient(135deg, var(--neon), var(--neon-dark));
-            border: none;
-            border-radius: 12px;
-            color: #050510;
-            font-size: 14px;
-            font-weight: 800;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            border: none; border-radius: 14px; color: #050510;
+            font-size: 14px; font-weight: 800;
+            font-family: 'Inter', sans-serif; cursor: pointer;
+            transition: all 0.3s; text-transform: uppercase;
+            letter-spacing: 1px; white-space: nowrap;
+        }
+        .search-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4); }
+
+        .quick-stats {
+            display: flex; justify-content: center;
+            gap: 30px; margin-top: 22px; flex-wrap: wrap;
+        }
+        .quick-stat { text-align: center; }
+        .quick-stat-value {
+            font-size: 20px; font-weight: 900;
+            color: var(--neon); font-family: 'JetBrains Mono', monospace;
+        }
+        .quick-stat-label {
+            font-size: 9px; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 1px; margin-top: 3px;
         }
 
-        .analyze-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
-        }
-
-        .loading { display: none; text-align: center; padding: 25px; }
+        /* YÜKLENİYOR */
+        .loading { display: none; text-align: center; padding: 35px; }
         .loading.active { display: block; }
-
         .spinner {
-            width: 40px; height: 40px;
+            width: 45px; height: 45px;
             border: 3px solid rgba(0, 255, 136, 0.2);
             border-top-color: var(--neon);
-            border-radius: 50%;
-            margin: 0 auto 12px;
+            border-radius: 50%; margin: 0 auto 12px;
             animation: spin 1s linear infinite;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
-
         .loading-text {
-            color: var(--neon);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            color: var(--neon); font-family: 'JetBrains Mono', monospace; font-size: 12px;
         }
 
+        /* SONUÇ */
         .result { display: none; }
         .result.active { display: block; animation: fadeIn 0.6s ease; }
-
-        .score-card {
-            text-align: center;
-            padding: 25px 20px;
-            border-radius: 18px;
-            margin-bottom: 16px;
-            position: relative;
-            overflow: hidden;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .vt-result-panel {
+            background: var(--bg-card); backdrop-filter: blur(20px);
+            border: 2px solid var(--border); border-radius: 22px;
+            padding: 26px; margin-bottom: 18px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .vt-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 22px;
+            padding-bottom: 18px; border-bottom: 1px solid var(--border);
+            flex-wrap: wrap; gap: 15px;
+        }
+        .vt-header-left h3 { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+        .vt-header-left p {
+            color: var(--text-dim); font-size: 11px;
+            font-family: 'JetBrains Mono', monospace; word-break: break-all;
+        }
+        .vt-score-badge {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 22px; border-radius: 14px;
+            background: rgba(0, 0, 0, 0.3); border: 2px solid;
+        }
+        .vt-score-number {
+            font-size: 36px; font-weight: 900; line-height: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .vt-score-label {
+            font-size: 10px; text-transform: uppercase;
+            letter-spacing: 1px; font-weight: 700;
         }
 
-        .score-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: currentColor;
+        /* MOTOR GRID */
+        .engines-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px; margin-bottom: 22px;
         }
-
-        .score-value {
-            font-size: 56px;
-            font-weight: 900;
-            line-height: 1;
-            letter-spacing: -3px;
+        .engine-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px; padding: 13px;
+            border-left: 4px solid var(--neon);
+            transition: all 0.3s;
+            animation: slideIn 0.4s ease backwards;
         }
-
-        .score-label {
-            font-size: 13px;
-            margin-top: 10px;
-            font-weight: 600;
+        body.light-mode .engine-card { background: rgba(0, 0, 0, 0.04); }
+        .engine-card.danger { border-left-color: var(--danger); }
+        .engine-card.warning { border-left-color: var(--warning); }
+        .engine-card.safe { border-left-color: var(--neon); }
+        .engine-card:hover { transform: translateX(4px); background: rgba(0, 255, 136, 0.05); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
+        .engine-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 6px;
+        }
+        .engine-name { font-size: 11px; font-weight: 700; color: var(--text); }
+        .engine-score {
+            font-size: 11px; font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .engine-verdict {
+            font-size: 10px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .engine-verdict.danger { color: var(--danger); }
+        .engine-verdict.warning { color: var(--warning); }
+        .engine-verdict.safe { color: var(--neon); }
+        .engine-bar {
+            height: 3px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 2px; overflow: hidden; margin-top: 7px;
+        }
+        .engine-bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
 
-        .camera-alert {
+        /* VT SEKMELERİ */
+        .vt-tabs {
+            display: flex; gap: 5px; margin-bottom: 18px;
+            background: rgba(0, 0, 0, 0.3); padding: 5px;
+            border-radius: 12px; flex-wrap: wrap;
+        }
+        body.light-mode .vt-tabs { background: rgba(0, 0, 0, 0.05); }
+        .vt-tab {
+            flex: 1; min-width: 90px; padding: 10px;
+            background: transparent; border: none; border-radius: 9px;
+            color: var(--text-dim); font-size: 11px;
+            font-weight: 600; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .vt-tab.active { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
+        .vt-tab-content { display: none; }
+        .vt-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        .detail-row {
+            display: flex; justify-content: space-between;
+            padding: 11px 0; border-bottom: 1px solid var(--border);
+            font-size: 12px; gap: 15px;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: var(--text-dim); font-weight: 600; flex-shrink: 0; }
+        .detail-value {
+            color: var(--text); font-family: 'JetBrains Mono', monospace;
+            text-align: right; word-break: break-all;
+        }
+        .detail-value.danger { color: var(--danger); }
+        .detail-value.safe { color: var(--neon); }
+        .detail-value.warning { color: var(--warning); }
+
+        /* UYARI KUTUSU */
+        .alert-box {
+            border-radius: 16px; padding: 18px; margin-bottom: 18px;
+            display: flex; gap: 13px; align-items: flex-start;
+        }
+        .alert-box.danger {
             background: linear-gradient(135deg, rgba(255, 51, 102, 0.15), rgba(255, 51, 102, 0.05));
             border: 2px solid var(--danger);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
         }
-
-        .camera-alert h3 {
-            color: var(--danger);
-            font-size: 16px;
-            margin-bottom: 8px;
-            font-weight: 800;
-        }
-
-        .camera-alert p { color: #ffaaaa; font-size: 13px; line-height: 1.6; }
-
-        .section {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-left: 3px solid var(--neon);
-        }
-
-        body.light-mode .section { background: rgba(0, 0, 0, 0.03); }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--neon);
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-
-        .finding-item {
-            color: var(--text);
-            opacity: 0.85;
-            margin-bottom: 8px;
-            font-size: 13px;
-            line-height: 1.5;
-            padding-left: 18px;
-            position: relative;
-        }
-
-        .finding-item::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--neon);
-            font-weight: bold;
-        }
-
-        .highlight {
-            background: rgba(255, 51, 102, 0.3);
-            color: #ff6688;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-        }
-
-        .url-detail {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            padding: 10px 14px;
-            margin-bottom: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: var(--text);
-            word-break: break-all;
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        body.light-mode .url-detail { background: rgba(0, 0, 0, 0.05); }
-
-        .url-detail strong {
-            color: var(--neon);
-            font-family: 'Inter', sans-serif;
-            font-size: 10px;
-            text-transform: uppercase;
-            flex-shrink: 0;
-        }
-
-        .permission-box {
+        .alert-box.warning {
             background: linear-gradient(135deg, rgba(255, 170, 0, 0.15), rgba(255, 170, 0, 0.05));
             border: 2px solid var(--warning);
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 12px;
         }
-
-        .permission-box h3 {
-            color: var(--warning);
-            font-size: 15px;
-            margin-bottom: 8px;
-            font-weight: 800;
-        }
-
-        .permission-box p {
-            color: var(--text);
-            opacity: 0.85;
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 14px;
-        }
-
-        .permission-buttons { display: flex; gap: 10px; }
-
-        .perm-btn {
-            flex: 1;
-            padding: 11px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s;
-        }
-
-        .perm-btn.safe { background: var(--neon); color: #050510; }
-        .perm-btn.danger { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
-
-        .pdf-btn {
-            width: 100%;
-            padding: 11px;
-            margin-top: 12px;
-            background: transparent;
+        .alert-box.safe {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05));
             border: 2px solid var(--neon);
-            border-radius: 10px;
-            color: var(--neon);
-            font-size: 12px;
-            font-weight: 700;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
+        }
+        .alert-icon { font-size: 26px; flex-shrink: 0; }
+        .alert-content h4 { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
+        .alert-box.danger .alert-content h4 { color: var(--danger); }
+        .alert-box.warning .alert-content h4 { color: var(--warning); }
+        .alert-box.safe .alert-content h4 { color: var(--neon); }
+        .alert-content p {
+            font-size: 12px; line-height: 1.6;
+            color: var(--text); opacity: 0.9;
         }
 
-        .pdf-btn:hover { background: var(--neon); color: #050510; }
-
-        .side-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        /* HASH */
+        .hash-input-area { display: flex; gap: 8px; margin-bottom: 15px; }
+        .hash-input-area input {
+            flex: 1; padding: 14px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px; background: rgba(0, 0, 0, 0.4);
+            color: var(--text); font-size: 13px;
+            font-family: 'JetBrains Mono', monospace; outline: none;
         }
-
-        .side-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 18px;
-        }
-
-        .side-title {
-            color: var(--neon);
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .history-item {
-            padding: 9px 11px;
+        body.light-mode .hash-input-area input { background: rgba(255, 255, 255, 0.8); }
+        .hash-input-area input:focus { border-color: var(--neon); }
+        .hash-result {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            margin-bottom: 7px;
-            font-size: 11px;
-            border-left: 3px solid var(--text-dim);
+            border-radius: 12px; padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; margin-top: 10px;
+        }
+        body.light-mode .hash-result { background: rgba(0, 0, 0, 0.04); }
+        .hash-row {
+            display: flex; justify-content: space-between;
+            padding: 8px 0; border-bottom: 1px solid var(--border); gap: 15px;
+        }
+        .hash-row:last-child { border-bottom: none; }
+        .hash-label { color: var(--neon); font-weight: 700; }
+        .hash-value { color: var(--text); word-break: break-all; text-align: right; }
+
+        /* ŞİFRE */
+        .password-input-area { position: relative; margin-bottom: 15px; }
+        .password-input-area input {
+            width: 100%; padding: 14px 45px 14px 14px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px; background: rgba(0, 0, 0, 0.4);
+            color: var(--text); font-size: 14px;
+            font-family: 'JetBrains Mono', monospace; outline: none;
+        }
+        body.light-mode .password-input-area input { background: rgba(255, 255, 255, 0.8); }
+        .password-input-area input:focus { border-color: var(--neon); }
+        .password-toggle {
+            position: absolute; right: 12px; top: 50%;
+            transform: translateY(-50%); background: transparent;
+            border: none; color: var(--text-dim); cursor: pointer; font-size: 16px;
+        }
+        .password-strength-bar {
+            height: 8px; border-radius: 4px; margin-top: 12px;
+            background: rgba(0, 0, 0, 0.3); overflow: hidden;
+        }
+        .password-strength-fill {
+            height: 100%; border-radius: 4px;
+            transition: width 0.5s, background 0.5s; width: 0%;
+        }
+        .password-strength-text {
+            text-align: center; margin-top: 10px;
+            font-size: 14px; font-weight: 700;
+        }
+        .password-details {
+            margin-top: 15px; background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px; padding: 15px;
+        }
+        body.light-mode .password-details { background: rgba(0, 0, 0, 0.04); }
+        .password-detail-item {
+            display: flex; justify-content: space-between;
+            padding: 7px 0; font-size: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .password-detail-item:last-child { border-bottom: none; }
+        .password-crack-time {
+            text-align: center; font-size: 18px;
+            font-weight: 900; margin-top: 15px; color: var(--danger);
         }
 
-        body.light-mode .history-item { background: rgba(0, 0, 0, 0.04); }
-
-        .history-item.low { border-left-color: var(--neon); }
-        .history-item.medium { border-left-color: var(--warning); }
-        .history-item.high { border-left-color: var(--danger); }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text);
-            font-weight: 600;
-            margin-bottom: 3px;
+        /* QR */
+        .qr-area {
+            border: 2px dashed var(--neon);
+            border-radius: 14px; padding: 30px;
+            text-align: center; cursor: pointer;
+            transition: all 0.3s; background: rgba(0, 255, 136, 0.03);
+        }
+        .qr-area:hover { background: rgba(0, 255, 136, 0.08); border-color: var(--neon-dark); }
+        .qr-icon { font-size: 50px; margin-bottom: 12px; color: var(--neon); }
+        .qr-text { color: var(--text-dim); font-size: 13px; }
+        .qr-result {
+            margin-top: 15px; padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px; color: var(--text);
+            word-break: break-all; display: none;
+        }
+        .qr-preview {
+            max-width: 200px; margin: 15px auto;
+            border-radius: 10px; display: none;
         }
 
-        .history-time { color: var(--text-dim); font-size: 9px; }
-        .history-preview { color: var(--text-dim); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-        .empty-history {
-            color: var(--text-dim);
-            font-size: 11px;
-            text-align: center;
-            padding: 15px 0;
-            font-style: italic;
+        /* QUIZ */
+        .quiz-question {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px; padding: 20px; margin-bottom: 15px;
         }
+        body.light-mode .quiz-question { background: rgba(0, 0, 0, 0.04); }
+        .quiz-question h4 {
+            color: var(--text); font-size: 14px;
+            margin-bottom: 15px; font-weight: 700;
+        }
+        .quiz-option {
+            display: block; width: 100%; text-align: left;
+            padding: 12px 16px; margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text);
+            font-size: 13px; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .quiz-option:hover { border-color: var(--neon); background: rgba(0, 255, 136, 0.1); }
+        .quiz-option.correct {
+            background: rgba(0, 255, 136, 0.2);
+            border-color: var(--neon); color: var(--neon);
+        }
+        .quiz-option.wrong {
+            background: rgba(255, 51, 102, 0.2);
+            border-color: var(--danger); color: var(--danger);
+        }
+        .quiz-result {
+            text-align: center; padding: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--neon);
+            border-radius: 14px; margin-top: 15px;
+        }
+        .quiz-result h3 { color: var(--neon); font-size: 20px; margin-bottom: 8px; }
 
-        /* GERÇEK TÜRKİYE HARİTASI */
+        /* HARİTA */
         .map-container {
             background: rgba(0, 0, 0, 0.4);
-            border-radius: 14px;
-            padding: 10px;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
+            border-radius: 14px; padding: 10px;
+            margin-bottom: 12px; position: relative; overflow: hidden;
         }
-
         body.light-mode .map-container { background: rgba(240, 248, 255, 0.6); }
-
         #turkeyMap {
-            width: 100%;
-            height: auto;
-            max-height: 500px;
-            display: block;
+            width: 100%; height: auto;
+            max-height: 550px; display: block;
         }
-
         .map-legend {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-            font-size: 10px;
-            color: var(--text-dim);
-            flex-wrap: wrap;
+            display: flex; justify-content: center;
+            gap: 15px; margin-top: 10px;
+            font-size: 10px; color: var(--text-dim); flex-wrap: wrap;
         }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .legend-dot {
-            width: 10px; height: 10px;
-            border-radius: 50%;
-        }
-
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
         .city-info-popup {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+            position: absolute; top: 15px; right: 15px;
             background: rgba(0, 0, 0, 0.95);
-            border: 2px solid var(--neon);
-            border-radius: 12px;
-            padding: 15px;
-            min-width: 220px;
-            display: none;
-            z-index: 10;
+            border: 2px solid var(--neon); border-radius: 12px;
+            padding: 15px; min-width: 220px;
+            display: none; z-index: 10;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-
-        body.light-mode .city-info-popup {
-            background: rgba(255, 255, 255, 0.98);
-        }
-
-        .city-info-popup h4 {
-            color: var(--neon);
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-
-        .city-info-popup p {
-            color: var(--text);
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
+        body.light-mode .city-info-popup { background: rgba(255, 255, 255, 0.98); }
+        .city-info-popup h4 { color: var(--neon); font-size: 14px; margin-bottom: 8px; }
+        .city-info-popup p { color: var(--text); font-size: 12px; line-height: 1.6; }
         .city-info-close {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            background: transparent;
-            border: none;
-            color: var(--text-dim);
-            font-size: 18px;
-            cursor: pointer;
+            position: absolute; top: 8px; right: 10px;
+            background: transparent; border: none;
+            color: var(--text-dim); font-size: 18px; cursor: pointer;
         }
 
-        /* ADMIN PANEL */
+        /* ADMIN */
         .admin-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 12px; margin-bottom: 20px;
         }
-
         .admin-stat {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
+            border-radius: 12px; padding: 15px; text-align: center;
         }
-
         body.light-mode .admin-stat { background: rgba(0, 0, 0, 0.04); }
-
         .admin-stat-value {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--neon);
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px; font-weight: 900;
+            color: var(--neon); font-family: 'JetBrains Mono', monospace;
         }
-
         .admin-stat-label {
-            font-size: 10px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            margin-top: 5px;
+            font-size: 10px; color: var(--text-dim);
+            text-transform: uppercase; margin-top: 5px;
         }
-
         .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            margin-top: 10px;
+            width: 100%; border-collapse: collapse;
+            font-size: 11px; margin-top: 10px;
         }
-
         .admin-table th {
             background: rgba(0, 255, 136, 0.1);
-            color: var(--neon);
-            padding: 10px;
-            text-align: left;
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
+            color: var(--neon); padding: 10px;
+            text-align: left; font-weight: 700;
+            font-size: 10px; text-transform: uppercase;
             border-bottom: 2px solid var(--border);
         }
-
         .admin-table td {
-            padding: 10px;
-            border-bottom: 1px solid var(--border);
+            padding: 10px; border-bottom: 1px solid var(--border);
             color: var(--text);
         }
-
-        .admin-table tr:hover td {
-            background: rgba(0, 255, 136, 0.05);
-        }
-
         .admin-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
+            display: inline-block; padding: 3px 8px;
+            border-radius: 6px; font-size: 9px; font-weight: 700;
         }
-
-        .admin-badge.admin {
-            background: rgba(255, 51, 102, 0.2);
-            color: var(--danger);
-        }
-
-        .admin-badge.user {
-            background: rgba(0, 255, 136, 0.15);
-            color: var(--neon);
-        }
-
+        .admin-badge.admin { background: rgba(255, 51, 102, 0.2); color: var(--danger); }
+        .admin-badge.user { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
+        .admin-badge.guest { background: rgba(255, 170, 0, 0.15); color: var(--warning); }
         .admin-action-btn {
-            padding: 5px 10px;
-            border-radius: 6px;
-            border: 1px solid var(--danger);
-            background: transparent;
-            color: var(--danger);
-            font-size: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
+            padding: 5px 10px; border-radius: 6px;
+            border: 1px solid var(--danger); background: transparent;
+            color: var(--danger); font-size: 9px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s;
         }
+        .admin-action-btn:hover { background: var(--danger); color: #fff; }
 
-        .admin-action-btn:hover {
-            background: var(--danger);
-            color: #fff;
+        /* KART */
+        .card {
+            background: var(--bg-card); backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px; padding: 22px; margin-bottom: 18px;
         }
-
-        /* EĞİTİM */
-        .edu-card {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--neon);
-        }
-
-        body.light-mode .edu-card { background: rgba(0, 0, 0, 0.03); }
-
-        .edu-card h4 {
-            color: var(--neon);
-            font-size: 13px;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .edu-card p {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 12px;
-            line-height: 1.6;
+        .side-title {
+            color: var(--neon); font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 12px; display: flex;
+            align-items: center; gap: 8px;
         }
 
         /* SOHBET */
         .chat-container {
-            height: 350px;
-            display: flex;
+            height: 380px; display: flex;
             flex-direction: column;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 12px;
+            border-radius: 14px; padding: 15px;
         }
-
         body.light-mode .chat-container { background: rgba(0, 0, 0, 0.04); }
-
         .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 5px;
-            margin-bottom: 12px;
+            flex: 1; overflow-y: auto;
+            padding-right: 5px; margin-bottom: 12px;
         }
-
         .chat-message {
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            font-size: 13px;
-            line-height: 1.5;
-            max-width: 85%;
-            animation: fadeIn 0.3s ease;
+            padding: 10px 14px; border-radius: 12px;
+            margin-bottom: 8px; font-size: 12px;
+            line-height: 1.5; max-width: 85%;
         }
-
         .chat-message.bot {
             background: rgba(0, 255, 136, 0.1);
-            border-left: 3px solid var(--neon);
-            color: var(--text);
+            border-left: 3px solid var(--neon); color: var(--text);
         }
-
         .chat-message.user {
             background: rgba(0, 100, 255, 0.1);
-            border-right: 3px solid #00ccff;
-            color: var(--text);
-            margin-left: auto;
-            text-align: right;
+            border-right: 3px solid #00ccff; color: var(--text);
+            margin-left: auto; text-align: right;
         }
-
-        .chat-input-area {
-            display: flex;
-            gap: 8px;
-        }
-
+        .chat-input-area { display: flex; gap: 8px; }
         .chat-input {
-            flex: 1;
-            padding: 12px;
+            flex: 1; padding: 12px;
             border: 2px solid rgba(0, 255, 136, 0.2);
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.4);
-            color: var(--text);
-            font-size: 13px;
-            font-family: 'Inter', sans-serif;
-            outline: none;
+            border-radius: 10px; background: rgba(0, 0, 0, 0.4);
+            color: var(--text); font-size: 12px;
+            font-family: 'Inter', sans-serif; outline: none;
         }
-
         body.light-mode .chat-input { background: rgba(255, 255, 255, 0.8); }
-
         .chat-input:focus { border-color: var(--neon); }
-
         .chat-send {
-            padding: 12px 20px;
-            background: var(--neon);
-            border: none;
-            border-radius: 10px;
-            color: #050510;
-            font-weight: 700;
+            padding: 12px 20px; background: var(--neon);
+            border: none; border-radius: 10px;
+            color: #050510; font-weight: 700;
             font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
+            cursor: pointer; transition: all 0.3s;
         }
-
         .chat-send:hover { transform: scale(1.05); }
 
-        /* İHBAR */
-        .report-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .report-stat {
+        /* EĞİTİM */
+        .edu-card {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
+            border-radius: 14px; padding: 16px;
+            margin-bottom: 10px; border-left: 3px solid var(--neon);
+        }
+        body.light-mode .edu-card { background: rgba(0, 0, 0, 0.03); }
+        .edu-card h4 {
+            color: var(--neon); font-size: 13px;
+            margin-bottom: 6px; display: flex;
+            align-items: center; gap: 8px;
+        }
+        .edu-card p {
+            color: var(--text); opacity: 0.8;
+            font-size: 12px; line-height: 1.6;
         }
 
-        body.light-mode .report-stat { background: rgba(0, 0, 0, 0.04); }
-
-        .report-stat-value {
-            font-size: 22px;
-            font-weight: 900;
-            color: var(--neon);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .report-stat-label {
-            font-size: 10px;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        .report-list-item {
-            padding: 10px 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        body.light-mode .report-list-item { background: rgba(0, 0, 0, 0.04); }
-
-        .report-item-url {
-            color: var(--text);
-            word-break: break-all;
-            flex: 1;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-        }
-
+        /* FOOTER */
         .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: var(--text-dim);
-            font-size: 11px;
-            line-height: 1.8;
+            text-align: center; margin-top: 25px;
+            color: var(--text-dim); font-size: 10px; line-height: 1.8;
         }
-
         .footer strong { color: var(--neon); }
 
         @media (max-width: 900px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .stats-panel { grid-template-columns: repeat(2, 1fr); }
             .admin-grid { grid-template-columns: repeat(2, 1fr); }
-            .logo-text { font-size: 28px; }
-            .logo-icon { font-size: 36px; }
-            .score-value { font-size: 42px; }
-            .report-stats { grid-template-columns: 1fr; }
+            .logo-text { font-size: 26px; }
+            .logo-icon { font-size: 34px; }
+            .search-input-group { flex-direction: column; }
+            .vt-header { flex-direction: column; align-items: flex-start; }
+            .engines-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 500px) {
-            .container { padding: 15px 10px; }
-            .card { padding: 16px; }
-            .stat-value { font-size: 20px; }
-            .logo-text { font-size: 22px; }
-            .logo-icon { font-size: 28px; }
-            .tab { min-width: 65px; font-size: 10px; padding: 8px 6px; }
-            .gate-card { padding: 30px 20px; }
+            .container { padding: 12px; }
+            .search-hero { padding: 18px 12px; }
+            .vt-result-panel { padding: 16px; }
+            .vt-score-number { font-size: 28px; }
+            .logo-text { font-size: 20px; }
+            .logo-icon { font-size: 26px; }
+            .engines-grid { grid-template-columns: 1fr; }
+            .gate-card { padding: 28px 18px; }
         }
     </style>
 </head>
 <body>
-    <!-- GİRİŞ KAPISI -->
+    <canvas id="matrix"></canvas>
+
     <div class="gate" id="gate">
         <div class="gate-card">
             <div class="gate-logo">🛡️</div>
             <div class="gate-title">PhishGuard-TR</div>
-            <div class="gate-subtitle">Türkiye'ye Özel Siber Tehdit Kalkanı</div>
+            <div class="gate-subtitle">Türkiye'nin Siber Tehdit Analiz Platformu</div>
 
             <div class="gate-tabs">
                 <button class="gate-tab active" onclick="switchGate('login', event)">Giriş Yap</button>
@@ -1124,34 +770,38 @@
                 <button class="gate-btn" onclick="gateRegister()">📝 Kayıt Ol</button>
             </div>
 
+            <button class="guest-btn" onclick="continueAsGuest()">👤 Misafir Olarak Devam Et</button>
+
             <div class="gate-footer">
-                Kayıt olarak <strong style="color:var(--neon);">kullanım şartlarını</strong> kabul etmiş olursunuz.<br>
-                Bu sistem eğitim ve farkındalık amaçlıdır.
+                Kayıt olmadan da tüm analizleri kullanabilirsiniz.<br>
+                Kayıt olursanız geçmişiniz ve istatistikleriniz saklanır.
             </div>
         </div>
     </div>
 
-    <!-- ANA UYGULAMA -->
     <div class="app" id="app">
-        <canvas id="matrix"></canvas>
-
         <div class="container">
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI • v9.0</span>
+                    <span>CANLI SİSTEM • v11</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
-                    <div class="user-badge">
-                        <span>👤</span>
+                    <div class="user-badge" id="userBadge">
+                        <span id="userBadgeIcon">👤</span>
                         <span id="userName">Kullanıcı</span>
-                        <span id="userRole" style="font-size:10px;opacity:0.7;"></span>
+                        <span id="userRole" style="font-size:9px;opacity:0.7;"></span>
                     </div>
-                    <button class="icon-btn" id="adminBtn" onclick="switchTab('admin', event)" style="display:none;">👑 Admin</button>
-                    <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn">🔇 Ses</button>
+                    <button class="icon-btn" id="adminBtn" onclick="switchView('admin')" style="display:none;">👑 Admin</button>
+                    <button class="icon-btn" onclick="switchView('scan')">🔍 Tarama</button>
+                    <button class="icon-btn" onclick="switchView('tools')">🧰 Araçlar</button>
+                    <button class="icon-btn" onclick="switchView('map')">🗺️ Harita</button>
+                    <button class="icon-btn" onclick="switchView('chat')">💬 Asistan</button>
+                    <button class="icon-btn" onclick="switchView('edu')">🎓 Eğitim</button>
+                    <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn">🔇</button>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
-                    <button class="icon-btn" onclick="logout()">🚪 Çıkış</button>
+                    <button class="icon-btn" onclick="logout()">🚪</button>
                 </div>
             </div>
 
@@ -1160,268 +810,249 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'ye Özel Siber Tehdit Kalkanı v9</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v11</p>
             </div>
 
-            <div class="stats-panel">
-                <div class="stat-card">
-                    <div class="stat-value" id="statTotal">0</div>
-                    <div class="stat-label">Toplam Analiz</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statThreats" style="color:var(--danger);">0</div>
-                    <div class="stat-label">Tespit Edilen Tehdit</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statCamera" style="color:var(--warning);">0</div>
-                    <div class="stat-label">Kamera Riski</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="statAvg">0%</div>
-                    <div class="stat-label">Ortalama Risk</div>
-                </div>
-            </div>
+            <div id="scanView">
+                <div class="search-hero">
+                    <h2>🔍 Şüpheli İçeriği Analiz Et</h2>
+                    <p>Link, e-posta metni veya mesaj yapıştırın — 15 farklı analiz motoru saniyeler içinde tarasın</p>
 
-            <div class="main-grid">
-                <div class="card">
-                    <div class="tabs" id="mainTabs">
-                        <button class="tab active" onclick="switchTab('text', event)">📧 Metin</button>
-                        <button class="tab" onclick="switchTab('url', event)">🔗 Link</button>
-                        <button class="tab" onclick="switchTab('map', event)">🗺️ Harita</button>
-                        <button class="tab" onclick="switchTab('chat', event)">💬 Asistan</button>
-                        <button class="tab" onclick="switchTab('report', event)">📢 İhbar</button>
-                        <button class="tab" onclick="switchTab('edu', event)">🎓 Eğitim</button>
+                    <div class="search-tabs">
+                        <button class="search-tab active" onclick="switchSearchTab('url', event)">🔗 Link</button>
+                        <button class="search-tab" onclick="switchSearchTab('text', event)">📧 Metin</button>
                     </div>
 
-                    <!-- METİN -->
-                    <div class="tab-content active" id="textTab">
-                        <label class="input-label"><span>📝</span> Şüpheli Metin / E-posta</label>
-                        <textarea id="inputText" placeholder="Şüpheli e-posta metnini, mesajı veya bildirimi buraya yapıştır..."></textarea>
-                        <button class="analyze-btn" onclick="analyzeText()">🔍 Metni Analiz Et</button>
-                    </div>
-
-                    <!-- LİNK -->
-                    <div class="tab-content" id="urlTab">
-                        <label class="input-label"><span>🌐</span> Şüpheli Link</label>
+                    <div class="search-input-group" id="urlInputGroup">
                         <input type="text" id="inputUrl" placeholder="https://ornek-site.tk/giris">
-                        <button class="analyze-btn" onclick="analyzeUrl()">🔗 Linki Analiz Et</button>
+                        <button class="search-btn" onclick="analyzeUrl()">🔍 Tara</button>
                     </div>
 
-                    <!-- HARİTA -->
-                    <div class="tab-content" id="mapTab">
-                        <label class="input-label"><span>🗺️</span> Türkiye Siber Tehdit Haritası (81 İl)</label>
-                        <div class="map-container" id="mapContainer">
-                            <div class="city-info-popup" id="cityPopup">
-                                <button class="city-info-close" onclick="closeCityPopup()">×</button>
-                                <h4 id="cityPopupTitle">Şehir</h4>
-                                <p id="cityPopupContent"></p>
-                            </div>
-                            <object type="image/svg+xml" data="turkey.svg" id="turkeyMap"></object>
-                        </div>
-                        <div class="map-legend">
-                            <div class="legend-item"><span class="legend-dot" style="background:#ff3366;"></span> Yüksek risk (20+)</div>
-                            <div class="legend-item"><span class="legend-dot" style="background:#ffaa00;"></span> Orta risk (10-19)</div>
-                            <div class="legend-item"><span class="legend-dot" style="background:#00ff88;"></span> Düşük risk (0-9)</div>
-                        </div>
+                    <div class="search-input-group" id="textInputGroup" style="display:none;">
+                        <textarea id="inputText" placeholder="Şüpheli e-posta metnini veya mesajı buraya yapıştır..." style="height:80px;"></textarea>
+                        <button class="search-btn" onclick="analyzeText()">🔍 Tara</button>
                     </div>
 
-                    <!-- SOHBET -->
-                    <div class="tab-content" id="chatTab">
-                        <label class="input-label"><span>💬</span> Siber Güvenlik Asistanı</label>
-                        <div class="chat-container">
-                            <div class="chat-messages" id="chatMessages">
-                                <div class="chat-message bot">Merhaba! Ben PhishGuard asistanı. Siber güvenlik hakkında sorularını yanıtlayabilirim. Örneğin: "Oltalama nedir?", "Kamera izni tehlikeli mi?", "Şifrem güvenli mi?"</div>
-                            </div>
-                            <div class="chat-input-area">
-                                <input type="text" class="chat-input" id="chatInput" placeholder="Sorunuzu yazın..." onkeypress="if(event.key==='Enter') sendChat()">
-                                <button class="chat-send" onclick="sendChat()">Gönder</button>
-                            </div>
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" id="quickTotal">0</div>
+                            <div class="quick-stat-label">Toplam Tarama</div>
                         </div>
-                    </div>
-
-                    <!-- İHBAR -->
-                    <div class="tab-content" id="reportTab">
-                        <label class="input-label"><span>📢</span> Şüpheli Link İhbar</label>
-                        <div class="report-stats">
-                            <div class="report-stat">
-                                <div class="report-stat-value" id="reportCount">0</div>
-                                <div class="report-stat-label">İhbar Edilen</div>
-                            </div>
-                            <div class="report-stat">
-                                <div class="report-stat-value" id="reportToday">0</div>
-                                <div class="report-stat-label">Bugün</div>
-                            </div>
-                            <div class="report-stat">
-                                <div class="report-stat-value" id="reportUnique">0</div>
-                                <div class="report-stat-label">Farklı Link</div>
-                            </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" style="color:var(--danger);" id="quickThreats">0</div>
+                            <div class="quick-stat-label">Tehdit</div>
                         </div>
-                        <input type="text" id="reportUrl" placeholder="İhbar etmek istediğiniz linki girin...">
-                        <input type="text" id="reportNote" placeholder="Kısa açıklama (opsiyonel)">
-                        <button class="analyze-btn" onclick="submitReport()">📢 İhbar Et</button>
-                        <div style="margin-top:15px;">
-                            <div class="side-title" style="margin-bottom:10px;"><span>📋</span> Son İhbarlar</div>
-                            <div id="reportList"><div class="empty-history">Henüz ihbar yok</div></div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-value" style="color:var(--warning);" id="quickCamera">0</div>
+                            <div class="quick-stat-label">Kamera Riski</div>
                         </div>
-                    </div>
-
-                    <!-- EĞİTİM -->
-                    <div class="tab-content" id="eduTab">
-                        <div class="edu-card">
-                            <h4>🎣 Oltalama (Phishing) Nedir?</h4>
-                            <p>Oltalama, saldırganların kendilerini banka, devlet kurumu veya tanıdık bir kişi gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırı türüdür.</p>
-                        </div>
-                        <div class="edu-card">
-                            <h4>🏦 Fake Banka Siteleri</h4>
-                            <p>Saldırganlar, gerçek banka sitelerinin birebir kopyasını yaparak TC kimlik, şifre ve kart bilgilerini çalar.</p>
-                        </div>
-                        <div class="edu-card">
-                            <h4>📷 Kamera İzni Neden Tehlikeli?</h4>
-                            <p>Bazı siteler sizden kamera veya mikrofon izni ister. Bu izni verdiğinizde, site görüntünüzü ve sesinizi kaydedebilir.</p>
-                        </div>
-                        <div class="edu-card">
-                            <h4>💰 Kripto Dolandırıcılığı</h4>
-                            <p>"Bedava Bitcoin", "Katlayarak geri ödeme" gibi vaatlerle kandırılan kullanıcılar, cüzdan bilgilerini kaptırır.</p>
-                        </div>
-                        <div class="edu-card">
-                            <h4>🔗 Şüpheli Link Nasıl Anlaşılır?</h4>
-                            <p>• URL kısaltıcılar gerçek hedefi gizler<br>
-                            • .tk, .ml, .ga gibi ücretsiz uzantılar sık kullanılır<br>
-                            • Banka siteleri asla "giris-banka.tk" gibi olmaz</p>
-                        </div>
-                    </div>
-
-                    <!-- ADMIN PANEL -->
-                    <div class="tab-content" id="adminTab">
-                        <label class="input-label"><span>👑</span> Admin Paneli</label>
-                        <div class="admin-grid">
-                            <div class="admin-stat">
-                                <div class="admin-stat-value" id="adminUsers">0</div>
-                                <div class="admin-stat-label">Toplam Kullanıcı</div>
-                            </div>
-                            <div class="admin-stat">
-                                <div class="admin-stat-value" id="adminAnalyses">0</div>
-                                <div class="admin-stat-label">Toplam Analiz</div>
-                            </div>
-                            <div class="admin-stat">
-                                <div class="admin-stat-value" id="adminReports">0</div>
-                                <div class="admin-stat-label">Toplam İhbar</div>
-                            </div>
-                            <div class="admin-stat">
-                                <div class="admin-stat-value" id="adminThreats">0</div>
-                                <div class="admin-stat-label">Tehdit</div>
-                            </div>
-                        </div>
-
-                        <div class="side-title" style="margin-bottom:10px;"><span>👥</span> Kayıtlı Kullanıcılar</div>
-                        <div style="overflow-x:auto;">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Ad Soyad</th>
-                                        <th>E-posta</th>
-                                        <th>Rol</th>
-                                        <th>Kayıt Tarihi</th>
-                                        <th>İşlem</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminUserTable">
-                                    <tr><td colspan="5" style="text-align:center;color:var(--text-dim);">Yükleniyor...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="side-title" style="margin:20px 0 10px;"><span>📢</span> Tüm İhbarlar</div>
-                        <div style="overflow-x:auto;">
-                            <table class="admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Link</th>
-                                        <th>Kullanıcı</th>
-                                        <th>Not</th>
-                                        <th>Tarih</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminReportTable">
-                                    <tr><td colspan="4" style="text-align:center;color:var(--text-dim);">Yükleniyor...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- YÜKLENİYOR -->
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <div class="loading-text" id="loadingText">Analiz ediliyor...</div>
-                    </div>
-
-                    <!-- SONUÇ -->
-                    <div class="result" id="result">
-                        <div class="score-card" id="scoreCard">
-                            <div class="score-value" id="scoreValue">0%</div>
-                            <div class="score-label" id="scoreLabel"></div>
-                        </div>
-
-                        <div class="camera-alert" id="cameraAlert" style="display:none;">
-                            <h3>⚠️ ÖZEL UYARI</h3>
-                            <p id="cameraAlertText"></p>
-                        </div>
-
-                        <div class="section" id="findingsSection">
-                            <div class="section-title"><span>🚨</span> Tespit Edilen Unsurlar</div>
-                            <div id="findingsList"></div>
-                        </div>
-
-                        <div class="section" id="urlDetailsSection" style="display:none;">
-                            <div class="section-title"><span>🔍</span> Link Detayları</div>
-                            <div id="urlDetails"></div>
-                        </div>
-
-                        <div class="section" id="highlightSection" style="display:none;">
-                            <div class="section-title"><span>🔦</span> Şüpheli Kelimeler</div>
-                            <div id="highlightedText" style="color:var(--text);line-height:1.8;font-size:13px;"></div>
-                        </div>
-
-                        <div class="permission-box" id="permissionBox" style="display:none;">
-                            <h3>⚠️ İZİN UYARISI</h3>
-                            <p id="permissionText"></p>
-                            <div class="permission-buttons">
-                                <button class="perm-btn safe" onclick="closePermission()">✅ Anladım</button>
-                                <button class="perm-btn danger" onclick="closePermission()">🚫 Vazgeçtim</button>
-                            </div>
-                        </div>
-
-                        <button class="pdf-btn" onclick="downloadReport()">📄 Rapor İndir</button>
                     </div>
                 </div>
 
-                <div class="side-panel">
-                    <div class="side-card">
-                        <div class="side-title"><span>📜</span> Son Analizler</div>
-                        <div id="historyList">
-                            <div class="empty-history">Henüz analiz yapılmadı</div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <div class="loading-text" id="loadingText">Analiz ediliyor...</div>
+                </div>
+
+                <div class="result" id="result">
+                    <div class="vt-result-panel">
+                        <div class="vt-header">
+                            <div class="vt-header-left">
+                                <h3>📊 Analiz Sonucu</h3>
+                                <p id="resultTarget">-</p>
+                            </div>
+                            <div class="vt-score-badge" id="vtScoreBadge">
+                                <div>
+                                    <div class="vt-score-number" id="vtScoreNumber">0%</div>
+                                    <div class="vt-score-label" id="vtScoreLabel">Risk Puanı</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert-box" id="alertBox" style="display:none;">
+                            <div class="alert-icon" id="alertIcon">⚠️</div>
+                            <div class="alert-content">
+                                <h4 id="alertTitle">Uyarı</h4>
+                                <p id="alertText"></p>
+                            </div>
+                        </div>
+
+                        <div class="side-title" style="margin-bottom:15px;"><span>🔬</span> Analiz Motorları (<span id="engineCount">0</span>/15 tehdit tespit etti)</div>
+                        <div class="engines-grid" id="enginesGrid"></div>
+
+                        <div class="vt-tabs">
+                            <button class="vt-tab active" onclick="switchVtTab('details', event)">📋 Detaylar</button>
+                            <button class="vt-tab" onclick="switchVtTab('findings', event)">🚨 Bulgular</button>
+                            <button class="vt-tab" onclick="switchVtTab('recommendations', event)">💡 Öneriler</button>
+                        </div>
+
+                        <div class="vt-tab-content active" id="detailsTab">
+                            <div id="detailsContent"></div>
+                        </div>
+
+                        <div class="vt-tab-content" id="findingsTab">
+                            <div id="findingsContent"></div>
+                        </div>
+
+                        <div class="vt-tab-content" id="recommendationsTab">
+                            <div id="recommendationsContent"></div>
+                        </div>
+
+                        <button class="search-btn" style="margin-top:20px;width:100%;" onclick="downloadReport()">📄 Rapor İndir</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="toolsView" style="display:none;">
+                <div class="card">
+                    <div class="side-title"><span>🔐</span> Dosya Hash Kontrolü (VirusTotal Tarzı)</div>
+                    <div class="hash-input-area">
+                        <input type="text" id="hashInput" placeholder="MD5 veya SHA256 hash girin...">
+                        <button class="search-btn" onclick="checkHash()">🔍 Kontrol Et</button>
+                    </div>
+                    <div id="hashResult" class="hash-result" style="display:none;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="side-title"><span>🔑</span> Şifre Güç Analizi</div>
+                    <div class="password-input-area">
+                        <input type="password" id="passwordInput" placeholder="Şifrenizi girin..." oninput="analyzePassword()">
+                        <button class="password-toggle" onclick="togglePassword()">👁️</button>
+                    </div>
+                    <div class="password-strength-bar">
+                        <div class="password-strength-fill" id="passwordStrengthFill"></div>
+                    </div>
+                    <div class="password-strength-text" id="passwordStrengthText">Şifre bekleniyor...</div>
+                    <div class="password-details" id="passwordDetails" style="display:none;">
+                        <div class="password-detail-item">
+                            <span>📏 Uzunluk:</span>
+                            <span id="pwdLength">-</span>
+                        </div>
+                        <div class="password-detail-item">
+                            <span>🔤 Karakter Çeşitliliği:</span>
+                            <span id="pwdChars">-</span>
+                        </div>
+                        <div class="password-detail-item">
+                            <span>⚠️ Yaygın Şifre:</span>
+                            <span id="pwdCommon">-</span>
+                        </div>
+                        <div class="password-crack-time" id="pwdCrackTime">Kırılma Süresi: -</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="side-title"><span>📱</span> QR Kod Okuyucu</div>
+                    <div class="qr-area" onclick="document.getElementById('qrInput').click()">
+                        <div class="qr-icon">📷</div>
+                        <div class="qr-text">QR kod resmini buraya tıklayıp yükle</div>
+                        <input type="file" id="qrInput" accept="image/*" style="display:none;" onchange="readQR(event)">
+                    </div>
+                    <img id="qrPreview" class="qr-preview" alt="QR Önizleme">
+                    <div id="qrResult" class="qr-result"></div>
+                </div>
+            </div>
+
+            <div id="mapView" style="display:none;">
+                <div class="card">
+                    <div class="side-title"><span>🗺️</span> Türkiye Siber Tehdit Haritası (81 İl)</div>
+                    <div class="map-container" id="mapContainer">
+                        <div class="city-info-popup" id="cityPopup">
+                            <button class="city-info-close" onclick="closeCityPopup()">×</button>
+                            <h4 id="cityPopupTitle">Şehir</h4>
+                            <p id="cityPopupContent"></p>
+                        </div>
+                        <object type="image/svg+xml" data="turkey.svg" id="turkeyMap"></object>
+                    </div>
+                    <div class="map-legend">
+                        <div class="legend-item"><span class="legend-dot" style="background:#ff3366;"></span> Yüksek risk (20+)</div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#ffaa00;"></span> Orta risk (10-19)</div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#00ff88;"></span> Düşük risk (0-9)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chatView" style="display:none;">
+                <div class="card">
+                    <div class="side-title"><span>💬</span> Siber Güvenlik Asistanı</div>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="chat-message bot">Merhaba! Ben PhishGuard asistanı. Siber güvenlik hakkında sorularını yanıtlayabilirim. Örneğin: "Oltalama nedir?", "Kamera izni tehlikeli mi?", "Şifrem güvenli mi?"</div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" id="chatInput" placeholder="Sorunuzu yazın..." onkeypress="if(event.key==='Enter') sendChat()">
+                            <button class="chat-send" onclick="sendChat()">Gönder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="eduView" style="display:none;">
+                <div class="card">
+                    <div class="side-title"><span>🎓</span> Siber Güvenlik Eğitimi</div>
+                    <div class="edu-card">
+                        <h4>🎣 Oltalama (Phishing) Nedir?</h4>
+                        <p>Oltalama, saldırganların kendilerini banka, devlet kurumu veya tanıdık bir kişi gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırı türüdür.</p>
+                    </div>
+                    <div class="edu-card">
+                        <h4>🏦 Fake Banka Siteleri</h4>
+                        <p>Saldırganlar, gerçek banka sitelerinin birebir kopyasını yaparak TC kimlik, şifre ve kart bilgilerini çalar.</p>
+                    </div>
+                    <div class="edu-card">
+                        <h4>📷 Kamera İzni Neden Tehlikeli?</h4>
+                        <p>Bazı siteler sizden kamera veya mikrofon izni ister. Bu izni verdiğinizde, site görüntünüzü ve sesinizi kaydedebilir.</p>
+                    </div>
+                    <div class="edu-card">
+                        <h4>💰 Kripto Dolandırıcılığı</h4>
+                        <p>"Bedava Bitcoin", "Katlayarak geri ödeme" gibi vaatlerle kandırılan kullanıcılar, cüzdan bilgilerini kaptırır.</p>
+                    </div>
+
+                    <div class="side-title" style="margin-top:20px;"><span>🧠</span> Mini Test: Siber Güvenlik Bilgini Test Et</div>
+                    <div id="quizContainer"></div>
+                </div>
+            </div>
+
+            <div id="adminView" style="display:none;">
+                <div class="card">
+                    <div class="side-title"><span>👑</span> Admin Paneli</div>
+                    <div class="admin-grid">
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminUsers">0</div>
+                            <div class="admin-stat-label">Kullanıcı</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminAnalyses">0</div>
+                            <div class="admin-stat-label">Analiz</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminReports">0</div>
+                            <div class="admin-stat-label">İhbar</div>
+                        </div>
+                        <div class="admin-stat">
+                            <div class="admin-stat-value" id="adminThreats">0</div>
+                            <div class="admin-stat-label">Tehdit</div>
                         </div>
                     </div>
 
-                    <div class="side-card">
-                        <div class="side-title"><span>💡</span> Güvenlik İpucu</div>
-                        <div style="color:var(--text);opacity:0.8;font-size:12px;line-height:1.7;" id="tipText">
-                            Şüpheli bir linke tıklamadan önce mutlaka analiz edin.
-                        </div>
-                    </div>
-
-                    <div class="side-card">
-                        <div class="side-title"><span>🏆</span> Risk Seviyesi</div>
-                        <div style="text-align:center;padding:10px 0;">
-                            <div style="font-size:36px;margin-bottom:5px;" id="riskEmoji">🛡️</div>
-                            <div style="font-size:12px;color:var(--text-dim);" id="riskText">Sistem hazır</div>
-                        </div>
+                    <div class="side-title" style="margin-bottom:10px;"><span>👥</span> Kayıtlı Kullanıcılar</div>
+                    <div style="overflow-x:auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Ad Soyad</th>
+                                    <th>E-posta</th>
+                                    <th>Rol</th>
+                                    <th>Kayıt</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUserTable"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v9<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v11<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1460,24 +1091,19 @@
             drops = Array(Math.floor(columns)).fill(1);
         });
 
-        // ===== VERİTABANI (localStorage) =====
+        // ===== VERİTABANI =====
         const DB = {
             getUsers: () => JSON.parse(localStorage.getItem('pg_users') || '[]'),
             setUsers: (u) => localStorage.setItem('pg_users', JSON.stringify(u)),
             getCurrentUser: () => JSON.parse(localStorage.getItem('pg_current') || 'null'),
             setCurrentUser: (u) => localStorage.setItem('pg_current', JSON.stringify(u)),
             clearCurrentUser: () => localStorage.removeItem('pg_current'),
-            getHistory: () => JSON.parse(localStorage.getItem('pg_history') || '[]'),
-            setHistory: (h) => localStorage.setItem('pg_history', JSON.stringify(h)),
             getReports: () => JSON.parse(localStorage.getItem('pg_reports') || '[]'),
             setReports: (r) => localStorage.setItem('pg_reports', JSON.stringify(r)),
-            getUserHistory: (email) => JSON.parse(localStorage.getItem('pg_history_' + email) || '[]'),
-            setUserHistory: (email, h) => localStorage.setItem('pg_history_' + email, JSON.stringify(h)),
             getUserStats: (email) => JSON.parse(localStorage.getItem('pg_stats_' + email) || '{"total":0,"threats":0,"camera":0,"scoreSum":0}'),
             setUserStats: (email, s) => localStorage.setItem('pg_stats_' + email, JSON.stringify(s))
         };
 
-        // ===== ADMIN BİLGİSİ =====
         function initAdmin() {
             const users = DB.getUsers();
             if (!users.find(u => u.email === 'hazretirox@gmail.com')) {
@@ -1493,7 +1119,7 @@
         }
         initAdmin();
 
-        // ===== GİRİŞ KAPISI =====
+        // ===== GİRİŞ =====
         function switchGate(type, event) {
             document.querySelectorAll('.gate-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
@@ -1511,15 +1137,12 @@
             const email = document.getElementById('gateRegEmail').value.trim().toLowerCase();
             const password = document.getElementById('gateRegPassword').value;
             const password2 = document.getElementById('gateRegPassword2').value;
-
-            if (!name || !email || !password || !password2) { alert('Lütfen tüm alanları doldurun!'); return; }
-            if (!email.includes('@') || !email.includes('.')) { alert('Geçerli bir e-posta adresi girin!'); return; }
+            if (!name || !email || !password || !password2) { alert('Tüm alanları doldurun!'); return; }
+            if (!email.includes('@') || !email.includes('.')) { alert('Geçerli e-posta girin!'); return; }
             if (password.length < 6) { alert('Şifre en az 6 karakter olmalı!'); return; }
             if (password !== password2) { alert('Şifreler eşleşmiyor!'); return; }
-
             const users = DB.getUsers();
             if (users.find(u => u.email === email)) { alert('Bu e-posta zaten kayıtlı!'); return; }
-
             const newUser = { name, email, password, role: 'user', date: new Date().toISOString() };
             users.push(newUser);
             DB.setUsers(users);
@@ -1531,62 +1154,306 @@
         function gateLogin() {
             const email = document.getElementById('gateLoginEmail').value.trim().toLowerCase();
             const password = document.getElementById('gateLoginPassword').value;
-
-            if (!email || !password) { alert('Lütfen e-posta ve şifrenizi girin!'); return; }
-
+            if (!email || !password) { alert('E-posta ve şifre girin!'); return; }
             const users = DB.getUsers();
             const user = users.find(u => u.email === email && u.password === password);
             if (!user) { alert('E-posta veya şifre hatalı!'); return; }
-
             DB.setCurrentUser(user);
             openApp();
         }
 
+        function continueAsGuest() {
+            const guestUser = {
+                name: 'Misafir',
+                email: 'guest_' + Date.now() + '@phishguard.tr',
+                role: 'guest',
+                date: new Date().toISOString()
+            };
+            DB.setCurrentUser(guestUser);
+            openApp();
+        }
+
         function logout() {
-            if (!confirm('Çıkış yapmak istediğinize emin misiniz?')) return;
+            if (!confirm('Çıkış yapmak istiyor musunuz?')) return;
             DB.clearCurrentUser();
             document.getElementById('app').classList.remove('active');
             document.getElementById('gate').classList.remove('hidden');
-            document.getElementById('gateLoginEmail').value = '';
-            document.getElementById('gateLoginPassword').value = '';
         }
 
         function openApp() {
             const user = DB.getCurrentUser();
             if (!user) return;
-
             document.getElementById('gate').classList.add('hidden');
             document.getElementById('app').classList.add('active');
             document.getElementById('userName').textContent = user.name;
-            document.getElementById('userRole').textContent = user.role === 'admin' ? '(Admin)' : '';
-
             if (user.role === 'admin') {
+                document.getElementById('userRole').textContent = '(Admin)';
+                document.getElementById('userBadgeIcon').textContent = '👑';
                 document.getElementById('adminBtn').style.display = 'flex';
+            } else if (user.role === 'guest') {
+                document.getElementById('userRole').textContent = '(Misafir)';
+                document.getElementById('userBadgeIcon').textContent = '👤';
+                document.getElementById('userBadge').classList.add('guest');
+                document.getElementById('adminBtn').style.display = 'none';
             } else {
+                document.getElementById('userRole').textContent = '';
+                document.getElementById('userBadgeIcon').textContent = '👤';
                 document.getElementById('adminBtn').style.display = 'none';
             }
-
             loadUserData();
             if (user.role === 'admin') updateAdminPanel();
             loadTurkeyMap();
+            initQuiz();
         }
 
         function loadUserData() {
             const user = DB.getCurrentUser();
             if (!user) return;
-
-            const userStats = DB.getUserStats(user.email);
-            document.getElementById('statTotal').textContent = userStats.total;
-            document.getElementById('statThreats').textContent = userStats.threats;
-            document.getElementById('statCamera').textContent = userStats.camera;
-            document.getElementById('statAvg').textContent = userStats.total > 0 ? Math.round(userStats.scoreSum / userStats.total) + '%' : '0%';
-
-            const userHistory = DB.getUserHistory(user.email);
-            renderHistory(userHistory);
-            updateReportUI();
+            if (user.role === 'guest') {
+                document.getElementById('quickTotal').textContent = '0';
+                document.getElementById('quickThreats').textContent = '0';
+                document.getElementById('quickCamera').textContent = '0';
+                return;
+            }
+            const s = DB.getUserStats(user.email);
+            document.getElementById('quickTotal').textContent = s.total;
+            document.getElementById('quickThreats').textContent = s.threats;
+            document.getElementById('quickCamera').textContent = s.camera;
         }
 
-        // ===== TÜRKİYE HARİTASI =====
+        function switchView(view) {
+            ['scanView', 'toolsView', 'mapView', 'chatView', 'eduView', 'adminView'].forEach(v => {
+                document.getElementById(v).style.display = 'none';
+            });
+            document.getElementById(view + 'View').style.display = 'block';
+            if (view === 'admin') updateAdminPanel();
+        }
+
+        function switchSearchTab(tab, event) {
+            document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            if (tab === 'url') {
+                document.getElementById('urlInputGroup').style.display = 'flex';
+                document.getElementById('textInputGroup').style.display = 'none';
+            } else {
+                document.getElementById('urlInputGroup').style.display = 'none';
+                document.getElementById('textInputGroup').style.display = 'flex';
+            }
+        }
+
+        // ===== HASH =====
+        const knownMaliciousHashes = {
+            '5d41402abc4b2a76b9719d911017c592': 'Test zararlı yazılım (MD5)',
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855': 'Boş dosya (SHA256)',
+            'd41d8cd98f00b204e9800998ecf8427e': 'Boş MD5'
+        };
+
+        async function checkHash() {
+            const hash = document.getElementById('hashInput').value.trim().toLowerCase();
+            if (!hash) { alert('Lütfen bir hash girin!'); return; }
+            const resultDiv = document.getElementById('hashResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<div style="text-align:center;color:var(--neon);">🔍 Hash kontrol ediliyor...</div>';
+            await new Promise(r => setTimeout(r, 800));
+            const isKnown = knownMaliciousHashes[hash];
+            const hashType = hash.length === 32 ? 'MD5' : hash.length === 64 ? 'SHA256' : 'Bilinmiyor';
+            let verdict, color, icon;
+            if (isKnown) {
+                verdict = '🚨 ZARARLI YAZILIM!';
+                color = 'var(--danger)';
+                icon = '🚨';
+            } else if (hashType === 'Bilinmiyor') {
+                verdict = '⚠️ Geçersiz hash formatı';
+                color = 'var(--warning)';
+                icon = '⚠️';
+            } else {
+                verdict = '✅ Temiz (bilinen zararlı listesinde yok)';
+                color = 'var(--neon)';
+                icon = '✅';
+            }
+            resultDiv.innerHTML = `
+                <div style="text-align:center;font-size:24px;margin-bottom:12px;">${icon}</div>
+                <div style="text-align:center;color:${color};font-size:16px;font-weight:800;margin-bottom:15px;">${verdict}</div>
+                <div class="hash-row"><span class="hash-label">Hash:</span><span class="hash-value">${hash}</span></div>
+                <div class="hash-row"><span class="hash-label">Tür:</span><span class="hash-value">${hashType}</span></div>
+                <div class="hash-row"><span class="hash-label">Uzunluk:</span><span class="hash-value">${hash.length} karakter</span></div>
+                ${isKnown ? `<div class="hash-row"><span class="hash-label">Tespit:</span><span class="hash-value" style="color:var(--danger);">${isKnown}</span></div>` : ''}
+                <div class="hash-row"><span class="hash-label">Kaynak:</span><span class="hash-value">Yerel zararlı hash veritabanı</span></div>
+            `;
+        }
+
+        // ===== ŞİFRE =====
+        const commonPasswords = ['123456','password','12345678','qwerty','123456789','12345','1234','111111','1234567','dragon','123123','abc123','football','monkey','letmein','shadow','master','666666','qwertyuiop','123321','google','admin','root','pass','test','turkiye','istanbul','ankara','galatasaray','fenerbahce'];
+
+        function togglePassword() {
+            const input = document.getElementById('passwordInput');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function analyzePassword() {
+            const password = document.getElementById('passwordInput').value;
+            const fill = document.getElementById('passwordStrengthFill');
+            const text = document.getElementById('passwordStrengthText');
+            const details = document.getElementById('passwordDetails');
+            if (password.length === 0) {
+                fill.style.width = '0%';
+                text.textContent = 'Şifre bekleniyor...';
+                text.style.color = 'var(--text)';
+                details.style.display = 'none';
+                return;
+            }
+            details.style.display = 'block';
+            const length = password.length;
+            document.getElementById('pwdLength').textContent = length + ' karakter';
+            let charTypes = 0;
+            let charDesc = [];
+            if (/[a-z]/.test(password)) { charTypes++; charDesc.push('küçük harf'); }
+            if (/[A-Z]/.test(password)) { charTypes++; charDesc.push('büyük harf'); }
+            if (/[0-9]/.test(password)) { charTypes++; charDesc.push('rakam'); }
+            if (/[^a-zA-Z0-9]/.test(password)) { charTypes++; charDesc.push('özel karakter'); }
+            document.getElementById('pwdChars').textContent = charTypes + ' çeşit (' + charDesc.join(', ') + ')';
+            const isCommon = commonPasswords.includes(password.toLowerCase());
+            document.getElementById('pwdCommon').textContent = isCommon ? '🚨 EVET - Çok yaygın!' : '✅ Hayır';
+            let score = 0;
+            score += Math.min(length * 4, 40);
+            score += charTypes * 15;
+            if (isCommon) score = Math.min(score, 10);
+            let crackTime = '';
+            if (isCommon) crackTime = 'Anında (saniyeler)';
+            else if (score < 30) crackTime = 'Birkaç dakika';
+            else if (score < 50) crackTime = 'Birkaç saat';
+            else if (score < 70) crackTime = 'Birkaç gün';
+            else if (score < 85) crackTime = 'Birkaç yıl';
+            else crackTime = 'Yüzyıllar';
+            document.getElementById('pwdCrackTime').textContent = '⏱️ Kırılma Süresi: ' + crackTime;
+            fill.style.width = score + '%';
+            if (score < 30) {
+                fill.style.background = '#ff3366';
+                text.textContent = '❌ Zayıf Şifre';
+                text.style.color = '#ff3366';
+            } else if (score < 60) {
+                fill.style.background = '#ffaa00';
+                text.textContent = '⚠️ Orta Seviye';
+                text.style.color = '#ffaa00';
+            } else if (score < 85) {
+                fill.style.background = '#00cc66';
+                text.textContent = '✅ Güçlü Şifre';
+                text.style.color = '#00cc66';
+            } else {
+                fill.style.background = '#00ff88';
+                text.textContent = '🛡️ Çok Güçlü';
+                text.style.color = '#00ff88';
+            }
+        }
+
+        // ===== QR =====
+        function readQR(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    document.getElementById('qrPreview').src = e.target.result;
+                    document.getElementById('qrPreview').style.display = 'block';
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    let qrCode = null;
+                    try {
+                        if (typeof jsQR !== 'undefined') {
+                            qrCode = jsQR(imageData.data, imageData.width, imageData.height);
+                        }
+                    } catch(err) { console.log('QR okuma hatası:', err); }
+                    const resultDiv = document.getElementById('qrResult');
+                    resultDiv.style.display = 'block';
+                    if (qrCode && qrCode.data) {
+                        resultDiv.innerHTML = `
+                            <div style="color:var(--neon);font-weight:700;margin-bottom:8px;">✅ QR Kod Okundu!</div>
+                            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;margin-bottom:10px;">
+                                <strong style="color:var(--neon);">İçerik:</strong><br>
+                                ${qrCode.data}
+                            </div>
+                            <button class="search-btn" style="width:100%;" onclick="document.getElementById('inputUrl').value='${qrCode.data.replace(/'/g, "\\'")}'; switchView('scan');">🔍 Bu Linki Analiz Et</button>
+                        `;
+                        speak('QR kod okundu');
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div style="color:var(--warning);font-weight:700;margin-bottom:8px;">⚠️ QR Kod Okunamadı</div>
+                            <div style="font-size:11px;color:var(--text-dim);">Resimde net bir QR kod bulunamadı.</div>
+                        `;
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ===== QUIZ =====
+        const quizQuestions = [
+            { q: 'Oltalama (phishing) nedir?', options: ['Bir tür virüs', 'Saldırganların kendini güvenilir gösterip bilgi çalma', 'İnternet hızlandırma yöntemi', 'Bir yazılım güncellemesi'], correct: 1 },
+            { q: 'Hangi link şüphelidir?', options: ['https://www.google.com', 'https://www.turkiye.gov.tr', 'http://bankaniz-giris.tk/dogrula', 'https://www.ziraatbank.com.tr'], correct: 2 },
+            { q: 'Kamera izni verirken ne yapmalısınız?', options: ['Hemen izin ver', 'Sadece güvendiğin sitelere izin ver', 'Her siteye izin ver', 'Kamera iznini hiç verme'], correct: 1 },
+            { q: 'Güçlü bir şifre nasıl olmalıdır?', options: ['123456', 'Sadece doğum tarihi', 'En az 12 karakter, harf+rakam+özel karakter', 'İsminiz'], correct: 2 },
+            { q: 'Bankalar şifre isterken hangi yolu kullanır?', options: ['E-posta ile', 'SMS ile link göndererek', 'Resmi mobil uygulama', 'WhatsApp'], correct: 2 }
+        ];
+
+        let quizState = { current: 0, score: 0, answered: false };
+
+        function initQuiz() {
+            quizState = { current: 0, score: 0, answered: false };
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (quizState.current >= quizQuestions.length) {
+                container.innerHTML = `
+                    <div class="quiz-result">
+                        <h3>🎉 Test Tamamlandı!</h3>
+                        <p style="color:var(--text);font-size:14px;">Skorunuz: <strong style="color:var(--neon);font-size:20px;">${quizState.score}/${quizQuestions.length}</strong></p>
+                        <p style="color:var(--text-dim);font-size:12px;margin-top:8px;">
+                            ${quizState.score === quizQuestions.length ? '🏆 Mükemmel!' : quizState.score >= 3 ? '👍 İyi!' : '📚 Daha fazla öğren.'}
+                        </p>
+                        <button class="search-btn" style="margin-top:15px;" onclick="initQuiz()">🔄 Tekrar Dene</button>
+                    </div>
+                `;
+                return;
+            }
+            const q = quizQuestions[quizState.current];
+            container.innerHTML = `
+                <div class="quiz-question">
+                    <h4>${quizState.current + 1}. ${q.q}</h4>
+                    ${q.options.map((opt, i) => `<button class="quiz-option" onclick="answerQuiz(${i})">${opt}</button>`).join('')}
+                </div>
+                <div style="text-align:center;color:var(--text-dim);font-size:11px;">
+                    Soru ${quizState.current + 1} / ${quizQuestions.length} • Skor: ${quizState.score}
+                </div>
+            `;
+        }
+
+        function answerQuiz(index) {
+            if (quizState.answered) return;
+            quizState.answered = true;
+            const q = quizQuestions[quizState.current];
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((opt, i) => {
+                opt.disabled = true;
+                if (i === q.correct) opt.classList.add('correct');
+                else if (i === index) opt.classList.add('wrong');
+            });
+            if (index === q.correct) quizState.score++;
+            setTimeout(() => {
+                quizState.current++;
+                quizState.answered = false;
+                renderQuiz();
+            }, 1500);
+        }
+
+        // ===== HARİTA =====
         const cityData = {
             'Adana': 8, 'Adıyaman': 4, 'Afyonkarahisar': 5, 'Ağrı': 3, 'Aksaray': 4, 'Amasya': 3, 'Ankara': 28,
             'Antalya': 12, 'Ardahan': 2, 'Artvin': 2, 'Aydın': 7, 'Balıkesir': 8, 'Bartın': 2, 'Batman': 3,
@@ -1612,29 +1479,24 @@
         function loadTurkeyMap() {
             const mapObj = document.getElementById('turkeyMap');
             if (!mapObj) return;
-
             mapObj.addEventListener('load', function() {
                 try {
                     const svgDoc = mapObj.contentDocument;
                     if (!svgDoc) return;
-                    
                     const paths = svgDoc.querySelectorAll('path');
                     paths.forEach(path => {
                         const cityName = path.getAttribute('data-name');
                         if (!cityName) return;
-
                         const risk = getCityRisk(cityName);
                         let color = '#00ff88';
                         if (risk === 'high') color = '#ff3366';
                         else if (risk === 'medium') color = '#ffaa00';
-
                         path.style.fill = color;
                         path.style.fillOpacity = '0.5';
                         path.style.stroke = '#00ff88';
                         path.style.strokeWidth = '1';
                         path.style.cursor = 'pointer';
                         path.style.transition = 'all 0.3s';
-
                         path.addEventListener('mouseenter', function() {
                             this.style.fillOpacity = '0.9';
                             this.style.strokeWidth = '2';
@@ -1647,75 +1509,375 @@
                             showCity(cityName, cityData[cityName] || 0);
                         });
                     });
-                } catch(e) {
-                    console.log('Harita yüklenemedi:', e);
-                }
+                } catch(e) { console.log('Harita hatası:', e); }
             });
         }
 
         function showCity(city, count) {
             const popup = document.getElementById('cityPopup');
             document.getElementById('cityPopupTitle').textContent = '📍 ' + city;
-            let riskText = 'Düşük risk';
-            let riskColor = '#00ff88';
+            let riskText = 'Düşük risk', riskColor = '#00ff88';
             if (count >= 20) { riskText = 'Yüksek risk'; riskColor = '#ff3366'; }
             else if (count >= 10) { riskText = 'Orta risk'; riskColor = '#ffaa00'; }
-            
             document.getElementById('cityPopupContent').innerHTML = 
                 `<strong style="color:${riskColor};font-size:20px;">${count}</strong> tehdit tespit edildi<br><br>` +
-                `<span style="color:var(--text-dim);font-size:11px;">Risk seviyesi: <strong style="color:${riskColor};">${riskText}</strong></span>`;
+                `<span style="color:var(--text-dim);font-size:11px;">Risk: <strong style="color:${riskColor};">${riskText}</strong></span>`;
             popup.style.display = 'block';
-            speak(city + ' için ' + count + ' tehdit tespit edildi');
+            speak(city + ' için ' + count + ' tehdit');
         }
 
         function closeCityPopup() {
             document.getElementById('cityPopup').style.display = 'none';
         }
 
-        // ===== SEKME =====
-        function switchTab(tab, event) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            
-            if (event) {
-                event.target.closest('.tab').classList.add('active');
-            } else {
-                document.querySelectorAll('.tab').forEach(t => {
-                    if (t.textContent.includes('Admin')) t.classList.add('active');
+        // ===== MOTORLAR =====
+        const engines = [
+            { id: 'url', name: '🔗 URL Yapı Motoru' },
+            { id: 'ssl', name: '🔒 SSL Sertifika Motoru' },
+            { id: 'domain', name: '🌐 Domain İtibar Motoru' },
+            { id: 'bank', name: '🏦 Banka Taklit Motoru' },
+            { id: 'crypto', name: '💰 Kripto Dolandırıcılık Motoru' },
+            { id: 'camera', name: '📷 Kamera Tuzağı Motoru' },
+            { id: 'edevlet', name: '🏛️ E-Devlet Taklit Motoru' },
+            { id: 'kargo', name: '📦 Kargo Taklit Motoru' },
+            { id: 'fatura', name: '📄 Fatura Taklit Motoru' },
+            { id: 'sosyal', name: '📱 Sosyal Medya Motoru' },
+            { id: 'is', name: '💼 İş İlanı Motoru' },
+            { id: 'ai', name: '🤖 Yapay Zeka Motoru' },
+            { id: 'community', name: '👥 Topluluk Motoru' },
+            { id: 'tld', name: '🌍 TLD Risk Motoru' },
+            { id: 'phishing', name: '🎣 Oltalama Motoru' }
+        ];
+
+        function runEngineAnalysis(input, isUrl) {
+            const results = [];
+            const lower = input.toLowerCase();
+            const domain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0] : '';
+            engines.forEach(engine => {
+                let score = 0;
+                let findings = [];
+                switch(engine.id) {
+                    case 'url':
+                        if (isUrl) {
+                            if (!input.startsWith('https')) { score += 30; findings.push('HTTPS yok'); }
+                            if (input.includes('@')) { score += 40; findings.push('@ hilesi'); }
+                            if (input.length > 100) { score += 15; findings.push('URL çok uzun'); }
+                            if (input.includes('..')) { score += 20; findings.push('Çift nokta'); }
+                        }
+                        break;
+                    case 'ssl':
+                        if (isUrl && !input.startsWith('https')) { score = 60; findings.push('SSL yok'); }
+                        break;
+                    case 'domain':
+                        if (isUrl) {
+                            const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'ziraatbank.com.tr', 'isbank.com.tr'];
+                            if (!trusted.some(t => domain.includes(t))) { score = 40; findings.push('Bilinmeyen domain'); }
+                        }
+                        break;
+                    case 'bank':
+                        const banks = ['ziraat', 'isbank', 'garanti', 'akbank', 'yapikredi', 'halkbank', 'vakifbank', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc'];
+                        const hasBank = banks.some(b => lower.includes(b));
+                        const trustedBanks = ['ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr', 'akbank.com'];
+                        if (hasBank && !trustedBanks.some(t => domain.includes(t))) {
+                            score = 85; findings.push('Banka taklidi!');
+                        }
+                        break;
+                    case 'crypto':
+                        const cryptoWords = ['bitcoin', 'btc', 'ethereum', 'kripto', 'crypto', 'coin', 'token', 'nft', 'katlayarak', 'yüksek getiri'];
+                        if (cryptoWords.some(w => lower.includes(w))) {
+                            score = 80; findings.push('Kripto dolandırıcılığı');
+                        }
+                        break;
+                    case 'camera':
+                        const camWords = ['kamera', 'camera', 'webcam', 'video', 'mikrofon', 'toplanti', 'meeting', 'zoom', 'canli'];
+                        if (camWords.some(w => lower.includes(w))) {
+                            score = 75; findings.push('Kamera/mikrofon tuzağı');
+                        }
+                        break;
+                    case 'edevlet':
+                        if (lower.includes('e-devlet') || lower.includes('edevlet')) {
+                            if (!domain.includes('turkiye.gov.tr')) { score = 85; findings.push('E-Devlet taklidi!'); }
+                        }
+                        break;
+                    case 'kargo':
+                        if (['ptt', 'kargo', 'gönderi', 'kargonuz', 'paketiniz'].some(w => lower.includes(w))) {
+                            score = 65; findings.push('Kargo taklidi');
+                        }
+                        break;
+                    case 'fatura':
+                        if (['fatura', 'elektrik', 'su', 'doğalgaz', 'internet faturanız'].some(w => lower.includes(w))) {
+                            score = 60; findings.push('Fatura taklidi');
+                        }
+                        break;
+                    case 'sosyal':
+                        if (['instagram', 'facebook', 'whatsapp', 'twitter'].some(w => lower.includes(w))) {
+                            score = 50; findings.push('Sosyal medya taklidi');
+                        }
+                        break;
+                    case 'is':
+                        if (['iş ilanı', 'evden çalış', 'home office', 'günlük kazanç'].some(w => lower.includes(w))) {
+                            score = 65; findings.push('Sahte iş ilanı');
+                        }
+                        break;
+                    case 'ai':
+                        let aiScore = 0;
+                        if (/acil|hemen|derhal/.test(lower)) aiScore += 20;
+                        if (/şifre|parola|tc kimlik/.test(lower)) aiScore += 25;
+                        if (/tıklayın|giriş yapın/.test(lower)) aiScore += 15;
+                        score = aiScore;
+                        if (aiScore > 0) findings.push('AI analizi: ' + aiScore + ' puan');
+                        break;
+                    case 'community':
+                        const reports = DB.getReports();
+                        if (reports.some(r => input.includes(r.url))) {
+                            score = 90; findings.push('Topluluk tarafından ihbar edilmiş!');
+                        }
+                        break;
+                    case 'tld':
+                        const riskyTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.work', '.click'];
+                        if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) {
+                            score = 60; findings.push('Riskli TLD');
+                        }
+                        break;
+                    case 'phishing':
+                        const phishWords = ['acil', 'hemen', 'son uyarı', 'hesabınız askıya', 'doğrulama', 'tıklayın'];
+                        const matches = phishWords.filter(w => lower.includes(w));
+                        if (matches.length > 0) {
+                            score = Math.min(100, matches.length * 20);
+                            findings.push(matches.length + ' oltalama kalıbı');
+                        }
+                        break;
+                }
+                results.push({
+                    ...engine,
+                    score: Math.min(100, score),
+                    findings,
+                    verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe'
                 });
+            });
+            return results;
+        }
+
+        // ===== ANALİZ =====
+        function analyzeUrl() {
+            const url = document.getElementById('inputUrl').value.trim();
+            if (!url) { alert('Lütfen bir link girin!'); return; }
+            runAnalysis(url, true);
+        }
+
+        function analyzeText() {
+            const text = document.getElementById('inputText').value.trim();
+            if (!text) { alert('Lütfen bir metin girin!'); return; }
+            runAnalysis(text, false);
+        }
+
+        function runAnalysis(input, isUrl) {
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('loading').classList.add('active');
+            const steps = [
+                'URL yapısı analiz ediliyor...',
+                'SSL sertifikası kontrol ediliyor...',
+                'Banka taklit motoru çalışıyor...',
+                'Kripto dolandırıcılık motoru çalışıyor...',
+                'Kamera tuzağı motoru çalışıyor...',
+                'E-Devlet taklit motoru çalışıyor...',
+                'Yapay zeka motoru analiz ediyor...',
+                'Topluluk veritabanı kontrol ediliyor...',
+                'Sonuçlar derleniyor...'
+            ];
+            let i = 0;
+            const interval = setInterval(() => {
+                document.getElementById('loadingText').textContent = steps[i];
+                i++;
+                if (i >= steps.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loading').classList.remove('active');
+                        showResults(input, isUrl);
+                    }, 300);
+                }
+            }, 200);
+        }
+
+        function showResults(input, isUrl) {
+            const engineResults = runEngineAnalysis(input, isUrl);
+            const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
+            const avgScore = Math.round(engineResults.reduce((a, e) => a + e.score, 0) / engineResults.length);
+
+            document.getElementById('result').classList.add('active');
+            document.getElementById('resultTarget').textContent = input.substring(0, 100) + (input.length > 100 ? '...' : '');
+
+            const scoreNumber = document.getElementById('vtScoreNumber');
+            const scoreLabel = document.getElementById('vtScoreLabel');
+            const scoreBadge = document.getElementById('vtScoreBadge');
+            scoreNumber.textContent = avgScore + '%';
+
+            if (avgScore < 30) {
+                scoreBadge.style.borderColor = '#00ff88';
+                scoreBadge.style.color = '#00ff88';
+                scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)';
+                scoreLabel.textContent = 'DÜŞÜK RİSK';
+            } else if (avgScore < 60) {
+                scoreBadge.style.borderColor = '#ffaa00';
+                scoreBadge.style.color = '#ffaa00';
+                scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)';
+                scoreLabel.textContent = 'ORTA RİSK';
+            } else {
+                scoreBadge.style.borderColor = '#ff3366';
+                scoreBadge.style.color = '#ff3366';
+                scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)';
+                scoreLabel.textContent = 'YÜKSEK RİSK';
             }
-            
+
+            const grid = document.getElementById('enginesGrid');
+            grid.innerHTML = '';
+            document.getElementById('engineCount').textContent = threatCount;
+
+            engineResults.forEach((e, idx) => {
+                const card = document.createElement('div');
+                card.className = 'engine-card ' + e.verdict;
+                card.style.animationDelay = (idx * 0.04) + 's';
+                const verdictText = e.verdict === 'danger' ? '🚨 TEHDİT' : e.verdict === 'warning' ? '⚠️ ŞÜPHELİ' : '✅ TEMİZ';
+                const barColor = e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00ff88';
+                card.innerHTML = `
+                    <div class="engine-header">
+                        <div class="engine-name">${e.name}</div>
+                        <div class="engine-score">${e.score}%</div>
+                    </div>
+                    <div class="engine-verdict ${e.verdict}">${verdictText}</div>
+                    <div class="engine-bar">
+                        <div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            const alertBox = document.getElementById('alertBox');
+            const alertIcon = document.getElementById('alertIcon');
+            const alertTitle = document.getElementById('alertTitle');
+            const alertText = document.getElementById('alertText');
+
+            if (avgScore >= 60) {
+                alertBox.className = 'alert-box danger';
+                alertBox.style.display = 'flex';
+                alertIcon.textContent = '🚨';
+                alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!';
+                alertText.textContent = `${threatCount}/15 motor bu içeriği tehdit olarak işaretledi. Linke TIKLAMAYIN, bilgilerinizi GİRMEYİN!`;
+            } else if (avgScore >= 30) {
+                alertBox.className = 'alert-box warning';
+                alertBox.style.display = 'flex';
+                alertIcon.textContent = '⚠️';
+                alertTitle.textContent = 'ORTA RİSK';
+                alertText.textContent = `${threatCount}/15 motor şüpheli buldu. Dikkatli olun.`;
+            } else {
+                alertBox.className = 'alert-box safe';
+                alertBox.style.display = 'flex';
+                alertIcon.textContent = '✅';
+                alertTitle.textContent = 'DÜŞÜK RİSK';
+                alertText.textContent = 'Bu içerik güvenli görünüyor.';
+            }
+
+            document.getElementById('detailsContent').innerHTML = `
+                <div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div>
+                <div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div>
+                ${isUrl ? `<div class="detail-row"><span class="detail-label">Protokol</span><span class="detail-value ${input.startsWith('https') ? 'safe' : 'danger'}">${input.startsWith('https') ? 'HTTPS' : 'HTTP'}</span></div>` : ''}
+                <div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">15</span></div>
+                <div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div>
+                <div class="detail-row"><span class="detail-label">Ortalama Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>
+            `;
+
+            const allFindings = [];
+            engineResults.forEach(e => {
+                if (e.findings.length > 0) {
+                    e.findings.forEach(f => allFindings.push(`${e.name}: ${f}`));
+                }
+            });
+
+            document.getElementById('findingsContent').innerHTML = allFindings.length > 0
+                ? allFindings.map(f => `<div class="detail-row"><span class="detail-label">▸</span><span class="detail-value">${f}</span></div>`).join('')
+                : '<div class="detail-row"><span class="detail-label">Şüpheli unsur tespit edilmedi.</span></div>';
+
+            let recommendations = [];
+            if (avgScore >= 60) {
+                recommendations = ['🚫 Bu linke TIKLAMAYIN', '🔐 Şifrelerinizi ASLA girmeyin', '💳 Kart bilgilerinizi paylaşmayın', '📞 Bankanızı resmi numaradan arayın', '📢 USOM\'a bildirin: usom.gov.tr'];
+            } else if (avgScore >= 30) {
+                recommendations = ['⚠️ Dikkatli olun', '🔍 Domain adresini kontrol edin', '❓ Emin değilseniz tıklamayın'];
+            } else {
+                recommendations = ['✅ İçerik güvenli görünüyor', '🛡️ Yine de dikkatli olun', '🔒 HTTPS kullanın'];
+            }
+
+            document.getElementById('recommendationsContent').innerHTML = recommendations
+                .map(r => `<div class="detail-row"><span class="detail-label">${r}</span></div>`).join('');
+
+            const user = DB.getCurrentUser();
+            if (user && user.role !== 'guest') {
+                const s = DB.getUserStats(user.email);
+                s.total++;
+                if (avgScore >= 60) s.threats++;
+                if (engineResults.find(e => e.id === 'camera' && e.verdict === 'danger')) s.camera++;
+                s.scoreSum += avgScore;
+                DB.setUserStats(user.email, s);
+                document.getElementById('quickTotal').textContent = s.total;
+                document.getElementById('quickThreats').textContent = s.threats;
+                document.getElementById('quickCamera').textContent = s.camera;
+            }
+
+            window.currentAnalysis = { input, isUrl, engineResults, avgScore, threatCount };
+        }
+
+        function switchVtTab(tab, event) {
+            document.querySelectorAll('.vt-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.vt-tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
             document.getElementById(tab + 'Tab').classList.add('active');
-            if (tab === 'admin') updateAdminPanel();
-            
-            if (tab !== 'edu' && tab !== 'map' && tab !== 'chat' && tab !== 'report' && tab !== 'admin') {
-                document.getElementById('result').classList.remove('active');
-                document.getElementById('loading').classList.remove('active');
-            }
+        }
+
+        function downloadReport() {
+            if (!window.currentAnalysis) return;
+            const { input, isUrl, engineResults, avgScore, threatCount } = window.currentAnalysis;
+            const user = DB.getCurrentUser();
+            const now = new Date().toLocaleString('tr-TR');
+            let report = `
+========================================
+PHISHGUARD-TR ANALİZ RAPORU v11
+========================================
+Tarih: ${now}
+Kullanıcı: ${user?.name || 'Misafir'}
+Risk Puanı: ${avgScore}%
+Durum: ${avgScore >= 60 ? 'YÜKSEK RİSK' : avgScore >= 30 ? 'ORTA RİSK' : 'DÜŞÜK RİSK'}
+Tehdit Motoru: ${threatCount}/15
+
+MOTOR SONUÇLARI:
+${engineResults.map(e => `${e.name}: ${e.score}% ${e.verdict === 'danger' ? '🚨' : e.verdict === 'warning' ? '⚠️' : '✅'}`).join('\n')}
+
+BULGULAR:
+${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).join('\n') || '• Şüpheli unsur yok'}
+========================================
+            `;
+            const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'PhishGuard-Rapor-' + Date.now() + '.txt';
+            link.click();
         }
 
         // ===== SOHBET =====
         const chatResponses = {
-            'oltalama': 'Oltalama (phishing), saldırganların kendilerini güvenilir bir kurum gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırıdır.',
-            'phishing': 'Oltalama (phishing), saldırganların kendilerini güvenilir bir kurum gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırıdır.',
-            'kamera': 'Kamera izni, bir siteye görüntünüzü kaydetme yetkisi verir. Saldırganlar bu izni şantaj veya kimlik hırsızlığı için kullanabilir.',
-            'şifre': 'Güçlü bir şifre en az 12 karakter, büyük-küçük harf, rakam ve özel karakter içermelidir.',
-            'banka': 'Bankalar asla e-posta veya SMS ile şifre istemez. Bankanızın resmi uygulamasını kullanın.',
-            'link': 'Şüpheli bir linki analiz etmek için "Link" sekmesini kullanın.',
-            'vpn': 'VPN, internet trafiğinizi şifreler ve IP adresinizi gizler.',
-            'güncelleme': 'Yazılımlarınızı güncel tutun. Güncellemeler güvenlik açıklarını kapatır.',
-            'antivirüs': 'Antivirüs yazılımı zararlı yazılımlara karşı korur.',
+            'oltalama': 'Oltalama, saldırganların kendilerini güvenilir bir kurum gibi göstererek bilgilerinizi çalmaya çalıştığı saldırıdır.',
+            'kamera': 'Kamera izni verdiğinizde site görüntünüzü kaydedebilir.',
+            'şifre': 'Güçlü şifre en az 12 karakter, harf+rakam+özel karakter içermelidir.',
+            'banka': 'Bankalar asla e-posta ile şifre istemez.',
+            'link': 'Şüpheli linkleri "Tarama" bölümünde analiz edin.',
+            'hash': 'Hash, bir dosyanın parmak izidir. MD5 (32) veya SHA256 (64) karakterdir.',
+            'qr': 'QR kodları okutmadan önce URL\'yi kontrol edin.',
             'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?',
-            'selam': 'Selam! Siber güvenlik hakkında ne sormak istersiniz?',
-            'teşekkür': 'Rica ederim!',
-            'kimsin': 'Ben PhishGuard-TR siber güvenlik asistanıyım.'
+            'teşekkür': 'Rica ederim!'
         };
 
         function sendChat() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             if (!message) return;
-            
             const messages = document.getElementById('chatMessages');
             const userMsg = document.createElement('div');
             userMsg.className = 'chat-message user';
@@ -1723,10 +1885,9 @@
             messages.appendChild(userMsg);
             input.value = '';
             messages.scrollTop = messages.scrollHeight;
-
             setTimeout(() => {
                 const lower = message.toLowerCase();
-                let response = 'Bu konuda bilgim yok. Şu konularda sorabilirsiniz: oltalama, kamera, şifre, banka, link, VPN.';
+                let response = 'Bu konuda bilgim yok.';
                 for (const [key, value] of Object.entries(chatResponses)) {
                     if (lower.includes(key)) { response = value; break; }
                 }
@@ -1738,114 +1899,15 @@
             }, 500);
         }
 
-        // ===== İHBAR =====
-        function submitReport() {
-            const user = DB.getCurrentUser();
-            const url = document.getElementById('reportUrl').value.trim();
-            const note = document.getElementById('reportNote').value.trim();
-            if (!url) { alert('Lütfen bir link girin!'); return; }
-            
-            const reports = DB.getReports();
-            reports.push({ url, note, date: new Date().toISOString(), user: user?.name || 'Misafir', email: user?.email });
-            DB.setReports(reports);
-            document.getElementById('reportUrl').value = '';
-            document.getElementById('reportNote').value = '';
-            updateReportUI();
-            alert('İhbarınız alındı! Teşekkürler.');
-        }
-
-        function updateReportUI() {
-            const reports = DB.getReports();
-            document.getElementById('reportCount').textContent = reports.length;
-            const today = new Date().toDateString();
-            const todayCount = reports.filter(r => new Date(r.date).toDateString() === today).length;
-            document.getElementById('reportToday').textContent = todayCount;
-            document.getElementById('reportUnique').textContent = new Set(reports.map(r => r.url)).size;
-
-            const list = document.getElementById('reportList');
-            if (reports.length === 0) {
-                list.innerHTML = '<div class="empty-history">Henüz ihbar yok</div>';
-            } else {
-                list.innerHTML = '';
-                reports.slice(-5).reverse().forEach(r => {
-                    const item = document.createElement('div');
-                    item.className = 'report-list-item';
-                    item.innerHTML = `<span class="report-item-url">${r.url}</span>`;
-                    list.appendChild(item);
-                });
-            }
-        }
-
-        // ===== İSTATİSTİK =====
-        function updateStats(score, isThreat, isCamera) {
-            const user = DB.getCurrentUser();
-            if (!user) return;
-            const userStats = DB.getUserStats(user.email);
-            userStats.total++;
-            if (isThreat) userStats.threats++;
-            if (isCamera) userStats.camera++;
-            userStats.scoreSum += score;
-            DB.setUserStats(user.email, userStats);
-            
-            document.getElementById('statTotal').textContent = userStats.total;
-            document.getElementById('statThreats').textContent = userStats.threats;
-            document.getElementById('statCamera').textContent = userStats.camera;
-            document.getElementById('statAvg').textContent = Math.round(userStats.scoreSum / userStats.total) + '%';
-        }
-
-        function addToHistory(type, preview, score) {
-            const user = DB.getCurrentUser();
-            if (!user) return;
-            const now = new Date();
-            const time = now.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-            const userHistory = DB.getUserHistory(user.email);
-            userHistory.unshift({ type, preview, score, time });
-            if (userHistory.length > 5) userHistory.pop();
-            DB.setUserHistory(user.email, userHistory);
-            renderHistory(userHistory);
-        }
-
-        function renderHistory(history) {
-            const list = document.getElementById('historyList');
-            if (!history || history.length === 0) {
-                list.innerHTML = '<div class="empty-history">Henüz analiz yapılmadı</div>';
-                return;
-            }
-            list.innerHTML = '';
-            history.forEach(h => {
-                const level = h.score < 30 ? 'low' : h.score < 60 ? 'medium' : 'high';
-                const item = document.createElement('div');
-                item.className = 'history-item ' + level;
-                item.innerHTML = `
-                    <div class="history-header">
-                        <span>${h.type === 'text' ? '📧' : '🔗'} ${h.score}%</span>
-                        <span class="history-time">${h.time}</span>
-                    </div>
-                    <div class="history-preview">${h.preview}</div>
-                `;
-                list.appendChild(item);
-            });
-        }
-
-        // ===== ADMIN PANEL =====
+        // ===== ADMIN =====
         function updateAdminPanel() {
             const users = DB.getUsers();
-            const reports = DB.getReports();
-            let allTotal = 0, allThreats = 0;
-
-            users.forEach(u => {
-                const s = DB.getUserStats(u.email);
-                allTotal += s.total;
-                allThreats += s.threats;
-            });
-
             document.getElementById('adminUsers').textContent = users.length;
-            document.getElementById('adminAnalyses').textContent = allTotal;
-            document.getElementById('adminReports').textContent = reports.length;
-            document.getElementById('adminThreats').textContent = allThreats;
-
-            const userTable = document.getElementById('adminUserTable');
-            userTable.innerHTML = '';
+            document.getElementById('adminAnalyses').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).total, 0);
+            document.getElementById('adminReports').textContent = DB.getReports().length;
+            document.getElementById('adminThreats').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).threats, 0);
+            const table = document.getElementById('adminUserTable');
+            table.innerHTML = '';
             users.forEach(u => {
                 const tr = document.createElement('tr');
                 const date = new Date(u.date).toLocaleDateString('tr-TR');
@@ -1856,48 +1918,28 @@
                     <td>${date}</td>
                     <td>${u.role !== 'admin' ? '<button class="admin-action-btn" onclick="deleteUser(\'' + u.email + '\')">Sil</button>' : '-'}</td>
                 `;
-                userTable.appendChild(tr);
+                table.appendChild(tr);
             });
-
-            const reportTable = document.getElementById('adminReportTable');
-            reportTable.innerHTML = '';
-            if (reports.length === 0) {
-                reportTable.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-dim);">Henüz ihbar yok</td></tr>';
-            } else {
-                reports.slice().reverse().forEach(r => {
-                    const tr = document.createElement('tr');
-                    const date = new Date(r.date).toLocaleString('tr-TR');
-                    tr.innerHTML = `
-                        <td style="font-family:monospace;font-size:10px;">${r.url}</td>
-                        <td>${r.user}</td>
-                        <td>${r.note || '-'}</td>
-                        <td>${date}</td>
-                    `;
-                    reportTable.appendChild(tr);
-                });
-            }
         }
 
         function deleteUser(email) {
-            if (!confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')) return;
+            if (!confirm('Kullanıcıyı silmek istediğinize emin misiniz?')) return;
             let users = DB.getUsers();
             users = users.filter(u => u.email !== email);
             DB.setUsers(users);
             updateAdminPanel();
         }
 
-        // ===== TEMA =====
+        // ===== TEMA & SES =====
         function toggleTheme() {
             document.body.classList.toggle('light-mode');
-            document.getElementById('themeBtn').textContent = 
-                document.body.classList.contains('light-mode') ? '☀️' : '🌙';
+            document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
         }
 
-        // ===== SES =====
         let voiceEnabled = false;
         function toggleVoice() {
             voiceEnabled = !voiceEnabled;
-            document.getElementById('voiceBtn').textContent = voiceEnabled ? '🔊 Ses Açık' : '🔇 Ses';
+            document.getElementById('voiceBtn').textContent = voiceEnabled ? '🔊' : '🔇';
         }
 
         function speak(text) {
@@ -1909,248 +1951,11 @@
             }
         }
 
-        // ===== SAAT =====
-        function updateClock() {
-            const now = new Date();
+        setInterval(() => {
             const clock = document.getElementById('clock');
-            if (clock) clock.textContent = now.toLocaleTimeString('tr-TR');
-        }
-        setInterval(updateClock, 1000);
+            if (clock) clock.textContent = new Date().toLocaleTimeString('tr-TR');
+        }, 1000);
 
-        // ===== YÜKLENİYOR =====
-        function showLoading(callback) {
-            const loading = document.getElementById('loading');
-            const loadingText = document.getElementById('loadingText');
-            const result = document.getElementById('result');
-            result.classList.remove('active');
-            loading.classList.add('active');
-            const steps = ['Metin taranıyor...', 'Risk kalıpları kontrol ediliyor...', 'Banka taklidi kontrol ediliyor...', 'Sonuçlar hazırlanıyor...'];
-            let i = 0;
-            const interval = setInterval(() => {
-                loadingText.textContent = steps[i];
-                i++;
-                if (i >= steps.length) {
-                    clearInterval(interval);
-                    setTimeout(() => { loading.classList.remove('active'); callback(); }, 200);
-                }
-            }, 180);
-        }
-
-        // ===== RİSK KALIPLARI =====
-        const riskPatterns = [
-            { pattern: /acil|hemen|derhal|son uyarı/gi, desc: "Aciliyet ifadesi", weight: 15 },
-            { pattern: /hesabınız|hesabınız askıya/gi, desc: "Hesap tehdidi", weight: 20 },
-            { pattern: /tıklayın|giriş yapın/gi, desc: "Tıklama yönlendirmesi", weight: 15 },
-            { pattern: /şifre|parola|tc kimlik/gi, desc: "Kişisel bilgi talebi", weight: 25 },
-            { pattern: /banka|kredi kartı|cvv/gi, desc: "Finansal bilgi talebi", weight: 25 },
-            { pattern: /ödül|kazandınız|bedava/gi, desc: "Cazibe vaadi", weight: 15 },
-            { pattern: /e-devlet|edevlet/gi, desc: "E-Devlet taklidi", weight: 25 },
-            { pattern: /ptt|kargo|kargonuz/gi, desc: "Sahte kargo bildirimi", weight: 20 },
-            { pattern: /fatura|elektrik|doğalgaz/gi, desc: "Sahte fatura bildirimi", weight: 20 },
-            { pattern: /kamera|görüntülü|video/gi, desc: "Kamera/görüntü talebi", weight: 25 },
-            { pattern: /mikrofon|dinleme/gi, desc: "Mikrofon talebi", weight: 25 },
-            { pattern: /bitcoin|kripto|crypto|coin/gi, desc: "Kripto dolandırıcılığı", weight: 25 },
-            { pattern: /katlayarak|yüksek getiri/gi, desc: "Yüksek getiri vaadi", weight: 30 },
-            { pattern: /iş ilanı|evden çalış/gi, desc: "Sahte iş ilanı", weight: 25 }
-        ];
-
-        const suspiciousDomainPatterns = [
-            { pattern: /bit\.ly|tinyurl/gi, desc: "URL kısaltıcı", weight: 25 },
-            { pattern: /[a-z0-9-]+\.(tk|ml|ga|cf|gq)/gi, desc: "Riskli TLD", weight: 30 },
-            { pattern: /@/g, desc: "@ hilesi", weight: 35 },
-            { pattern: /casejoys|phishing/gi, desc: "Zararlı kalıp", weight: 40 }
-        ];
-
-        const trustedDomains = ['google.com', 'youtube.com', 'facebook.com', 'gov.tr', 'edu.tr', 'ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr'];
-
-        const tips = [
-            "Şüpheli bir linke tıklamadan önce mutlaka analiz edin.",
-            "Kamera izni isteyen sitelere karşı dikkatli olun.",
-            "E-Devlet taklidi sitelere TC kimlik numaranızı girmeyin.",
-            "Bankalar SMS ile link göndermez.",
-            "Kripto para vaat eden sitelere itibar etmeyin."
-        ];
-
-        function rotateTip() {
-            const tipEl = document.getElementById('tipText');
-            if (tipEl) tipEl.textContent = tips[Math.floor(Math.random() * tips.length)];
-        }
-        setInterval(rotateTip, 8000);
-
-        // ===== METİN ANALİZİ =====
-        function analyzeText() {
-            const text = document.getElementById("inputText").value.trim();
-            if (!text) { alert("Lütfen analiz edilecek metni girin!"); return; }
-            showLoading(() => {
-                let totalScore = 0, findings = [], cameraRisk = false;
-                riskPatterns.forEach(rp => {
-                    const matches = text.match(rp.pattern);
-                    if (matches) {
-                        totalScore += rp.weight;
-                        findings.push(rp.desc + " (" + matches.length + " kez)");
-                        if (rp.desc.includes("Kamera") || rp.desc.includes("Mikrofon")) cameraRisk = true;
-                    }
-                });
-                const links = text.match(/https?:\/\/[^\s]+/gi) || [];
-                links.forEach(link => {
-                    suspiciousDomainPatterns.forEach(sp => {
-                        if (sp.pattern.test(link)) { totalScore += sp.weight; findings.push("Şüpheli link: " + sp.desc); }
-                    });
-                });
-                if (text.length < 50 && links.length > 0) { totalScore += 15; findings.push("Kısa metin içinde link"); }
-                if (totalScore > 100) totalScore = 100;
-                displayResult(totalScore, findings, links, text, cameraRisk, null, false);
-                updateStats(totalScore, totalScore >= 60, cameraRisk);
-                addToHistory('text', text.substring(0, 50) + '...', totalScore);
-            });
-        }
-
-        // ===== LİNK ANALİZİ =====
-        function analyzeUrl() {
-            const url = document.getElementById("inputUrl").value.trim();
-            if (!url) { alert("Lütfen analiz edilecek linki girin!"); return; }
-            showLoading(() => {
-                let totalScore = 0, findings = [], cameraRisk = false, urlDetails = {};
-                if (!/^https?:\/\//i.test(url)) { totalScore += 10; findings.push("URL http:// ile başlamıyor"); }
-                let domain = url.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0];
-                urlDetails.domain = domain;
-                urlDetails.protocol = url.startsWith('https') ? 'HTTPS (şifreli)' : 'HTTP (şifresiz)';
-                urlDetails.fullUrl = url;
-                urlDetails.length = url.length;
-                if (!url.startsWith('https')) { totalScore += 20; findings.push("HTTPS kullanılmıyor"); }
-                suspiciousDomainPatterns.forEach(sp => {
-                    if (sp.pattern.test(url)) { totalScore += sp.weight; findings.push(sp.desc); }
-                });
-                const domainLower = domain.toLowerCase();
-                const isTrusted = trustedDomains.some(td => domain.includes(td));
-                if (isTrusted) { totalScore = Math.max(0, totalScore - 30); findings.push("✅ Güvenilir domain"); }
-                else { totalScore += 10; findings.push("Bilinmeyen domain"); }
-                if (url.includes('@')) { totalScore += 30; findings.push("@ karakteri"); }
-                if (url.length > 100) { totalScore += 10; findings.push("URL çok uzun"); }
-                if (totalScore > 100) totalScore = 100;
-                displayResult(totalScore, findings, [url], url, cameraRisk, urlDetails, isTrusted);
-                updateStats(totalScore, totalScore >= 60, cameraRisk);
-                addToHistory('url', url.substring(0, 50), totalScore);
-            });
-        }
-
-        // ===== SONUÇ =====
-        function displayResult(score, findings, links, originalText, cameraRisk, urlDetails, isTrusted) {
-            const result = document.getElementById("result");
-            const scoreCard = document.getElementById("scoreCard");
-            const scoreValue = document.getElementById("scoreValue");
-            const scoreLabel = document.getElementById("scoreLabel");
-            const findingsList = document.getElementById("findingsList");
-            const cameraAlert = document.getElementById("cameraAlert");
-            const cameraAlertText = document.getElementById("cameraAlertText");
-            const urlDetailsSection = document.getElementById("urlDetailsSection");
-            const urlDetailsDiv = document.getElementById("urlDetails");
-            const riskEmoji = document.getElementById("riskEmoji");
-            const riskText = document.getElementById("riskText");
-
-            result.classList.add("active");
-            scoreValue.textContent = score + "%";
-
-            if (score < 30) {
-                scoreCard.style.background = "linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05))";
-                scoreCard.style.border = "2px solid #00ff88";
-                scoreCard.style.color = "#00ff88";
-                scoreLabel.textContent = "✅ DÜŞÜK RİSK — Güvenli görünüyor.";
-                riskEmoji.textContent = "🛡️";
-                riskText.textContent = "Düşük risk";
-            } else if (score < 60) {
-                scoreCard.style.background = "linear-gradient(135deg, rgba(255, 170, 0, 0.15), rgba(255, 170, 0, 0.05))";
-                scoreCard.style.border = "2px solid #ffaa00";
-                scoreCard.style.color = "#ffaa00";
-                scoreLabel.textContent = "⚠️ ORTA RİSK — Dikkatli olun.";
-                riskEmoji.textContent = "⚠️";
-                riskText.textContent = "Orta risk";
-            } else {
-                scoreCard.style.background = "linear-gradient(135deg, rgba(255, 51, 102, 0.15), rgba(255, 51, 102, 0.05))";
-                scoreCard.style.border = "2px solid #ff3366";
-                scoreCard.style.color = "#ff3366";
-                scoreLabel.textContent = "🚨 YÜKSEK RİSK — Oltalama saldırısı!";
-                riskEmoji.textContent = "🚨";
-                riskText.textContent = "Yüksek risk!";
-            }
-
-            if (cameraRisk || (urlDetails && !isTrusted)) {
-                cameraAlert.style.display = "block";
-                cameraAlertText.textContent = cameraRisk 
-                    ? "📷 Bu link kamera/mikrofon izni isteyebilir. İZİN VERMEYİN!"
-                    : "⚠️ Bu domain güvenilir listede değil. Dikkatli olun.";
-            } else {
-                cameraAlert.style.display = "none";
-            }
-
-            if (urlDetails) {
-                urlDetailsSection.style.display = "block";
-                urlDetailsDiv.innerHTML = `
-                    <div class="url-detail"><strong>URL</strong><span>${urlDetails.fullUrl}</span></div>
-                    <div class="url-detail"><strong>Domain</strong><span>${urlDetails.domain}</span></div>
-                    <div class="url-detail"><strong>Protokol</strong><span>${urlDetails.protocol}</span></div>
-                    <div class="url-detail"><strong>Uzunluk</strong><span>${urlDetails.length} karakter</span></div>
-                `;
-            } else {
-                urlDetailsSection.style.display = "none";
-            }
-
-            findingsList.innerHTML = "";
-            if (findings.length === 0) {
-                findingsList.innerHTML = '<div class="finding-item">Şüpheli unsur tespit edilmedi.</div>';
-            } else {
-                findings.forEach(f => {
-                    const div = document.createElement("div");
-                    div.className = "finding-item";
-                    div.textContent = f;
-                    findingsList.appendChild(div);
-                });
-            }
-            currentResult = { score, findings, originalText, cameraRisk, urlDetails };
-            result.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        let currentResult = null;
-
-        function closePermission() {
-            document.getElementById("permissionBox").style.display = "none";
-        }
-
-        // ===== RAPOR =====
-        function downloadReport() {
-            if (!currentResult) return;
-            const user = DB.getCurrentUser();
-            const { score, findings, originalText, cameraRisk, urlDetails } = currentResult;
-            const now = new Date().toLocaleString('tr-TR');
-            let report = `
-========================================
-PHISHGUARD-TR GÜVENLİK RAPORU v9
-========================================
-Tarih: ${now}
-Kullanıcı: ${user?.name || 'Misafir'}
-Risk Puanı: ${score}%
-Durum: ${score < 30 ? 'DÜŞÜK RİSK' : score < 60 ? 'ORTA RİSK' : 'YÜKSEK RİSK'}
-${cameraRisk ? '📷 KAMERA/MİKROFON RİSKİ TESPİT EDİLDİ' : ''}
-
-ANALİZ EDİLEN İÇERİK: ${urlDetails ? urlDetails.fullUrl : originalText}
-
-TESPİT EDİLEN UNSURLAR:
-${findings.map(f => '• ' + f).join('\n')}
-
-ÖNERİLER:
-${score >= 60 ? '• Bu içeriğe GÜVENMEYİN.' : '• Dikkatli olun.'}
-${cameraRisk ? '• Kamera/mikrofon izni VERMEYİN.' : ''}
-• Şüpheli durumları USOM'a bildirin: usom.gov.tr
-========================================
-            `;
-            const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'PhishGuard-Rapor-' + Date.now() + '.txt';
-            link.click();
-        }
-
-        // ===== BAŞLANGIÇ =====
         window.addEventListener('load', () => {
             const user = DB.getCurrentUser();
             if (user) openApp();
