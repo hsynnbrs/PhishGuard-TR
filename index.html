@@ -80,7 +80,6 @@
             z-index: 1;
         }
 
-        /* ÜST BAR */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -126,7 +125,6 @@
             transform: scale(1.05);
         }
 
-        /* HEADER */
         .header {
             text-align: center;
             margin-bottom: 30px;
@@ -169,7 +167,6 @@
             font-weight: 300;
         }
 
-        /* İSTATİSTİK PANELİ */
         .stats-panel {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -211,7 +208,6 @@
             font-weight: 600;
         }
 
-        /* ANA GRID */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 320px;
@@ -229,7 +225,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* KART */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(20px);
@@ -239,7 +234,6 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
-        /* SEKMELER */
         .tabs {
             display: flex;
             gap: 6px;
@@ -290,7 +284,6 @@
             to { opacity: 1; }
         }
 
-        /* INPUT */
         .input-label {
             display: flex;
             align-items: center;
@@ -364,7 +357,6 @@
             box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
         }
 
-        /* YÜKLENİYOR */
         .loading { display: none; text-align: center; padding: 30px; }
         .loading.active { display: block; }
 
@@ -385,7 +377,6 @@
             font-size: 13px;
         }
 
-        /* SONUÇ */
         .result { display: none; }
         .result.active { display: block; animation: fadeInUp 0.6s ease; }
 
@@ -601,7 +592,6 @@
         .perm-btn.danger { background: transparent; border: 2px solid var(--danger); color: var(--danger); }
         .perm-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); }
 
-        /* PDF BUTONU */
         .pdf-btn {
             width: 100%;
             padding: 12px;
@@ -625,7 +615,6 @@
             transform: translateY(-2px);
         }
 
-        /* SAĞ PANEL */
         .side-panel {
             display: flex;
             flex-direction: column;
@@ -687,7 +676,6 @@
             font-style: italic;
         }
 
-        /* EĞİTİM SEKMESİ */
         .edu-card {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 14px;
@@ -763,18 +751,6 @@
             color: var(--danger);
         }
 
-        .quiz-result {
-            text-align: center;
-            padding: 20px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--neon);
-            border-radius: 12px;
-            margin-top: 15px;
-        }
-
-        .quiz-result h3 { color: var(--neon); font-size: 18px; margin-bottom: 8px; }
-
-        /* FOOTER */
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -785,7 +761,6 @@
 
         .footer strong { color: var(--neon); }
 
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             .main-grid { grid-template-columns: 1fr; }
             .stats-panel { grid-template-columns: repeat(2, 1fr); }
@@ -807,16 +782,14 @@
     <canvas id="matrix"></canvas>
 
     <div class="container">
-        <!-- ÜST BAR -->
         <div class="top-bar">
             <div class="top-bar-left">
                 <span class="live-dot"></span>
-                <span>CANLI SİSTEM • v4.0</span>
+                <span>CANLI SİSTEM • v6.0</span>
             </div>
             <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
         </div>
 
-        <!-- HEADER -->
         <div class="header">
             <div class="logo">
                 <span class="logo-icon">🛡️</span>
@@ -825,7 +798,6 @@
             <p class="tagline">Türkiye'ye Özel Siber Tehdit Kalkanı</p>
         </div>
 
-        <!-- İSTATİSTİK PANELİ -->
         <div class="stats-panel">
             <div class="stat-card">
                 <div class="stat-value" id="statTotal">0</div>
@@ -845,9 +817,7 @@
             </div>
         </div>
 
-        <!-- ANA GRID -->
         <div class="main-grid">
-            <!-- SOL: ANALİZ KARTI -->
             <div class="card">
                 <div class="tabs">
                     <button class="tab active" onclick="switchTab('text', event)">📧 Metin</button>
@@ -855,36 +825,42 @@
                     <button class="tab" onclick="switchTab('edu', event)">🎓 Eğitim</button>
                 </div>
 
-                <!-- METİN -->
                 <div class="tab-content active" id="textTab">
                     <label class="input-label"><span>📝</span> Şüpheli Metin / E-posta</label>
                     <textarea id="inputText" placeholder="Şüpheli e-posta metnini, mesajı veya bildirimi buraya yapıştır..."></textarea>
                     <button class="analyze-btn" onclick="analyzeText()">🔍 Metni Analiz Et</button>
                 </div>
 
-                <!-- LİNK -->
                 <div class="tab-content" id="urlTab">
                     <label class="input-label"><span>🌐</span> Şüpheli Link</label>
                     <input type="text" id="inputUrl" placeholder="https://ornek-site.tk/giris">
                     <button class="analyze-btn" onclick="analyzeUrl()">🔗 Linki Analiz Et</button>
                 </div>
 
-                <!-- EĞİTİM -->
                 <div class="tab-content" id="eduTab">
                     <div class="edu-card">
                         <h4>🎣 Oltalama (Phishing) Nedir?</h4>
                         <p>Oltalama, saldırganların kendilerini banka, devlet kurumu veya tanıdık bir kişi gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırı türüdür. Genellikle e-posta, SMS veya sahte web siteleri üzerinden yapılır.</p>
                     </div>
                     <div class="edu-card">
+                        <h4>🏦 Fake Banka Siteleri</h4>
+                        <p>Saldırganlar, gerçek banka sitelerinin birebir kopyasını yaparak kullanıcıların TC kimlik, şifre ve kart bilgilerini çalar. Bu siteler genellikle <strong>bankaniz-giris.tk</strong> gibi sahte adresler kullanır. Gerçek banka siteleri her zaman <strong>https://</strong> ile başlar ve resmi uzantı kullanır.</p>
+                    </div>
+                    <div class="edu-card">
                         <h4>📷 Kamera İzni Neden Tehlikeli?</h4>
                         <p>Bazı siteler sizden kamera veya mikrofon izni ister. Bu izni verdiğinizde, site görüntünüzü ve sesinizi kaydedebilir. Saldırganlar bu görüntüleri şantaj veya kimlik hırsızlığı için kullanabilir. <strong>Sadece güvendiğiniz sitelere izin verin.</strong></p>
+                    </div>
+                    <div class="edu-card">
+                        <h4>💰 Kripto Dolandırıcılığı</h4>
+                        <p>"Bedava Bitcoin", "Katlayarak geri ödeme" gibi vaatlerle kandırılan kullanıcılar, cüzdan bilgilerini veya paralarını kaptırır. Bu tür siteler genellikle <strong>.xyz</strong>, <strong>.top</strong> gibi uzantılar kullanır ve aciliyet hissi yaratır.</p>
                     </div>
                     <div class="edu-card">
                         <h4>🔗 Şüpheli Link Nasıl Anlaşılır?</h4>
                         <p>• URL kısaltıcılar (bit.ly, tinyurl) gerçek hedefi gizler<br>
                         • .tk, .ml, .ga gibi ücretsiz uzantılar sık kullanılır<br>
                         • @ işareti içeren URL'lerde gerçek adres @'dan sonrasıdır<br>
-                        • IP adresi doğrudan yazılmışsa (192.168.1.1 gibi) dikkat edin</p>
+                        • IP adresi doğrudan yazılmışsa (192.168.1.1 gibi) dikkat edin<br>
+                        • Banka siteleri asla "giris-banka.tk" gibi olmaz</p>
                     </div>
 
                     <div class="quiz-question">
@@ -895,13 +871,11 @@
                     </div>
                 </div>
 
-                <!-- YÜKLENİYOR -->
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
                     <div class="loading-text" id="loadingText">Analiz ediliyor...</div>
                 </div>
 
-                <!-- SONUÇ -->
                 <div class="result" id="result">
                     <div class="score-card" id="scoreCard">
                         <div class="score-value" id="scoreValue">0%</div>
@@ -938,11 +912,10 @@
                         </div>
                     </div>
 
-                    <button class="pdf-btn" onclick="downloadReport()">📄 PDF Rapor İndir</button>
+                    <button class="pdf-btn" onclick="downloadReport()">📄 Rapor İndir</button>
                 </div>
             </div>
 
-            <!-- SAĞ: GEÇMİŞ PANELİ -->
             <div class="side-panel">
                 <div class="side-card">
                     <div class="side-title"><span>📜</span> Son Analizler</div>
@@ -954,7 +927,7 @@
                 <div class="side-card">
                     <div class="side-title"><span>💡</span> Güvenlik İpucu</div>
                     <div style="color:var(--text);opacity:0.8;font-size:12px;line-height:1.7;" id="tipText">
-                        Şüpheli bir linke tıklamadan önce mutlaka analiz edin. Emin değilseniz, o linki hiç açmayın.
+                        Şüpheli bir linke tıklamadan önce mutlaka analiz edin.
                     </div>
                 </div>
             </div>
@@ -1073,7 +1046,7 @@
                 btn.classList.add('wrong');
                 btn.textContent = '❌ Yanlış. ' + btn.textContent;
                 parent.querySelectorAll('.quiz-option').forEach(b => {
-                    if (b.textContent.includes('bankaniz-giris.tk') || b.onclick.toString().includes('true')) {
+                    if (b.onclick.toString().includes('true')) {
                         b.classList.add('correct');
                     }
                 });
@@ -1092,7 +1065,9 @@
             const steps = [
                 'Metin taranıyor...',
                 'Risk kalıpları kontrol ediliyor...',
-                'Link yapısı analiz ediliyor...',
+                'Banka taklidi kontrol ediliyor...',
+                'Kripto dolandırıcılığı kontrol ediliyor...',
+                'Domain yaşı ve SSL kontrol ediliyor...',
                 'Kamera/mikrofon riski değerlendiriliyor...',
                 'Sonuçlar hazırlanıyor...'
             ];
@@ -1108,7 +1083,7 @@
                         callback();
                     }, 300);
                 }
-            }, 250);
+            }, 200);
         }
 
         // ===== RİSK KALIPLARI =====
@@ -1134,19 +1109,65 @@
             { pattern: /kamera|kameranız|kamera açın|görüntülü|görüntü|video/gi, desc: "Kamera/görüntü talebi", weight: 25 },
             { pattern: /mikrofon|ses|sesiniz|konuşma|dinleme/gi, desc: "Mikrofon/ses talebi", weight: 25 },
             { pattern: /toplantı|online toplantı|zoom|google meet|teams/gi, desc: "Sahte toplantı daveti", weight: 20 },
-            { pattern: /kimlik doğrulama|yüz tanıma|biyometrik/gi, desc: "Biyometrik veri talebi", weight: 25 }
+            { pattern: /kimlik doğrulama|yüz tanıma|biyometrik/gi, desc: "Biyometrik veri talebi", weight: 25 },
+            // Kripto dolandırıcılığı
+            { pattern: /bitcoin|btc|ethereum|eth|kripto|crypto|coin|token|nft/gi, desc: "Kripto para dolandırıcılığı", weight: 25 },
+            { pattern: /katlayarak|katla|2x|3x|10x|yüksek getiri|garantili kazanç/gi, desc: "Yüksek getiri vaadi (dolandırıcılık)", weight: 30 },
+            { pattern: /cüzdan|wallet|private key|seed phrase|metamask|binance/gi, desc: "Kripto cüzdan bilgisi talebi", weight: 30 },
+            // Aşk dolandırıcılığı
+            { pattern: /aşk|sevgili|evlen|tanış|görüşelim|buluşalım/gi, desc: "Aşk dolandırıcılığı (romance scam)", weight: 20 },
+            // Sahte iş ilanı
+            { pattern: /iş ilanı|işe alım|home office|evden çalış|günlük kazanç|kolay para/gi, desc: "Sahte iş ilanı", weight: 25 },
+            // Sahte yatırım
+            { pattern: /yatırım|forex|borsa|hisse|fon|getiri|kar|kâr/gi, desc: "Sahte yatırım vaadi", weight: 20 }
         ];
 
         const suspiciousDomainPatterns = [
-            { pattern: /bit\.ly|tinyurl|goo\.gl|t\.co|is\.gd|buff\.ly|cutt\.ly|shorturl/gi, desc: "URL kısaltıcı", weight: 25 },
+            { pattern: /bit\.ly|tinyurl|goo\.gl|t\.co|is\.gd|buff\.ly|cutt\.ly|shorturl/gi, desc: "URL kısaltıcı kullanılmış", weight: 25 },
             { pattern: /[a-z0-9-]+\.(tk|ml|ga|cf|gq)/gi, desc: "Riskli alan adı uzantısı", weight: 30 },
-            { pattern: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/, desc: "IP adresi kullanımı", weight: 30 },
-            { pattern: /@/g, desc: "@ hilesi", weight: 35 },
-            { pattern: /[a-z0-9-]+(bank|banka|guvenlik|security|dogrulama|update|guncelle|giris|login)[a-z0-9-]*\./gi, desc: "Marka taklidi", weight: 25 },
+            { pattern: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/, desc: "IP adresi doğrudan kullanılmış", weight: 30 },
+            { pattern: /@/g, desc: "@ hilesi kullanılmış", weight: 35 },
+            { pattern: /[a-z0-9-]+(bank|banka|guvenlik|security|dogrulama|update|guncelle|giris|login)[a-z0-9-]*\./gi, desc: "Marka taklidi içeren alan adı", weight: 25 },
             { pattern: /[a-z0-9-]+\.(com|net|org)\.[a-z]{2,}/gi, desc: "Çift uzantı hilesi", weight: 20 },
-            { pattern: /https?:\/\/[^\s]*[0-9]{4,}/g, desc: "Şüpheli sayı dizisi", weight: 10 },
+            { pattern: /https?:\/\/[^\s]*[0-9]{4,}/g, desc: "URL içinde şüpheli sayı dizisi", weight: 10 },
             { pattern: /casejoys|phishing|malware|hack|exploit/gi, desc: "Bilinen zararlı kalıp", weight: 40 }
         ];
+
+        // ===== BİLİNEN KAMERA TUZAKLARI =====
+        const knownCameraTrapDomains = [
+            'casejoys', 'zoom-meeting', 'meet-google', 'online-toplanti',
+            'canli-gorusme', 'video-chat', 'kamera-ac', 'webcam-test',
+            'camera-test', 'face-verify', 'kimlik-dogrula', 'kamera-izle',
+            'canli-yayin', 'goruntulu-konusma', 'webcam-live', 'cam4',
+            'chatrandom', 'omegle', 'chatroulette'
+        ];
+
+        // ===== FAKE BANKA SİTELERİ (Türkiye'de sık görülen kalıplar) =====
+        const fakeBankPatterns = [
+            { pattern: /[a-z0-9-]*(banka|bank|ziraat|isbank|garanti|akbank|yapikredi|halkbank|vakifbank|qnb|finansbank|denizbank|teb|ing|hsbc|odeabank|sekerbank|alternatifbank|anadolubank|fibabanka|kuveytturk|albaraka|turkiyefinans|vakif|ziraat)[a-z0-9-]*\.(tk|ml|ga|cf|gq|xyz|top|online|site|com\.tk|com\.ml)/gi, desc: "🚨 SAHTE BANKA SİTESİ! Banka taklidi + riskli uzantı", weight: 70 },
+            { pattern: /(giris|login|dogrulama|onay|hesap|kart|sifre|parola)[a-z0-9-]*(banka|bank|ziraat|isbank|garanti|akbank|yapikredi|halkbank|vakifbank)[a-z0-9-]*\./gi, desc: "🚨 SAHTE BANKA GİRİŞ SAYFASI! Banka adı + giriş kelimesi", weight: 65 },
+            { pattern: /[a-z0-9-]*(banka|bank)[a-z0-9-]*(giris|login|dogrulama|onay|hesap|kart|sifre)[a-z0-9-]*\./gi, desc: "🚨 SAHTE BANKA SİTESİ! Banka + giriş kalıbı", weight: 65 },
+            { pattern: /[a-z0-9-]*(banka|bank)[a-z0-9-]*\.(com|net|org)\.(tk|ml|ga|cf|gq|xyz|top)/gi, desc: "🚨 SAHTE BANKA SİTESİ! Çift uzantı hilesi", weight: 70 }
+        ];
+
+        // ===== FAKE KRİPTO SİTELERİ =====
+        const fakeCryptoPatterns = [
+            { pattern: /[a-z0-9-]*(bitcoin|btc|ethereum|eth|kripto|crypto|coin|token|nft|binance|metamask|trustwallet)[a-z0-9-]*\.(tk|ml|ga|cf|gq|xyz|top|online|site)/gi, desc: "🚨 SAHTE KRİPTO SİTESİ! Kripto + riskli uzantı", weight: 65 },
+            { pattern: /(bedava|ücretsiz|free)[a-z0-9-]*(bitcoin|btc|ethereum|eth|kripto|crypto|coin)[a-z0-9-]*\./gi, desc: "🚨 BEDAVA KRİPTO TUZAĞI!", weight: 70 },
+            { pattern: /(katla|2x|3x|10x|100x|yuksek getiri|garantili kazanc)[a-z0-9-]*\./gi, desc: "🚨 YÜKSEK GETİRİ VAADİ (dolandırıcılık)", weight: 60 }
+        ];
+
+        // ===== FAKE İŞ İLANI SİTELERİ =====
+        const fakeJobPatterns = [
+            { pattern: /(is-ilan|isilan|kariyer|ise-alim|isveren|is-arayan)[a-z0-9-]*\.(tk|ml|ga|cf|gq|xyz|top|online)/gi, desc: "🚨 SAHTE İŞ İLANI SİTESİ!", weight: 55 },
+            { pattern: /(evden-calis|home-office|gunluk-kazanc|kolay-para|gunde-[0-9]+)[a-z0-9-]*\./gi, desc: "🚨 SAHTE EVDEN ÇALIŞMA İLANI!", weight: 55 }
+        ];
+
+        // Riskli TLD'ler (kamera tuzaklarında sık kullanılır)
+        const riskyTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.work', '.click', '.link', '.online', '.site'];
+
+        // Kamera/mikrofon kelimeleri (domain'de aranacak)
+        const cameraKeywords = ['kamera', 'camera', 'webcam', 'video', 'gorusme', 'görüşme', 'toplanti', 'meeting', 'canli', 'live', 'face', 'yuz', 'yüz', 'chat', 'sohbet', 'izle', 'watch'];
 
         const cameraRiskPatterns = [
             /toplanti|meeting|zoom|meet|teams|webinar|canli|gorusme|görüşme/gi,
@@ -1158,7 +1179,15 @@
         const trustedDomains = ['google.com', 'youtube.com', 'facebook.com', 'instagram.com', 
                                 'twitter.com', 'gov.tr', 'edu.tr', 'e-devlet.gov.tr', 
                                 'turkiye.gov.tr', 'ptt.gov.tr', 'sgk.gov.tr', 'wikipedia.org',
-                                'github.com', 'microsoft.com', 'apple.com', 'amazon.com'];
+                                'github.com', 'microsoft.com', 'apple.com', 'amazon.com',
+                                'zoom.us', 'teams.microsoft.com', 'meet.google.com',
+                                'ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr',
+                                'akbank.com', 'yapikredi.com.tr', 'halkbank.com.tr',
+                                'vakifbank.com.tr', 'qnb.com.tr', 'denizbank.com',
+                                'teb.com.tr', 'ing.com.tr', 'hsbc.com.tr', 'odeabank.com',
+                                'sekerbank.com.tr', 'alternatifbank.com.tr', 'anadolubank.com.tr',
+                                'fibabanka.com.tr', 'kuveytturk.com.tr', 'albaraka.com.tr',
+                                'turkiyefinans.com.tr'];
 
         const tips = [
             "Şüpheli bir linke tıklamadan önce mutlaka analiz edin.",
@@ -1168,7 +1197,11 @@
             "URL kısaltıcılar gerçek hedefi gizleyebilir.",
             "Yaygın şifreler (123456 gibi) saniyeler içinde kırılır.",
             "Resmi kurumlar e-posta ile şifre istemez.",
-            "Şüpheli e-postaları açmadan önce analiz edin."
+            "Bankalar SMS ile link göndermez, mobil uygulamayı kullanın.",
+            "Kripto para vaat eden sitelere itibar etmeyin.",
+            "'Bedava Bitcoin' diye bir şey yoktur.",
+            "Tanımadığınız kişilerle görüntülü görüşme yapmayın.",
+            "İş ilanı sitelerinde önce şirketi araştırın."
         ];
 
         function rotateTip() {
@@ -1215,7 +1248,7 @@
                 }
 
                 if (totalScore > 100) totalScore = 100;
-                displayResult(totalScore, findings, links, text, cameraRisk, null);
+                displayResult(totalScore, findings, links, text, cameraRisk, null, false);
                 updateStats(totalScore, totalScore >= 60, cameraRisk);
                 addToHistory('text', text.substring(0, 50) + '...', totalScore);
             });
@@ -1231,6 +1264,9 @@
                 let findings = [];
                 let cameraRisk = false;
                 let urlDetails = {};
+                let isFakeBank = false;
+                let isFakeCrypto = false;
+                let isFakeJob = false;
 
                 if (!/^https?:\/\//i.test(url)) {
                     totalScore += 10;
@@ -1255,6 +1291,54 @@
                     }
                 });
 
+                // ===== FAKE BANKA KONTROLÜ =====
+                fakeBankPatterns.forEach(fbp => {
+                    if (fbp.pattern.test(url)) {
+                        totalScore += fbp.weight;
+                        findings.push(fbp.desc);
+                        isFakeBank = true;
+                    }
+                });
+
+                // ===== FAKE KRİPTO KONTROLÜ =====
+                fakeCryptoPatterns.forEach(fcp => {
+                    if (fcp.pattern.test(url)) {
+                        totalScore += fcp.weight;
+                        findings.push(fcp.desc);
+                        isFakeCrypto = true;
+                    }
+                });
+
+                // ===== FAKE İŞ İLANI KONTROLÜ =====
+                fakeJobPatterns.forEach(fjp => {
+                    if (fjp.pattern.test(url)) {
+                        totalScore += fjp.weight;
+                        findings.push(fjp.desc);
+                        isFakeJob = true;
+                    }
+                });
+
+                // ===== DOMAIN'DE BANKA ADI VARSA =====
+                const bankNames = ['ziraat', 'isbank', 'garanti', 'akbank', 'yapikredi', 'halkbank', 'vakifbank', 'qnb', 'finansbank', 'denizbank', 'teb', 'ing', 'hsbc', 'odeabank', 'sekerbank', 'alternatifbank', 'anadolubank', 'fibabanka', 'kuveytturk', 'albaraka', 'turkiyefinans'];
+                const domainLower = domain.toLowerCase();
+                const hasBankName = bankNames.some(bn => domainLower.includes(bn));
+                const isTrustedBank = trustedDomains.some(td => domainLower.includes(td));
+                
+                if (hasBankName && !isTrustedBank) {
+                    totalScore += 50;
+                    findings.push("🚨 BANKA ADI TAKLİDİ! '" + bankNames.find(bn => domainLower.includes(bn)) + "' adı kullanılıyor ama resmi domain değil!");
+                    isFakeBank = true;
+                }
+
+                // ===== DOMAIN'DE KRİPTO KELİMESİ VARSA =====
+                const cryptoNames = ['bitcoin', 'btc', 'ethereum', 'eth', 'kripto', 'crypto', 'coin', 'token', 'nft', 'binance', 'metamask'];
+                const hasCryptoName = cryptoNames.some(cn => domainLower.includes(cn));
+                if (hasCryptoName && !isTrustedBank) {
+                    totalScore += 40;
+                    findings.push("🚨 KRİPTO DOLANDIRICILIĞI ŞÜPHESİ! Domain'de kripto kelimesi var.");
+                    isFakeCrypto = true;
+                }
+
                 cameraRiskPatterns.forEach(cp => {
                     if (cp.test(url)) cameraRisk = true;
                 });
@@ -1268,20 +1352,51 @@
                     findings.push("Bilinmeyen domain");
                 }
 
+                // ===== BİLİNEN KAMERA TUZAĞI KONTROLÜ =====
+                const isKnownTrap = knownCameraTrapDomains.some(trap => domainLower.includes(trap));
+                if (isKnownTrap) {
+                    totalScore += 60;
+                    findings.push("🚨 BİLİNEN KAMERA TUZAĞI DOMAINİ!");
+                    cameraRisk = true;
+                }
+
+                // ===== RİSKLİ TLD KONTROLÜ =====
+                const hasRiskyTLD = riskyTLDs.some(tld => domainLower.endsWith(tld));
+                if (hasRiskyTLD && !isTrusted) {
+                    totalScore += 20;
+                    findings.push("⚠️ Riskli alan adı uzantısı (" + domainLower.split('.').pop() + ")");
+                }
+
+                // ===== DOMAIN'DE KAMERA KELİMESİ KONTROLÜ =====
+                const hasCameraKeyword = cameraKeywords.some(kw => domainLower.includes(kw));
+                if (hasCameraKeyword && !isTrusted) {
+                    totalScore += 30;
+                    findings.push("📷 Domain adında kamera/görüntülü görüşme kelimesi var");
+                    cameraRisk = true;
+                }
+
+                // ===== BİLİNMEYEN DOMAIN İÇİN PROAKTİF UYARI =====
+                if (!isTrusted && !isKnownTrap && totalScore < 30) {
+                    findings.push("⚠️ Bu domain güvenilir listede değil. Linke tıklarsanız site sizden KAMERA/MİKROFON izni isteyebilir.");
+                }
+
                 if (url.includes('@')) { totalScore += 30; findings.push("@ karakteri"); }
                 if (url.includes('..')) { totalScore += 15; findings.push("Çift nokta"); }
                 if (url.length > 100) { totalScore += 10; findings.push("URL çok uzun"); }
-                if (cameraRisk) { totalScore += 25; findings.push("📷 Kamera/mikrofon kelimesi!"); }
+                if (cameraRisk && !isKnownTrap && !hasCameraKeyword) { 
+                    totalScore += 25; 
+                    findings.push("📷 Kamera/mikrofon kelimesi tespit edildi!"); 
+                }
 
                 if (totalScore > 100) totalScore = 100;
-                displayResult(totalScore, findings, [url], url, cameraRisk, urlDetails);
+                displayResult(totalScore, findings, [url], url, cameraRisk, urlDetails, isTrusted, isFakeBank, isFakeCrypto, isFakeJob);
                 updateStats(totalScore, totalScore >= 60, cameraRisk);
                 addToHistory('url', url.substring(0, 50), totalScore);
             });
         }
 
         // ===== SONUÇ =====
-        function displayResult(score, findings, links, originalText, cameraRisk, urlDetails) {
+        function displayResult(score, findings, links, originalText, cameraRisk, urlDetails, isTrusted, isFakeBank, isFakeCrypto, isFakeJob) {
             const result = document.getElementById("result");
             const scoreCard = document.getElementById("scoreCard");
             const scoreValue = document.getElementById("scoreValue");
@@ -1316,11 +1431,34 @@
                 scoreLabel.textContent = "🚨 YÜKSEK RİSK — Oltalama saldırısı!";
             }
 
-            if (cameraRisk) {
+            // Özel uyarılar
+            let specialAlerts = [];
+            if (isFakeBank) specialAlerts.push("🏦 FAKE BANKA SİTESİ");
+            if (isFakeCrypto) specialAlerts.push("💰 KRİPTO DOLANDIRICILIĞI");
+            if (isFakeJob) specialAlerts.push("💼 SAHTE İŞ İLANI");
+            if (cameraRisk) specialAlerts.push("📷 KAMERA/MİKROFON RİSKİ");
+
+            if (specialAlerts.length > 0 || (urlDetails && !isTrusted)) {
                 cameraAlert.style.display = "block";
-                cameraAlertText.textContent = "Bu içerik kamera, mikrofon veya görüntülü görüşme ile ilgili ifadeler içeriyor. " +
-                    "Siber saldırganlar kameranıza erişmek için bu tür tuzaklar kullanır. " +
-                    "Tanımadığınız kişilerle görüntülü görüşme yapmayın ve şüpheli sitelere KAMERA İZNİ VERMEYİN!";
+                let alertMsg = "";
+                
+                if (isFakeBank) {
+                    alertMsg += "🚨 BU BİR SAHTE BANKA SİTESİ! Bankanızın resmi sitesi bu değil. TC kimlik, şifre veya kart bilgilerinizi ASLA girmeyin! ";
+                }
+                if (isFakeCrypto) {
+                    alertMsg += "💰 BU BİR KRİPTO DOLANDIRICILIĞI! 'Bedava Bitcoin' veya 'yüksek getiri' vaatleri tuzaktır. Cüzdan bilgilerinizi paylaşmayın! ";
+                }
+                if (isFakeJob) {
+                    alertMsg += "💼 BU BİR SAHTE İŞ İLANI! 'Evden çalış, günlük kazanç' vaatleri dolandırıcılıktır. Ön ödeme yapmayın! ";
+                }
+                if (cameraRisk) {
+                    alertMsg += "📷 Bu link kamera/mikrofon izni isteyebilir. KAMERA İZNİ VERMEYİN! ";
+                }
+                if (!isFakeBank && !isFakeCrypto && !isFakeJob && !cameraRisk && urlDetails && !isTrusted) {
+                    alertMsg = "⚠️ Bu domain güvenilir listede değil. Linke tıklarsanız site sizden KAMERA, MİKROFON veya KONUM izni isteyebilir. İzin vermeden önce iki kere düşünün.";
+                }
+                
+                cameraAlertText.textContent = alertMsg;
             } else {
                 cameraAlert.style.display = "none";
             }
@@ -1332,6 +1470,7 @@
                     <div class="url-detail"><strong>Domain</strong><span>${urlDetails.domain}</span></div>
                     <div class="url-detail"><strong>Protokol</strong><span>${urlDetails.protocol}</span></div>
                     <div class="url-detail"><strong>Uzunluk</strong><span>${urlDetails.length} karakter</span></div>
+                    <div class="url-detail"><strong>Domain Yaşı</strong><span>${isTrusted ? 'Bilinen/güvenilir' : 'Bilinmiyor (yeni olabilir)'}</span></div>
                 `;
             } else {
                 urlDetailsSection.style.display = "none";
@@ -1366,16 +1505,19 @@
                 highlightSection.style.display = "none";
             }
 
-            if (cameraRisk) {
+            if (cameraRisk || isFakeBank || isFakeCrypto || isFakeJob) {
                 permissionBox.style.display = "block";
-                permissionText.textContent = "Bu linke tıklarsanız, site sizden kamera ve/veya mikrofon izni isteyebilir. " +
-                    "Siber saldırganlar bu izni kullanarak görüntünüzü ve sesinizi kaydedebilir. " +
-                    "Sadece güvendiğiniz ve resmi sitelere izin verin!";
+                let permMsg = "";
+                if (isFakeBank) permMsg += "🏦 Bu sahte banka sitesine BİLGİLERİNİZİ GİRMEYİN! ";
+                if (isFakeCrypto) permMsg += "💰 Bu kripto sitesine PARA YATIRMAYIN! ";
+                if (isFakeJob) permMsg += "💼 Bu iş ilanına ÖN ÖDEME YAPMAYIN! ";
+                if (cameraRisk) permMsg += "📷 Bu linke tıklarsanız site KAMERA/MİKROFON izni isteyebilir. İZİN VERMEYİN!";
+                permissionText.textContent = permMsg;
             } else {
                 permissionBox.style.display = "none";
             }
 
-            currentResult = { score, findings, originalText, cameraRisk, urlDetails };
+            currentResult = { score, findings, originalText, cameraRisk, urlDetails, isFakeBank, isFakeCrypto, isFakeJob };
             result.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
@@ -1383,11 +1525,11 @@
             document.getElementById("permissionBox").style.display = "none";
         }
 
-        // ===== PDF RAPOR =====
+        // ===== RAPOR =====
         function downloadReport() {
             if (!currentResult) return;
             
-            const { score, findings, originalText, cameraRisk, urlDetails } = currentResult;
+            const { score, findings, originalText, cameraRisk, urlDetails, isFakeBank, isFakeCrypto, isFakeJob } = currentResult;
             const now = new Date().toLocaleString('tr-TR');
             
             let report = `
@@ -1397,7 +1539,10 @@ PHISHGUARD-TR GÜVENLİK RAPORU
 Tarih: ${now}
 Risk Puanı: ${score}%
 Durum: ${score < 30 ? 'DÜŞÜK RİSK' : score < 60 ? 'ORTA RİSK' : 'YÜKSEK RİSK'}
-${cameraRisk ? '⚠️ KAMERA/MİKROFON RİSKİ TESPİT EDİLDİ' : ''}
+${isFakeBank ? '🏦 FAKE BANKA SİTESİ TESPİT EDİLDİ' : ''}
+${isFakeCrypto ? '💰 KRİPTO DOLANDIRICILIĞI TESPİT EDİLDİ' : ''}
+${isFakeJob ? '💼 SAHTE İŞ İLANI TESPİT EDİLDİ' : ''}
+${cameraRisk ? '📷 KAMERA/MİKROFON RİSKİ TESPİT EDİLDİ' : ''}
 
 ----------------------------------------
 ANALİZ EDİLEN İÇERİK
@@ -1413,9 +1558,12 @@ ${findings.map(f => '• ' + f).join('\n')}
 ÖNERİLER
 ----------------------------------------
 ${score >= 60 ? '• Bu içeriğe GÜVENMEYİN ve linke TIKLAMAYIN.' : score >= 30 ? '• Dikkatli olun, şüpheli unsurlar var.' : '• İçerik güvenli görünüyor ancak yine de dikkatli olun.'}
+${isFakeBank ? '• Bankanızın resmi sitesini kullanın. Şüpheli durumda bankanızı arayın.' : ''}
+${isFakeCrypto ? '• Kripto para vaatlerine itibar etmeyin. Resmi borsaları kullanın.' : ''}
+${isFakeJob ? '• İş ilanlarında ön ödeme yapmayın. Şirketi araştırın.' : ''}
 ${cameraRisk ? '• Kamera/mikrofon izni VERMEYİN.' : ''}
 • Kişisel bilgilerinizi (TC, şifre, kart no) asla paylaşmayın.
-• Şüpheli durumları USOM\'a bildirin: usom.gov.tr
+• Şüpheli durumları USOM'a bildirin: usom.gov.tr
 
 ========================================
 PhishGuard-TR — TÜBİTAK 2204-A Projesi
