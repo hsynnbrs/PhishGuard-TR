@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishGuard-TR | Oltalama ve Link Tehdit Analizcisi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #0a0a1a, #1a1a3a, #0a0a1a);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 0 60px rgba(0, 255, 136, 0.1);
+        }
+        h1 {
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 32px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        .subtitle {
+            color: #888;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #aaa;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: rgba(0, 255, 136, 0.15);
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+        .tab-btn:hover {
+            border-color: #00ff88;
+            color: #00ff88;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus { border-color: #00ff88; }
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus { border-color: #00ff88; }
+        button.analyze-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 15px;
+            background: linear-gradient(90deg, #00ff88, #00cc66);
+            border: none;
+            border-radius: 10px;
+            color: #0a0a1a;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        button.analyze-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4);
+        }
+        .result {
+            margin-top: 30px;
+            display: none;
+        }
+        .score-box {
+            text-align: center;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .score-number {
+            font-size: 55px;
+            font-weight: bold;
+        }
+        .score-label {
+            font-size: 16px;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+        .analysis-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #00ff88;
+        }
+        .analysis-section h3 {
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .highlight {
+            background: rgba(255, 68, 68, 0.3);
+            color: #ff6b6b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .finding {
+            color: #ccc;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .finding::before {
+            content: "▸ ";
+            color: #00ff88;
+            font-weight: bold;
+        }
+        .link-item {
+            color: #ffaa00;
+            font-size: 13px;
+            word-break: break-all;
+            margin-bottom: 5px;
+        }
+        .camera-warning {
+            background: rgba(255, 68, 68, 0.15);
+            border: 2px solid #ff4444;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .camera-warning h3 {
+            color: #ff4444;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .camera-warning p {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .camera-warning .warning-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .permission-box {
+            background: rgba(255, 170, 0, 0.1);
+            border: 2px solid #ffaa00;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        .permission-box h3 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .permission-box p {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .permission-box .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .permission-box .btn-group button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-safe {
+            background: #00ff88;
+            color: #0a0a1a;
+        }
+        .btn-danger {
+            background: #ff4444;
+            color: #fff;
+        }
+        .btn-safe:hover, .btn-danger:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+        .url-details {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #ccc;
+            word-break: break-all;
+        }
+        .url-details strong {
+            color: #00ff88;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ PhishGuard-TR</h1>
+        <p class="subtitle">Türkiye'ye Özel Oltalama ve Link Tehdit Analizcisi</p>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('text')">📧 Metin Analizi</button>
+            <button class="tab-btn" onclick="switchTab('url')">🔗 Link Analizi</button>
+        </div>
+
+        <!-- METİN ANALİZİ SEKMESİ -->
+        <div class="tab-content active" id="textTab">
+            <textarea id="inputText" placeholder="Şüpheli e-posta metnini veya mesajı buraya yapıştır..."></textarea>
+            <button class="analyze-btn" onclick="analyzeText()">🔍 METNİ ANALİZ ET</button>
+        </div>
+
+        <!-- LİNK ANALİZİ SEKMESİ -->
+        <div class="tab-content" id="urlTab">
+            <input type="text" id="inputUrl" placeholder="Şüpheli linki buraya yapıştır (ör: http://sahte-site.tk/giris)">
+            <button class="analyze-btn" onclick="analyzeUrl()">🔗 LİNKİ ANALİZ ET</button>
+        </div>
+
+        <div class="result" id="result">
+            <div class="score-box" id="scoreBox">
+                <div class="score-number" id="scoreNumber">0%</div>
+                <div class="score-label" id="scoreLabel"></div>
+            </div>
+
+            <div id="cameraWarning" class="camera-warning" style="display:none;">
+                <div class="warning-icon">📷</div>
+                <h3>KAMERA / MİKROFON RİSKİ TESPİT EDİLDİ!</h3>
+                <p id="cameraWarningText"></p>
+            </div>
+
+            <div class="analysis-section" id="findingsSection">
+                <h3>🚨 Tespit Edilen Şüpheli Unsurlar</h3>
+                <div id="findingsList"></div>
+            </div>
+
+            <div class="analysis-section" id="urlDetailsSection" style="display:none;">
+                <h3>🔍 Link Detayları</h3>
+                <div id="urlDetails"></div>
+            </div>
+
+            <div class="analysis-section" id="highlightSection" style="display:none;">
+                <h3>🔦 Şüpheli Kelimeler (Metinde İşaretlenmiş)</h3>
+                <div id="highlightedText"></div>
+            </div>
+
+            <div class="permission-box" id="permissionBox" style="display:none;">
+                <h3>⚠️ İZİN UYARISI</h3>
+                <p id="permissionText"></p>
+                <div class="btn-group">
+                    <button class="btn-safe" onclick="closePermission()">✅ Anladım, Güvenliyim</button>
+                    <button class="btn-danger" onclick="closePermission()">🚫 Vazgeçtim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== METİN ANALİZİ İÇİN RİSK KALIPLARI =====
+        const riskPatterns = [
+            { pattern: /acil|hemen|derhal|son şans|son uyarı|süreniz doluyor/gi, desc: "Aciliyet ve baskı ifadesi", weight: 15 },
+            { pattern: /hesabınız|hesabınız askıya|hesabınız kapatılacak|hesabınız kilitlenecek/gi, desc: "Hesap tehdidi", weight: 20 },
+            { pattern: /tıklayın|linke tıklayın|buraya tıklayın|giriş yapın/gi, desc: "Tıklama yönlendirmesi", weight: 15 },
+            { pattern: /şifre|parola|kullanıcı adı|tc kimlik|kimlik numarası/gi, desc: "Kişisel bilgi talebi", weight: 25 },
+            { pattern: /banka|kredi kartı|kart numarası|cvv|son kullanma/gi, desc: "Finansal bilgi talebi", weight: 25 },
+            { pattern: /ödül|kazandınız|bedava|ücretsiz|hediye/gi, desc: "Cazibe vaadi", weight: 15 },
+            { pattern: /doğrulama|doğrulayın|onaylayın|güncelleyin/gi, desc: "Doğrulama talebi", weight: 15 },
+            { pattern: /iptal|kapatılacak|silinecek|askıya alınacak/gi, desc: "Tehdit içeren ifade", weight: 20 },
+            { pattern: /merhaba|sayın müşteri|değerli müşteri/gi, desc: "Genel hitap (kişiselleştirilmemiş)", weight: 10 },
+            // Türkiye'ye özel
+            { pattern: /e-devlet|edevlet|e devlet/gi, desc: "E-Devlet taklidi (Türkiye'ye özel)", weight: 25 },
+            { pattern: /ptt|kargo|gönderi|kargonuz|paketiniz/gi, desc: "Sahte kargo bildirimi (Türkiye'ye özel)", weight: 20 },
+            { pattern: /fatura|elektrik|su|doğalgaz|internet faturanız/gi, desc: "Sahte fatura bildirimi", weight: 20 },
+            { pattern: /sgk|bağkur|emekli|prim/gi, desc: "SGK/emeklilik taklidi", weight: 20 },
+            { pattern: /vergi|vergi borcu|vergi iadesi/gi, desc: "Vergi iadesi tuzağı", weight: 20 },
+            { pattern: /mobil bankacılık|internet bankacılığı|şube/gi, desc: "Banka taklidi", weight: 15 },
+            { pattern: /turkcell|vodafone|türk telekom|avea/gi, desc: "Operatör taklidi", weight: 15 },
+            { pattern: /instagram|facebook|whatsapp|twitter/gi, desc: "Sosyal medya taklidi", weight: 10 },
+            { pattern: /kaçırıldı|kapatılacak|silinecek|ceza/gi, desc: "Tehdit içeren ifade", weight: 15 },
+            // Kamera/mikrofon tuzağı
+            { pattern: /kamera|kameranız|kamera açın|görüntülü|görüntü|video/gi, desc: "Kamera/görüntü talebi", weight: 25 },
+            { pattern: /mikrofon|ses|sesiniz|konuşma|dinleme/gi, desc: "Mikrofon/ses talebi", weight: 25 },
+            { pattern: /toplantı|online toplantı|zoom|google meet|teams/gi, desc: "Sahte toplantı daveti", weight: 20 },
+            { pattern: /kimlik doğrulama|yüz tanıma|biyometrik/gi, desc: "Biyometrik veri talebi", weight: 25 }
+        ];
+
+        // ===== LİNK ANALİZİ İÇİN RİSKLİ DOMAIN KALIPLARI =====
+        const suspiciousDomainPatterns = [
+            { pattern: /bit\.ly|tinyurl|goo\.gl|t\.co|is\.gd|buff\.ly/gi, desc: "URL kısaltıcı kullanılmış (gerçek hedef gizleniyor)", weight: 25 },
+            { pattern: /[a-z0-9-]+\.(tk|ml|ga|cf|gq)/gi, desc: "Ücretsiz ve riskli alan adı uzantısı (.tk, .ml, .ga, .cf, .gq)", weight: 30 },
+            { pattern: /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/, desc: "IP adresi doğrudan kullanılmış (gizleme taktiği)", weight: 30 },
+            { pattern: /@/g, desc: "@ hilesi kullanılmış (gerçek adres @'dan sonrası)", weight: 35 },
+            { pattern: /[a-z0-9-]+(bank|banka|guvenlik|security|dogrulama|update|guncelle|giris|login)[a-z0-9-]*\./gi, desc: "Marka taklidi içeren alan adı", weight: 25 },
+            { pattern: /[a-z0-9-]+\.(com|net|org)\.[a-z]{2,}/gi, desc: "Çift uzantı hilesi (ör: site.com.tr yerine site.com.tr.tk)", weight: 20 },
+            { pattern: /https?:\/\/[^\s]*[0-9]{4,}/g, desc: "URL içinde şüpheli sayı dizisi", weight: 10 }
+        ];
+
+        // Kamera/mikrofon riski taşıyan domain kalıpları
+        const cameraRiskPatterns = [
+            /toplanti|meeting|zoom|meet|teams|webinar|canli|gorusme|görüşme/gi,
+            /kamera|camera|video|goruntu|görüntü/gi,
+            /mikrofon|microphone|ses|audio|dinleme/gi,
+            /kimlik|dogrulama|doğrulama|biyometrik|yuz|yüz/gi
+        ];
+
+        // ===== SEKME DEĞİŞTİRME =====
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (tab === 'text') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('textTab').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('urlTab').classList.add('active');
+            }
+            
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('cameraWarning').style.display = 'none';
+            document.getElementById('permissionBox').style.display = 'none';
+        }
+
+        // ===== METİN ANALİZİ =====
+        function analyzeText() {
+            const text = document.getElementById("inputText").value.trim();
+            if (!text) {
+                alert("Lütfen analiz edilecek metni girin!");
+                return;
+            }
+
+            let totalScore = 0;
+            let findings = [];
+            let cameraRisk = false;
+
+            // Risk kalıplarını tara
+            riskPatterns.forEach(rp => {
+                const matches = text.match(rp.pattern);
+                if (matches) {
+                    totalScore += rp.weight;
+                    findings.push(rp.desc + " (" + matches.length + " kez tespit edildi)");
+                    
+                    // Kamera/mikrofon riski var mı?
+                    if (rp.desc.includes("Kamera") || rp.desc.includes("Mikrofon") || 
+                        rp.desc.includes("toplantı") || rp.desc.includes("Biyometrik")) {
+                        cameraRisk = true;
+                    }
+                }
+            });
+
+            // Linkleri bul
+            const linkRegex = /https?:\/\/[^\s]+/gi;
+            const links = text.match(linkRegex) || [];
+            links.forEach(link => {
+                suspiciousDomainPatterns.forEach(sp => {
+                    if (sp.test(link)) {
+                        totalScore += sp.weight;
+                        findings.push("Şüpheli link: " + sp.desc);
+                    }
+                });
+            });
+
+            if (text.length < 50 && links.length > 0) {
+                totalScore += 15;
+                findings.push("Kısa metin içinde link (klasik oltalama taktiği)");
+            }
+
+            if (totalScore > 100) totalScore = 100;
+
+            showResult(totalScore, findings, links, text, cameraRisk, null);
+        }
+
+        // ===== LİNK ANALİZİ =====
+        function analyzeUrl() {
+            const url = document.getElementById("inputUrl").value.trim();
+            if (!url) {
+                alert("Lütfen analiz edilecek linki girin!");
+                return;
+            }
+
+            let totalScore = 0;
+            let findings = [];
+            let cameraRisk = false;
+            let urlDetails = {};
+
+            // URL geçerli mi?
+            if (!/^https?:\/\//i.test(url)) {
+                totalScore += 10;
+                findings.push("URL http:// veya https:// ile başlamıyor (şüpheli)");
+            }
+
+            // Domain ayıkla
+            let domain = url.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0];
+            urlDetails.domain = domain;
+            urlDetails.protocol = url.startsWith('https') ? 'HTTPS (şifreli)' : 'HTTP (şifresiz - riskli)';
+            
+            if (!url.startsWith('https')) {
+                totalScore += 20;
+                findings.push("HTTPS kullanılmıyor (şifresiz bağlantı - riskli)");
+            }
+
+            // Şüpheli domain kalıplarını kontrol et
+            suspiciousDomainPatterns.forEach(sp => {
+                if (sp.pattern.test(url)) {
+                    totalScore += sp.weight;
+                    findings.push(sp.desc);
+                }
+            });
+
+            // Kamera/mikrofon riski kontrolü
+            cameraRiskPatterns.forEach(cp => {
+                if (cp.test(url)) {
+                    cameraRisk = true;
+                }
+            });
+
+            // Domain yaşı ve güvenilirlik simülasyonu
+            const trustedDomains = ['google.com', 'youtube.com', 'facebook.com', 'instagram.com', 
+                                    'twitter.com', 'gov.tr', 'edu.tr', 'e-devlet.gov.tr', 
+                                    'turkiye.gov.tr', 'ptt.gov.tr', 'sgk.gov.tr'];
+            const isTrusted = trustedDomains.some(td => domain.includes(td));
+            
+            if (isTrusted) {
+                totalScore = Math.max(0, totalScore - 30);
+                findings.push("✅ Güvenilir domain listesinde (risk düşürüldü)");
+            } else {
+                totalScore += 10;
+                findings.push("Bilinmeyen domain (güvenilir listede değil)");
+            }
+
+            // URL'de şüpheli karakterler
+            if (url.includes('@')) {
+                totalScore += 30;
+                findings.push("@ karakteri içeriyor (gerçek adres @'dan sonrası)");
+            }
+            if (url.includes('..')) {
+                totalScore += 15;
+                findings.push("Çift nokta (..) içeriyor (dizin atlama taktiği)");
+            }
+            if (url.length > 100) {
+                totalScore += 10;
+                findings.push("URL çok uzun (" + url.length + " karakter) - gizleme taktiği olabilir");
+            }
+
+            // Kamera riski varsa ekstra puan
+            if (cameraRisk) {
+                totalScore += 25;
+                findings.push("📷 Kamera/mikrofon/görüntülü görüşme ile ilgili kelime içeriyor!");
+            }
+
+            if (totalScore > 100) totalScore = 100;
+
+            urlDetails.fullUrl = url;
+            urlDetails.length = url.length;
+
+            showResult(totalScore, findings, [url], url, cameraRisk, urlDetails);
+        }
+
+        // ===== SONUCU GÖSTER =====
+        function showResult(score, findings, links, originalText, cameraRisk, urlDetails) {
+            const result = document.getElementById("result");
+            const scoreBox = document.getElementById("scoreBox");
+            const scoreNumber = document.getElementById("scoreNumber");
+            const scoreLabel = document.getElementById("scoreLabel");
+            const findingsList = document.getElementById("findingsList");
+            const highlightSection = document.getElementById("highlightSection");
+            const highlightedText = document.getElementById("highlightedText");
+            const cameraWarning = document.getElementById("cameraWarning");
+            const cameraWarningText = document.getElementById("cameraWarningText");
+            const permissionBox = document.getElementById("permissionBox");
+            const permissionText = document.getElementById("permissionText");
+            const urlDetailsSection = document.getElementById("urlDetailsSection");
+            const urlDetailsDiv = document.getElementById("urlDetails");
+
+            result.style.display = "block";
+            scoreNumber.textContent = score + "%";
+
+            // Renk ve etiket
+            if (score < 30) {
+                scoreBox.style.background = "rgba(0, 255, 136, 0.1)";
+                scoreBox.style.border = "2px solid #00ff88";
+                scoreNumber.style.color = "#00ff88";
+                scoreLabel.textContent = "✅ DÜŞÜK RİSK - Bu içerik büyük ihtimalle güvenli görünüyor.";
+            } else if (score < 60) {
+                scoreBox.style.background = "rgba(255, 170, 0, 0.1)";
+                scoreBox.style.border = "2px solid #ffaa00";
+                scoreNumber.style.color = "#ffaa00";
+                scoreLabel.textContent = "⚠️ ORTA RİSK - Dikkatli olun, şüpheli unsurlar var.";
+            } else {
+                scoreBox.style.background = "rgba(255, 68, 68, 0.1)";
+                scoreBox.style.border = "2px solid #ff4444";
+                scoreNumber.style.color = "#ff4444";
+                scoreLabel.textContent = "🚨 YÜKSEK RİSK - Bu büyük ihtimalle bir oltalama saldırısı!";
+            }
+
+            // Kamera uyarısı
+            if (cameraRisk) {
+                cameraWarning.style.display = "block";
+                cameraWarningText.textContent = "Bu içerik kamera, mikrofon veya görüntülü görüşme ile ilgili ifadeler içeriyor. " +
+                    "Siber saldırganlar, kameranıza veya mikrofonunuza erişmek için bu tür tuzaklar kullanabilir. " +
+                    "Tanımadığınız kişilerle görüntülü görüşme yapmayın ve şüpheli sitelere kamera izni vermeyin!";
+            } else {
+                cameraWarning.style.display = "none";
+            }
+
+            // URL detayları
+            if (urlDetails) {
+                urlDetailsSection.style.display = "block";
+                urlDetailsDiv.innerHTML = `
+                    <div class="url-details"><strong>Tam URL:</strong> ${urlDetails.fullUrl}</div>
+                    <div class="url-details"><strong>Domain:</strong> ${urlDetails.domain}</div>
+                    <div class="url-details"><strong>Protokol:</strong> ${urlDetails.protocol}</div>
+                    <div class="url-details"><strong>Uzunluk:</strong> ${urlDetails.length} karakter</div>
+                `;
+            } else {
+                urlDetailsSection.style.display = "none";
+            }
+
+            // Bulguları listele
+            findingsList.innerHTML = "";
+            if (findings.length === 0) {
+                findingsList.innerHTML = '<div class="finding">Herhangi bir şüpheli unsur tespit edilmedi.</div>';
+            } else {
+                findings.forEach(f => {
+                    const div = document.createElement("div");
+                    div.className = "finding";
+                    div.textContent = f;
+                    findingsList.appendChild(div);
+                });
+            }
+
+            // Metinde şüpheli kelimeleri renklendir (sadece metin analizinde)
+            if (!urlDetails && originalText) {
+                let highlighted = originalText;
+                riskPatterns.forEach(rp => {
+                    highlighted = highlighted.replace(rp.pattern, match => 
+                        '<span class="highlight">' + match + '</span>'
+                    );
+                });
+                
+                if (highlighted !== originalText) {
+                    highlightSection.style.display = "block";
+                    highlightedText.innerHTML = highlighted;
+                } else {
+                    highlightSection.style.display = "none";
+                }
+            } else {
+                highlightSection.style.display = "none";
+            }
+
+            // İzin uyarısı (eğer kamera riski varsa)
+            if (cameraRisk) {
+                permissionBox.style.display = "block";
+                permissionText.textContent = "Bu linke tıklarsanız, site sizden kamera ve/veya mikrofon izni isteyebilir. " +
+                    "Siber saldırganlar, bu izni kullanarak görüntünüzü ve sesinizi kaydedebilir. " +
+                    "Sadece güvendiğiniz ve resmi sitelere izin verin. Emin değilseniz, izin vermeyin!";
+            } else {
+                permissionBox.style.display = "none";
+            }
+
+            // Sonuca kaydır
+            result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closePermission() {
+            document.getElementById("permissionBox").style.display = "none";
+        }
+    </script>
+</body>
+</html>
