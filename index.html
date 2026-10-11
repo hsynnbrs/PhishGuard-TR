@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v12</title>
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v12.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
@@ -784,7 +784,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v12</span>
+                    <span>CANLI SİSTEM • v12.1</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
@@ -810,7 +810,7 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v12</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v12.1</p>
             </div>
 
             <div id="scanView">
@@ -1052,7 +1052,7 @@
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v12<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v12.1<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1591,20 +1591,13 @@
                         }
                         break;
                     case 'bank':
-                        // ===== TÜRKİYE'DEKİ TÜM BANKALAR + ÖDEME SİSTEMLERİ =====
                         const allBanks = [
-                            // Kamu bankaları
                             'ziraat', 'ziraatbank', 'halkbank', 'vakifbank', 'vakif', 'emlakkatilim', 'emlak',
-                            // Özel bankalar
                             'isbank', 'garanti', 'akbank', 'yapikredi', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc',
                             'odeabank', 'sekerbank', 'alternatifbank', 'anadolubank', 'fibabanka', 'burgan', 'icbc', 'dunya',
-                            // Katılım bankaları
                             'kuveytturk', 'kuveyt', 'albaraka', 'turkiyefinans', 'tomkatilim', 'tom',
-                            // Dijital bankalar
                             'enpara', 'cepteteb', 'nkolay', 'mobil',
-                            // Ödeme sistemleri
                             'papara', 'ininal', 'tosla', 'param', 'shopier', 'iyzico', 'paycell', 'bkm', 'troy',
-                            // Yabancı bankalar
                             'citibank', 'deutsche', 'jpmorgan', 'goldman'
                         ];
                         const bankGirisWords = ['giris', 'login', 'dogrulama', 'doğrulama', 'onay', 'hesap', 'sifre', 'şifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'ödeme', 'havale', 'eft', 'iban', 'kredi'];
@@ -1639,7 +1632,6 @@
                         }
                         break;
                     case 'edevlet':
-                        // ===== DEVLET KURUMLARI =====
                         const govWords = [
                             'e-devlet', 'edevlet', 'e devlet', 'turkiye.gov', 'turkiye gov',
                             'sgk', 'sosyal güvenlik', 'bagkur', 'bağkur', 'emekli',
@@ -1787,22 +1779,30 @@
             }, 200);
         }
 
+        // ===== SONUÇ GÖSTER (DÜZELTİLMİŞ) =====
         function showResults(input, isUrl) {
             const engineResults = runEngineAnalysis(input, isUrl);
             const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
             const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
             
-            // AĞIRLIKLI ORTALAMA: Tehdit motorları 4x, şüpheli 2x, temiz 1x
+            // ===== AĞIRLIKLI ORTALAMA (İlgisiz motorları sayma) =====
             let weightedSum = 0;
             let weightTotal = 0;
             engineResults.forEach(e => {
+                // %0 puan veren motorları ortalamaya katma (ilgisiz motor)
+                if (e.score === 0) return;
                 let weight = 1;
                 if (e.verdict === 'danger') weight = 4;
                 else if (e.verdict === 'warning') weight = 2;
                 weightedSum += e.score * weight;
                 weightTotal += weight;
             });
-            const avgScore = Math.round(weightedSum / weightTotal);
+            let avgScore = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0;
+
+            // Tehdit sayısı fazlaysa minimum puan garantile
+            if (threatCount >= 3) avgScore = Math.max(avgScore, 75);
+            else if (threatCount >= 2) avgScore = Math.max(avgScore, 60);
+            else if (threatCount >= 1) avgScore = Math.max(avgScore, 40);
 
             document.getElementById('result').classList.add('active');
             document.getElementById('resultTarget').textContent = input.substring(0, 100) + (input.length > 100 ? '...' : '');
@@ -1940,7 +1940,7 @@
             const now = new Date().toLocaleString('tr-TR');
             let report = `
 ========================================
-PHISHGUARD-TR ANALİZ RAPORU v12
+PHISHGUARD-TR ANALİZ RAPORU v12.1
 ========================================
 Tarih: ${now}
 Kullanıcı: ${user?.name || 'Misafir'}
