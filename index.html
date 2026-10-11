@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v11.1</title>
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v12</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
@@ -784,7 +784,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v11.1</span>
+                    <span>CANLI SİSTEM • v12</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
@@ -810,7 +810,7 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v11.1</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v12</p>
             </div>
 
             <div id="scanView">
@@ -976,7 +976,7 @@
                     <div class="side-title"><span>💬</span> Siber Güvenlik Asistanı</div>
                     <div class="chat-container">
                         <div class="chat-messages" id="chatMessages">
-                            <div class="chat-message bot">Merhaba! Ben PhishGuard asistanı. Siber güvenlik hakkında sorularını yanıtlayabilirim. Örneğin: "Oltalama nedir?", "Kamera izni tehlikeli mi?", "Şifrem güvenli mi?"</div>
+                            <div class="chat-message bot">Merhaba! Ben PhishGuard asistanı. Siber güvenlik hakkında sorularını yanıtlayabilirim.</div>
                         </div>
                         <div class="chat-input-area">
                             <input type="text" class="chat-input" id="chatInput" placeholder="Sorunuzu yazın..." onkeypress="if(event.key==='Enter') sendChat()">
@@ -1052,7 +1052,7 @@
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v11.1<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v12<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1538,7 +1538,7 @@
             { id: 'bank', name: '🏦 Banka Taklit Motoru' },
             { id: 'crypto', name: '💰 Kripto Dolandırıcılık Motoru' },
             { id: 'camera', name: '📷 Kamera Tuzağı Motoru' },
-            { id: 'edevlet', name: '🏛️ E-Devlet Taklit Motoru' },
+            { id: 'edevlet', name: '🏛️ Devlet Kurumu Taklit Motoru' },
             { id: 'kargo', name: '📦 Kargo Taklit Motoru' },
             { id: 'fatura', name: '📄 Fatura Taklit Motoru' },
             { id: 'sosyal', name: '📱 Sosyal Medya Motoru' },
@@ -1566,8 +1566,7 @@
                             if (input.includes('@')) { score += 45; findings.push('@ hilesi'); }
                             if (input.length > 100) { score += 15; findings.push('URL çok uzun'); }
                             if (input.includes('..')) { score += 25; findings.push('Çift nokta (dizin atlama)'); }
-                            // Şüpheli URL kelimeleri
-                            const urlKeywords = ['giris', 'login', 'dogrulama', 'doğrulama', 'onay', 'hesap', 'sifre', 'şifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'ödeme'];
+                            const urlKeywords = ['giris', 'login', 'dogrulama', 'doğrulama', 'onay', 'hesap', 'sifre', 'şifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'ödeme', 'bilgi', 'guncelle', 'güncelle', 'havale', 'eft', 'iban', 'kredi'];
                             const foundUrlKw = urlKeywords.filter(kw => lower.includes(kw));
                             if (foundUrlKw.length > 0) {
                                 score += foundUrlKw.length * 20;
@@ -1583,7 +1582,7 @@
                         break;
                     case 'domain':
                         if (isUrl) {
-                            const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr', 'akbank.com', 'yapikredi.com.tr', 'halkbank.com.tr', 'vakifbank.com.tr', 'turkiye.gov.tr', 'wikipedia.org'];
+                            const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'wikipedia.org', 'github.com', 'microsoft.com', 'apple.com'];
                             const isTrusted = trusted.some(t => domain.includes(t));
                             if (!isTrusted) { 
                                 score = 45; 
@@ -1592,27 +1591,39 @@
                         }
                         break;
                     case 'bank':
-                        const banks = ['ziraat', 'isbank', 'garanti', 'akbank', 'yapikredi', 'halkbank', 'vakifbank', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc', 'odeabank', 'sekerbank', 'fibabanka', 'kuveytturk', 'albaraka', 'turkiyefinans'];
-                        const bankGirisWords = ['giris', 'login', 'dogrulama', 'doğrulama', 'onay', 'hesap', 'sifre', 'şifre', 'parola', 'kart', 'banka', 'bank'];
-                        const trustedBanks = ['ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr', 'akbank.com', 'yapikredi.com.tr', 'halkbank.com.tr', 'vakifbank.com.tr'];
+                        // ===== TÜRKİYE'DEKİ TÜM BANKALAR + ÖDEME SİSTEMLERİ =====
+                        const allBanks = [
+                            // Kamu bankaları
+                            'ziraat', 'ziraatbank', 'halkbank', 'vakifbank', 'vakif', 'emlakkatilim', 'emlak',
+                            // Özel bankalar
+                            'isbank', 'garanti', 'akbank', 'yapikredi', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc',
+                            'odeabank', 'sekerbank', 'alternatifbank', 'anadolubank', 'fibabanka', 'burgan', 'icbc', 'dunya',
+                            // Katılım bankaları
+                            'kuveytturk', 'kuveyt', 'albaraka', 'turkiyefinans', 'tomkatilim', 'tom',
+                            // Dijital bankalar
+                            'enpara', 'cepteteb', 'nkolay', 'mobil',
+                            // Ödeme sistemleri
+                            'papara', 'ininal', 'tosla', 'param', 'shopier', 'iyzico', 'paycell', 'bkm', 'troy',
+                            // Yabancı bankalar
+                            'citibank', 'deutsche', 'jpmorgan', 'goldman'
+                        ];
+                        const bankGirisWords = ['giris', 'login', 'dogrulama', 'doğrulama', 'onay', 'hesap', 'sifre', 'şifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'ödeme', 'havale', 'eft', 'iban', 'kredi'];
+                        const trustedBanks = ['ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr', 'akbank.com', 'yapikredi.com.tr', 'halkbank.com.tr', 'vakifbank.com.tr', 'qnb.com.tr', 'denizbank.com', 'teb.com.tr', 'ing.com.tr', 'hsbc.com.tr', 'odeabank.com', 'sekerbank.com.tr', 'alternatifbank.com.tr', 'anadolubank.com.tr', 'fibabanka.com.tr', 'kuveytturk.com.tr', 'albaraka.com.tr', 'turkiyefinans.com.tr', 'enpara.com', 'cepteteb.com.tr', 'papara.com', 'ininal.com', 'tosla.com', 'iyzico.com'];
                         
-                        const hasBankName = banks.some(b => lower.includes(b));
+                        const foundBanks = allBanks.filter(b => lower.includes(b));
                         const hasBankGiris = bankGirisWords.some(w => lower.includes(w));
                         const isTrustedBank = trustedBanks.some(t => domain.includes(t));
                         
-                        if (hasBankName && !isTrustedBank) {
-                            score = 90;
-                            findings.push('🚨 BANKA ADI TAKLİDİ! Resmi domain değil!');
+                        if (foundBanks.length > 0 && !isTrustedBank) {
+                            score = 95;
+                            findings.push('🚨 BANKA ADI TAKLİDİ! Tespit: ' + foundBanks.join(', ') + ' - Resmi domain değil!');
                         } else if (hasBankGiris && !isTrustedBank && isUrl) {
                             score = 70;
                             findings.push('🚨 Banka giriş sayfası taklidi!');
-                        } else if (hasBankName && hasBankGiris && !isTrustedBank) {
-                            score = 95;
-                            findings.push('🚨 SAHTE BANKA GİRİŞ SAYFASI!');
                         }
                         break;
                     case 'crypto':
-                        const cryptoWords = ['bitcoin', 'btc', 'ethereum', 'eth', 'kripto', 'crypto', 'coin', 'token', 'nft', 'katlayarak', 'katla', 'yüksek getiri', 'garantili kazanç', 'bedava btc', 'bedava bitcoin'];
+                        const cryptoWords = ['bitcoin', 'btc', 'ethereum', 'eth', 'kripto', 'crypto', 'coin', 'token', 'nft', 'katlayarak', 'katla', 'yüksek getiri', 'garantili kazanç', 'bedava btc', 'bedava bitcoin', 'binance', 'metamask', 'trustwallet', 'cüzdan', 'wallet', 'seed phrase', 'private key'];
                         const foundCrypto = cryptoWords.filter(w => lower.includes(w));
                         if (foundCrypto.length > 0) {
                             score = Math.min(100, 60 + foundCrypto.length * 10);
@@ -1620,7 +1631,7 @@
                         }
                         break;
                     case 'camera':
-                        const camWords = ['kamera', 'camera', 'webcam', 'kameranı', 'kameranizi', 'kamera aç', 'mikrofon', 'toplanti', 'toplantı', 'meeting', 'zoom', 'canli', 'canlı', 'gorusme', 'görüşme', 'video chat', 'videochat'];
+                        const camWords = ['kamera', 'camera', 'webcam', 'kameranı', 'kameranizi', 'kamera aç', 'mikrofon', 'toplanti', 'toplantı', 'meeting', 'zoom', 'canli', 'canlı', 'gorusme', 'görüşme', 'video chat', 'videochat', 'face time', 'facetime'];
                         const foundCam = camWords.filter(w => lower.includes(w));
                         if (foundCam.length > 0) {
                             score = Math.min(100, 70 + foundCam.length * 10);
@@ -1628,47 +1639,75 @@
                         }
                         break;
                     case 'edevlet':
-                        if (lower.includes('e-devlet') || lower.includes('edevlet') || lower.includes('e devlet')) {
-                            if (!domain.includes('turkiye.gov.tr')) { 
-                                score = 95; 
-                                findings.push('🚨 E-DEVLET TAKLİDİ! Resmi site değil!'); 
-                            }
+                        // ===== DEVLET KURUMLARI =====
+                        const govWords = [
+                            'e-devlet', 'edevlet', 'e devlet', 'turkiye.gov', 'turkiye gov',
+                            'sgk', 'sosyal güvenlik', 'bagkur', 'bağkur', 'emekli',
+                            'ptt', 'kargo', 'gönderi', 'gonderi', 'kargonuz', 'paketiniz',
+                            'gib', 'vergi', 'vergi iadesi', 'vergi borcu', 'vergi borc',
+                            'nvi', 'nüfus', 'nufus', 'kimlik',
+                            'emniyet', 'polis', 'asayis', 'asayiş',
+                            'meb', 'eokul', 'e-okul', 'okul',
+                            'osym', 'ösym', 'yks', 'lys', 'sinav', 'sınav',
+                            'yokatlas', 'yök', 'yok', 'universite', 'üniversite',
+                            'saglik', 'sağlık', 'hastane', 'randevu', 'e-nabiz', 'enabiz',
+                            'tarim', 'tarım', 'ciftci', 'çiftçi', 'destek',
+                            'ticaret', 'sanayi', 'gumruk', 'gümrük',
+                            'adalet', 'mahkeme', 'dava', 'uyap',
+                            'askerlik', 'askeralma', 'bedelli',
+                            'maliye', 'hazine', 'gelir',
+                            'belediye', 'valilik', 'kaymakamlik', 'kaymakamlık',
+                            'afad', 'kizilay', 'kızılay',
+                            'diyanet', 'kuran',
+                            'rtuk', 'rtük', 'btk'
+                        ];
+                        const trustedGov = ['turkiye.gov.tr', 'e-devlet.gov.tr', 'sgk.gov.tr', 'ptt.gov.tr', 'gib.gov.tr', 'nvi.gov.tr', 'egm.gov.tr', 'meb.gov.tr', 'osym.gov.tr', 'yokatlas.yok.gov.tr', 'saglik.gov.tr', 'tarim.gov.tr', 'ticaret.gov.tr', 'adalet.gov.tr', 'askeralma.gov.tr', 'hmb.gov.tr', 'afad.gov.tr', 'kizilay.org.tr', 'diyanet.gov.tr', 'rtuk.gov.tr', 'btk.gov.tr'];
+                        
+                        const foundGov = govWords.filter(w => lower.includes(w));
+                        const isTrustedGov = trustedGov.some(t => domain.includes(t));
+                        
+                        if (foundGov.length > 0 && !isTrustedGov) {
+                            score = Math.min(100, 75 + foundGov.length * 5);
+                            findings.push('🚨 DEVLET KURUMU TAKLİDİ! Tespit: ' + foundGov.join(', '));
                         }
                         break;
                     case 'kargo':
-                        const kargoWords = ['ptt', 'kargo', 'gönderi', 'gonderi', 'kargonuz', 'paketiniz', 'paket takip', 'kargo takip'];
+                        const kargoWords = ['ptt', 'kargo', 'gönderi', 'gonderi', 'kargonuz', 'paketiniz', 'paket takip', 'kargo takip', 'dhl', 'ups', 'fedex', 'aras', 'yurtici', 'yurtiçi', 'mng', 'surat', 'sürat', 'hepsijet'];
                         if (kargoWords.some(w => lower.includes(w)) && isUrl) {
                             score = 70;
                             findings.push('Kargo taklidi şüphesi');
                         }
                         break;
                     case 'fatura':
-                        const faturaWords = ['fatura', 'elektrik', 'su fatura', 'doğalgaz', 'dogalgaz', 'internet fatura', 'faturanız', 'faturaniz'];
+                        const faturaWords = ['fatura', 'elektrik', 'su fatura', 'doğalgaz', 'dogalgaz', 'internet fatura', 'faturanız', 'faturaniz', 'enerjisa', 'botaş', 'botas', 'igdas', 'iski', 'aski', 'tedas', 'tedaş', 'kredi kartı ekstre'];
                         if (faturaWords.some(w => lower.includes(w)) && isUrl) {
                             score = 65;
                             findings.push('Fatura taklidi şüphesi');
                         }
                         break;
                     case 'sosyal':
-                        const sosyalWords = ['instagram', 'facebook', 'whatsapp', 'twitter', 'tiktok', 'hesabınız kapatılacak'];
-                        if (sosyalWords.some(w => lower.includes(w)) && isUrl && !domain.includes('instagram.com') && !domain.includes('facebook.com')) {
-                            score = 55;
+                        const sosyalWords = ['instagram', 'facebook', 'whatsapp', 'twitter', 'tiktok', 'snapchat', 'telegram', 'youtube', 'hesabınız kapatılacak', 'hesabiniz kapatilacak', 'mavi tik', 'mavi onay', 'takipçi', 'takipci'];
+                        const trustedSosyal = ['instagram.com', 'facebook.com', 'whatsapp.com', 'twitter.com', 'x.com', 'tiktok.com', 'telegram.org', 'youtube.com'];
+                        if (sosyalWords.some(w => lower.includes(w)) && !trustedSosyal.some(t => domain.includes(t))) {
+                            score = 60;
                             findings.push('Sosyal medya taklidi');
                         }
                         break;
                     case 'is':
-                        const isWords = ['iş ilanı', 'is ilani', 'evden çalış', 'evden calis', 'home office', 'günlük kazanç', 'gunluk kazanc', 'kolay para', 'günde 1000'];
+                        const isWords = ['iş ilanı', 'is ilani', 'evden çalış', 'evden calis', 'home office', 'günlük kazanç', 'gunluk kazanc', 'kolay para', 'günde 1000', 'gunde 1000', 'kariyer', 'ise alim', 'işe alım'];
                         if (isWords.some(w => lower.includes(w))) {
-                            score = 70;
+                            score = 65;
                             findings.push('Sahte iş ilanı şüphesi');
                         }
                         break;
                     case 'ai':
                         let aiScore = 0;
-                        if (/acil|hemen|derhal|son uyarı|son sans/.test(lower)) aiScore += 25;
-                        if (/şifre|parola|tc kimlik|kimlik numarası|kart numarası|cvv/.test(lower)) aiScore += 30;
-                        if (/tıklayın|tiklayin|giriş yapın|giris yapin|linke tikla/.test(lower)) aiScore += 20;
-                        if (/hesabınız|hesabiniz|kapatılacak|kapatilacak|askıya/.test(lower)) aiScore += 25;
+                        if (/acil|hemen|derhal|son uyarı|son sans|son şans/.test(lower)) aiScore += 25;
+                        if (/şifre|parola|tc kimlik|kimlik numarası|kart numarası|cvv|son kullanma/.test(lower)) aiScore += 30;
+                        if (/tıklayın|tiklayin|giriş yapın|giris yapin|linke tikla|hemen tikla/.test(lower)) aiScore += 20;
+                        if (/hesabınız|hesabiniz|kapatılacak|kapatilacak|askıya|askiya/.test(lower)) aiScore += 25;
+                        if (/kazandınız|kazandiniz|ödül|odul|hediye|bedava|ücretsiz|ucretsiz/.test(lower)) aiScore += 20;
+                        if (/doğrulama|dogrulama|onay|güncelleme|guncelleme/.test(lower)) aiScore += 15;
                         score = Math.min(100, aiScore);
                         if (aiScore > 0) findings.push('AI analizi: ' + aiScore + ' puan');
                         break;
@@ -1680,14 +1719,14 @@
                         }
                         break;
                     case 'tld':
-                        const riskyTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.work', '.click', '.online', '.site', '.link'];
+                        const riskyTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.work', '.click', '.online', '.site', '.link', '.info', '.buzz', '.cyou', '.monster', '.rest'];
                         if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) {
-                            score = 65;
-                            findings.push('Riskli alan adı uzantısı: ' + domain.split('.').pop());
+                            score = 70;
+                            findings.push('🚨 Riskli alan adı uzantısı: ' + domain.split('.').pop());
                         }
                         break;
                     case 'phishing':
-                        const phishWords = ['acil', 'hemen', 'derhal', 'son uyarı', 'hesabınız askıya', 'hesabiniz askiya', 'doğrulama', 'dogrulama', 'tıklayın', 'tiklayin', 'onaylayın', 'onaylayin', 'güncelleyin', 'guncelleyin'];
+                        const phishWords = ['acil', 'hemen', 'derhal', 'son uyarı', 'hesabınız askıya', 'hesabiniz askiya', 'doğrulama', 'dogrulama', 'tıklayın', 'tiklayin', 'onaylayın', 'onaylayin', 'güncelleyin', 'guncelleyin', 'kazandınız', 'kazandiniz', 'ödül', 'odul', 'bedava', 'ücretsiz', 'ucretsiz', 'son şans', 'son sans', 'iptal', 'kapatılacak', 'kapatilacak', 'askıya alınacak', 'askiya alinacak'];
                         const matches = phishWords.filter(w => lower.includes(w));
                         if (matches.length > 0) {
                             score = Math.min(100, matches.length * 25);
@@ -1727,9 +1766,9 @@
                 'URL yapısı analiz ediliyor...',
                 'SSL sertifikası kontrol ediliyor...',
                 'Banka taklit motoru çalışıyor...',
+                'Devlet kurumu taklit motoru çalışıyor...',
                 'Kripto dolandırıcılık motoru çalışıyor...',
                 'Kamera tuzağı motoru çalışıyor...',
-                'E-Devlet taklit motoru çalışıyor...',
                 'Yapay zeka motoru analiz ediyor...',
                 'Topluluk veritabanı kontrol ediliyor...',
                 'Sonuçlar derleniyor...'
@@ -1753,12 +1792,12 @@
             const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
             const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
             
-            // Ağırlıklı ortalama: tehdit motorları daha etkili
+            // AĞIRLIKLI ORTALAMA: Tehdit motorları 4x, şüpheli 2x, temiz 1x
             let weightedSum = 0;
             let weightTotal = 0;
             engineResults.forEach(e => {
                 let weight = 1;
-                if (e.verdict === 'danger') weight = 3;
+                if (e.verdict === 'danger') weight = 4;
                 else if (e.verdict === 'warning') weight = 2;
                 weightedSum += e.score * weight;
                 weightTotal += weight;
@@ -1901,7 +1940,7 @@
             const now = new Date().toLocaleString('tr-TR');
             let report = `
 ========================================
-PHISHGUARD-TR ANALİZ RAPORU v11.1
+PHISHGUARD-TR ANALİZ RAPORU v12
 ========================================
 Tarih: ${now}
 Kullanıcı: ${user?.name || 'Misafir'}
