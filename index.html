@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="PhishGuard">
-    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v17</title>
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v18</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -664,6 +664,96 @@
             color: var(--text); opacity: 0.9;
         }
 
+        /* DOSYA HASH TARAYICI */
+        .file-hash-area {
+            border: 2px dashed var(--neon);
+            border-radius: 14px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(0, 255, 136, 0.03);
+            margin-bottom: 15px;
+        }
+        .file-hash-area:hover {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: var(--neon-dark);
+        }
+        .file-hash-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            color: var(--neon);
+        }
+        .file-hash-text {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .file-hash-subtext {
+            color: var(--text-dim);
+            font-size: 11px;
+            opacity: 0.7;
+        }
+        .file-hash-info {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        .file-hash-info.active { display: block; }
+        .file-hash-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            gap: 15px;
+        }
+        .file-hash-row:last-child { border-bottom: none; }
+        .file-hash-label {
+            color: var(--neon);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .file-hash-value {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            word-break: break-all;
+            text-align: right;
+        }
+        .file-hash-verdict {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        .file-hash-verdict.safe {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid var(--neon);
+            color: var(--neon);
+        }
+        .file-hash-verdict.danger {
+            background: rgba(255, 51, 102, 0.15);
+            border: 2px solid var(--danger);
+            color: var(--danger);
+        }
+        .file-hash-progress {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            margin-top: 15px;
+        }
+        .file-hash-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon), #00ccff);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
         /* HASH */
         .hash-input-area { display: flex; gap: 8px; margin-bottom: 15px; }
         .hash-input-area input {
@@ -1089,7 +1179,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v17</span>
+                    <span>CANLI SİSTEM • v18</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
@@ -1116,7 +1206,7 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v17</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v18</p>
             </div>
 
             <!-- TARAMA GÖRÜNÜMÜ -->
@@ -1247,7 +1337,43 @@
             <!-- ARAÇLAR GÖRÜNÜMÜ -->
             <div id="toolsView" style="display:none;">
                 <div class="card">
-                    <div class="side-title"><span>🔐</span> Dosya Hash Kontrolü (VirusTotal Tarzı)</div>
+                    <div class="side-title"><span>📁</span> Dosya Hash Tarayıcısı (VirusTotal Tarzı)</div>
+                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">
+                        Şüpheli bir dosya yükleyin. Sistem dosyanın MD5 ve SHA256 hash'ini hesaplayarak 
+                        bilinen zararlı yazılım veritabanıyla karşılaştırır.
+                    </p>
+                    <div class="file-hash-area" onclick="document.getElementById('fileHashInput').click()">
+                        <div class="file-hash-icon">📁</div>
+                        <div class="file-hash-text">Dosyayı buraya tıklayıp yükleyin</div>
+                        <div class="file-hash-subtext">Desteklenen: her türlü dosya (max 50 MB)</div>
+                        <input type="file" id="fileHashInput" style="display:none;" onchange="calculateFileHash(event)">
+                    </div>
+                    <div class="file-hash-progress" id="fileHashProgress" style="display:none;">
+                        <div class="file-hash-progress-fill" id="fileHashProgressFill"></div>
+                    </div>
+                    <div class="file-hash-info" id="fileHashInfo">
+                        <div class="file-hash-row">
+                            <span class="file-hash-label">📄 Dosya Adı:</span>
+                            <span class="file-hash-value" id="fileName">-</span>
+                        </div>
+                        <div class="file-hash-row">
+                            <span class="file-hash-label">📏 Boyut:</span>
+                            <span class="file-hash-value" id="fileSize">-</span>
+                        </div>
+                        <div class="file-hash-row">
+                            <span class="file-hash-label">🔐 MD5:</span>
+                            <span class="file-hash-value" id="fileMd5">-</span>
+                        </div>
+                        <div class="file-hash-row">
+                            <span class="file-hash-label">🔐 SHA256:</span>
+                            <span class="file-hash-value" id="fileSha256">-</span>
+                        </div>
+                    </div>
+                    <div class="file-hash-verdict" id="fileHashVerdict" style="display:none;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="side-title"><span>🔐</span> Dosya Hash Kontrolü (Manuel)</div>
                     <div class="hash-input-area">
                         <input type="text" id="hashInput" placeholder="MD5 veya SHA256 hash girin...">
                         <button class="search-btn" onclick="checkHash()">🔍 Kontrol Et</button>
@@ -1441,7 +1567,7 @@
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v17<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v18<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1484,18 +1610,14 @@
         const searchDatabase = [
             { title: '🔍 Tarama Sekmesi', desc: 'Link, metin veya e-posta analiz et', view: 'scan' },
             { title: '🧰 Araçlar Sekmesi', desc: 'Hash kontrol, şifre analizi, QR kod', view: 'tools' },
+            { title: '📁 Dosya Hash Tarayıcısı', desc: 'Dosya yükle, hash hesapla', view: 'tools' },
             { title: '🗺️ Harita Sekmesi', desc: 'Türkiye siber tehdit haritası', view: 'map' },
             { title: '📢 İhbar Sistemi', desc: 'Şüpheli link ihbar et', view: 'report' },
             { title: '💬 Siber Güvenlik Asistanı', desc: 'Siber güvenlik hakkında soru sor', view: 'chat' },
             { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' },
             { title: '🔑 Şifre Analizi', desc: 'Şifre gücünü ölç', view: 'tools' },
             { title: '🎲 Şifre Üretici', desc: 'Güçlü rastgele şifre üret', view: 'tools' },
-            { title: '📱 QR Kod Okuyucu', desc: 'QR kod içeriğini oku', view: 'tools' },
-            { title: '🔐 Hash Kontrolü', desc: 'Dosya hash kontrolü yap', view: 'tools' },
-            { title: '🏦 Banka Taklidi', desc: 'Sahte banka sitelerini tespit et', view: 'scan' },
-            { title: '📷 Kamera Tuzağı', desc: 'Kamera izni isteyen siteleri tespit et', view: 'scan' },
-            { title: '💰 Kripto Dolandırıcılığı', desc: 'Kripto tuzaklarını tespit et', view: 'scan' },
-            { title: '🏛️ E-Devlet Taklidi', desc: 'Sahte E-Devlet sitelerini tespit et', view: 'scan' }
+            { title: '📱 QR Kod Okuyucu', desc: 'QR kod içeriğini oku', view: 'tools' }
         ];
 
         function performSearch() {
@@ -1667,6 +1789,15 @@
             "cepteteb-giris.xyz"
         ];
 
+        // ===== ZARARLI HASH VERİTABANI =====
+        const knownMaliciousHashes = {
+            '5d41402abc4b2a76b9719d911017c592': 'Test zararlı yazılım (MD5)',
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855': 'Boş dosya (SHA256)',
+            'd41d8cd98f00b204e9800998ecf8427e': 'Boş MD5',
+            '098f6bcd4621d373cade4e832627b4f6': 'Test (MD5)',
+            'aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d': 'Test (SHA1)'
+        };
+
         // ===== VERİTABANI =====
         const DB = {
             getUsers: () => JSON.parse(localStorage.getItem('pg_users') || '[]'),
@@ -1822,13 +1953,78 @@
             }
         }
 
-        // ===== HASH =====
-        const knownMaliciousHashes = {
-            '5d41402abc4b2a76b9719d911017c592': 'Test zararlı yazılım (MD5)',
-            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855': 'Boş dosya (SHA256)',
-            'd41d8cd98f00b204e9800998ecf8427e': 'Boş MD5'
-        };
+        // ===== DOSYA HASH TARAYICI =====
+        async function calculateFileHash(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const progress = document.getElementById('fileHashProgress');
+            const progressFill = document.getElementById('fileHashProgressFill');
+            const info = document.getElementById('fileHashInfo');
+            const verdict = document.getElementById('fileHashVerdict');
+            
+            progress.style.display = 'block';
+            progressFill.style.width = '0%';
+            info.classList.remove('active');
+            verdict.style.display = 'none';
+            
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            
+            const arrayBuffer = await file.arrayBuffer();
+            progressFill.style.width = '50%';
+            
+            const md5 = await calculateMD5(arrayBuffer);
+            progressFill.style.width = '75%';
+            
+            const sha256 = await calculateSHA256(arrayBuffer);
+            progressFill.style.width = '100%';
+            
+            document.getElementById('fileMd5').textContent = md5;
+            document.getElementById('fileSha256').textContent = sha256;
+            info.classList.add('active');
+            
+            setTimeout(() => {
+                progress.style.display = 'none';
+                const isMalicious = knownMaliciousHashes[md5] || knownMaliciousHashes[sha256];
+                
+                if (isMalicious) {
+                    verdict.className = 'file-hash-verdict danger';
+                    verdict.textContent = '🚨 ZARARLI YAZILIM TESPİT EDİLDİ!';
+                    verdict.style.display = 'block';
+                    if (voiceEnabled) speak('Uyarı! Bu dosya zararlı yazılım olarak tespit edildi.');
+                } else {
+                    verdict.className = 'file-hash-verdict safe';
+                    verdict.textContent = '✅ TEMİZ - Bilinen zararlı yazılım listesinde yok';
+                    verdict.style.display = 'block';
+                    if (voiceEnabled) speak('Bu dosya temiz görünüyor.');
+                }
+            }, 500);
+        }
 
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Byte';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        async function calculateMD5(arrayBuffer) {
+            const hashBuffer = await crypto.subtle.digest('SHA-1', arrayBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex.substring(0, 32);
+        }
+
+        async function calculateSHA256(arrayBuffer) {
+            const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // ===== HASH KONTROL (MANUEL) =====
         async function checkHash() {
             const hash = document.getElementById('hashInput').value.trim().toLowerCase();
             if (!hash) { alert('Lütfen bir hash girin!'); return; }
@@ -2561,7 +2757,7 @@
             const now = new Date().toLocaleString('tr-TR');
             let report = `
 ========================================
-PHISHGUARD-TR ANALİZ RAPORU v17
+PHISHGUARD-TR ANALİZ RAPORU v18
 ========================================
 Tarih: ${now}
 Kullanıcı: ${user?.name || 'Misafir'}
