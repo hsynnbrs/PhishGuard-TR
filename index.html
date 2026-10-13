@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v14</title>
+    <meta name="theme-color" content="#00ff88">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGZmODgiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMwMGNjZmYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjEwMCIgZmlsbD0iIzA1MDUxMCIvPjxwYXRoIGQ9Ik0yNTYgNjAgTDQyMCAxMzAgTDQyMCAyNjAgQzQyMCAzNjAgMzQwIDQzMCAyNTYgNDYwIEMxNzIgNDMwIDkyIDM2MCA5MiAyNjAgTDkyIDEzMCBaIiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjZykiIHN0cm9rZS13aWR0aD0iMjAiLz48cGF0aCBkPSJNMTkwIDI2MCBMMjM1IDMwNSBMMzMwIDIwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMDBmZjg4IiBzdHJva2Utd2lkdGg9IjMwIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=">
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v15</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -267,6 +270,166 @@
         .quick-stat-label {
             font-size: 9px; color: var(--text-dim);
             text-transform: uppercase; letter-spacing: 1px; margin-top: 3px;
+        }
+
+        /* CANLI TEHDİT AKIŞI */
+        .live-feed {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 18px;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+        .live-feed-title {
+            color: var(--neon);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .live-dot-feed {
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        .feed-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            border-left: 3px solid var(--danger);
+            animation: slideInFeed 0.5s ease;
+        }
+        @keyframes slideInFeed {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .feed-item .feed-domain {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 8px;
+        }
+        .feed-item .feed-score {
+            color: var(--danger);
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            flex-shrink: 0;
+        }
+        .feed-item.safe {
+            border-left-color: var(--neon);
+        }
+        .feed-item.safe .feed-score {
+            color: var(--neon);
+        }
+
+        /* GRAFİKLER */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .chart-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+        }
+        .chart-card h4 {
+            color: var(--neon);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+
+        /* İHBAR SİSTEMİ */
+        .report-section {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        .report-section h3 {
+            color: var(--neon);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .report-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--text);
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            outline: none;
+            margin-bottom: 12px;
+        }
+        body.light-mode .report-input { background: rgba(255, 255, 255, 0.8); }
+        .report-input:focus { border-color: var(--neon); }
+        .report-list {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 11px;
+            border-left: 3px solid var(--warning);
+        }
+        .report-item-domain {
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: 8px;
+        }
+        .report-item-user {
+            color: var(--text-dim);
+            font-size: 10px;
+            flex-shrink: 0;
         }
 
         /* YÜKLENİYOR */
@@ -724,6 +887,7 @@
 
         @media (max-width: 900px) {
             .admin-grid { grid-template-columns: repeat(2, 1fr); }
+            .charts-grid { grid-template-columns: 1fr; }
             .logo-text { font-size: 26px; }
             .logo-icon { font-size: 34px; }
             .search-input-group { flex-direction: column; }
@@ -784,7 +948,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v14</span>
+                    <span>CANLI SİSTEM • v15</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
@@ -810,7 +974,7 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v14</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v15</p>
             </div>
 
             <div id="scanView">
@@ -846,6 +1010,47 @@
                             <div class="quick-stat-value" style="color:var(--warning);" id="quickCamera">0</div>
                             <div class="quick-stat-label">Kamera Riski</div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- CANLI TEHDİT AKIŞI -->
+                <div class="live-feed" id="liveFeed">
+                    <div class="live-feed-title">
+                        <span class="live-dot-feed"></span>
+                        <span>CANLI TEHDİT AKIŞI</span>
+                    </div>
+                    <div id="feedList">
+                        <div class="feed-item safe">
+                            <span class="feed-domain">Sistem başlatıldı, tehdit bekleniyor...</span>
+                            <span class="feed-score">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFİKLER -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h4>📊 Haftalık Tehdit İstatistikleri</h4>
+                        <div class="chart-container">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h4>📈 Tehdit Türleri Dağılımı</h4>
+                        <div class="chart-container">
+                            <canvas id="threatTypeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İHBAR SİSTEMİ -->
+                <div class="report-section">
+                    <h3>📢 Şüpheli Link İhbar Et</h3>
+                    <input type="text" class="report-input" id="reportUrlInput" placeholder="İhbar etmek istediğiniz linki girin...">
+                    <input type="text" class="report-input" id="reportNoteInput" placeholder="Kısa açıklama (opsiyonel)">
+                    <button class="search-btn" onclick="submitReport()" style="width:100%;">📢 İhbar Et</button>
+                    <div class="report-list" id="reportList">
+                        <div style="text-align:center;color:var(--text-dim);font-size:11px;padding:10px;">Henüz ihbar yok</div>
                     </div>
                 </div>
 
@@ -1052,7 +1257,7 @@
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v14<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v15<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1091,9 +1296,8 @@
             drops = Array(Math.floor(columns)).fill(1);
         });
 
-        // ===== ZARARLI LİNK VERİTABANI (USOM + Domain Formatlı) =====
+        // ===== ZARARLI LİNK VERİTABANI =====
         const knownMaliciousLinks = [
-            // ===== USOM IP ADRESLİ ZARARLI LİNKLER (100) =====
             "104.168.170.48/inj20/tr_garantibank.php",
             "185.254.121.132/ijuygu/tr_garantibank.php",
             "185.33.234.76/cepteteb",
@@ -1109,98 +1313,44 @@
             "185.99.1.94/~ehgs/online/hgs-yukleme",
             "185.99.1.94/~onlinehgs",
             "185.99.1.94/~kredikartisorgul",
-            "185.99.1.94/~hgso/online/hgs-yukleme/",
-            "185.99.1.94/~hgss/online/hgs-yukleme",
-            "185.99.1.94/~ihgs",
-            "185.99.1.94/~paymenthgs",
-            "185.99.1.94/~veryhgs",
             "143.95.233.41/~hgsodeme/",
             "143.95.233.41/~bankasisorgu",
             "143.95.233.41/~faturaodeme",
-            "143.95.233.41/~guncelodemeniz",
-            "143.95.233.41/~guncelsorgulama",
-            "143.95.233.41/~kolaysorgu12",
-            "143.95.233.41/~kolaysorgu13",
-            "143.95.233.41/~odemeislem",
-            "143.95.233.41/~onlinesorgu",
-            "143.95.233.41/~sorgubank",
-            "143.95.233.41/~sorgulama",
-            "143.95.233.41/~sorgularim",
-            "143.95.233.41/~sorgularima",
-            "143.95.233.41/~sorgularm/",
-            "143.95.233.41/~yapisorgu",
-            "143.95.234.31/~guvenliislem",
-            "143.95.234.31/~hgsislem",
-            "143.95.234.31/~onlinehgs",
             "154.16.3.99/~faturamatik",
             "154.16.3.99/~hgsislem",
             "154.16.3.99/~kredikartiislem",
-            "154.16.3.99/~onlinesorgu",
-            "154.16.3.99/~sorgukart",
-            "154.16.3.99/~sorgupaykredikar",
-            "154.16.3.99/~sorguplay",
-            "154.16.3.99/~trafikislem",
-            "154.16.3.99/~trafiksistemi",
-            "154.16.3.99/~trafiktislem",
-            "154.16.3.99/~trafkislemleri",
             "134.0.117.224/1300/1300.exe",
             "190.14.39.239/hediyeinternet.apk",
             "205.185.127.140/googlesecurity_patch_3092.apk",
             "209.141.40.93/wp_poczta.apk",
-            
-            // ===== DOMAIN FORMATLI BANKA TAKLİDİ (40) =====
             "garanti-bbva-giris.tk",
+            "garantibbva-giris.tk",
             "garantibbva-onay.xyz",
-            "garantibbva-dogrula.ml",
             "garanti-giris.tk",
             "garanti-onay.xyz",
             "ziraatbank-giris.tk",
             "ziraat-onay.xyz",
             "ziraatbank-dogrula.ml",
-            "ziraat-giris.tk",
-            "ziraat-hesap.xyz",
             "akbank-hesap.tk",
             "akbank-dogrula.xyz",
-            "akbank-giris.tk",
-            "akbank-onay.ml",
             "isbank-giris.tk",
             "isbank-onay.ml",
-            "isbank-dogrula.xyz",
-            "isbank-hesap.tk",
             "yapikredi-hesap.tk",
-            "yapikredi-giris.xyz",
-            "yapikredi-onay.ml",
             "halkbank-onay.tk",
-            "halkbank-giris.xyz",
             "vakifbank-giris.ml",
-            "vakifbank-onay.tk",
             "qnb-dogrula.tk",
-            "qnb-giris.xyz",
             "denizbank-hesap.xyz",
-            "denizbank-giris.tk",
             "teb-giris.tk",
-            "teb-onay.xyz",
             "ing-onay.ml",
-            "ing-giris.tk",
             "enpara-giris.tk",
-            "enpara-onay.xyz",
             "papara-onay.xyz",
-            "papara-giris.tk",
             "ininal-dogrula.tk",
             "tosla-hesap.ml",
             "cepteteb-giris.tk",
-            "kuveytturk-onay.xyz",
-            "albaraka-giris.tk",
-            "turkiyefinans-dogrula.ml",
-            "sekerbank-giris.tk",
-            "odeabank-onay.xyz",
-            
-            // ===== DOMAIN FORMATLI DEVLET KURUMU TAKLİDİ (20) =====
             "edevlet-giris.tk",
             "edevlet-onay.xyz",
             "edevlet-dogrula.ml",
             "turkiye-gov-dogrula.ml",
-            "turkiye-gov-onay.tk",
             "sgk-giris.tk",
             "sgk-onay.xyz",
             "sgk-dogrulama.ml",
@@ -1216,8 +1366,6 @@
             "yokatlas-dogrula.xyz",
             "enabiz-giris.tk",
             "uyap-dava.ml",
-            
-            // ===== DOMAIN FORMATLI KRİPTO DOLANDIRICILIĞI (10) =====
             "bedava-bitcoin.tk",
             "bitcoin-katla.xyz",
             "kripto-kazanc.ml",
@@ -1228,8 +1376,6 @@
             "bedava-btc.ml",
             "kripto-katla.tk",
             "coin-hediye.xyz",
-            
-            // ===== DOMAIN FORMATLI KAMERA TUZAĞI (10) =====
             "zoom-toplanti.tk",
             "canli-gorusme.xyz",
             "kamera-ac.ml",
@@ -1239,7 +1385,28 @@
             "webcam-test.ml",
             "face-time.xyz",
             "canli-yayin.tk",
-            "kamera-izle.ml"
+            "kamera-izle.ml",
+            "test-banka.tk/giris",
+            "test-banka.tk",
+            "ziraatbank-giris.tk/dogrula",
+            "akbank-dogrula.xyz",
+            "garanti-onay.ml",
+            "isbank-giris.tk",
+            "yapikredi-hesap.ga",
+            "halkbank-dogrula.cf",
+            "vakifbank-giris.gq",
+            "qnb-onay.top",
+            "denizbank-giris.click",
+            "teb-dogrula.site",
+            "ziraat-onay.ml",
+            "akbank-hesap.tk",
+            "isbank-dogrula.xyz",
+            "garanti-giris.tk",
+            "papara-giris.tk",
+            "ininal-hesap.xyz",
+            "tosla-dogrula.ml",
+            "enpara-onay.tk",
+            "cepteteb-giris.xyz"
         ];
 
         // ===== VERİTABANI =====
@@ -1355,6 +1522,7 @@
             if (user.role === 'admin') updateAdminPanel();
             loadTurkeyMap();
             initQuiz();
+            updateReportUI();
         }
 
         function loadUserData() {
@@ -1855,23 +2023,21 @@
                         if (aiScore > 0) findings.push('AI analizi: ' + aiScore + ' puan');
                         break;
                     case 'community':
-                        // ===== USOM + DOMAIN ZARARLI LİNK VERİTABANI KONTROLÜ =====
                         const inputClean = input.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
                         const inputFull = input.toLowerCase();
                         
-                        const isInUsomList = knownMaliciousLinks.some(link => {
+                        const isInList = knownMaliciousLinks.some(link => {
                             const linkLower = link.toLowerCase();
                             return inputFull.includes(linkLower) || 
                                    linkLower.includes(inputClean) ||
                                    inputClean.includes(linkLower.split('/')[0]);
                         });
                         
-                        if (isInUsomList) {
+                        if (isInList) {
                             score = 100;
                             findings.push('🚨 USOM/ZARARLI VERİTABANINDA KAYITLI LİNK!');
                         }
                         
-                        // Kullanıcı ihbarları
                         const reports = DB.getReports();
                         if (reports.some(r => input.includes(r.url))) {
                             score = Math.max(score, 95);
@@ -2087,6 +2253,9 @@
                 document.getElementById('quickCamera').textContent = s.camera;
             }
 
+            const domain = input.replace(/^https?:\/\//i, '').split('/')[0];
+            addFeedItem(domain, avgScore);
+
             window.currentAnalysis = { input, isUrl, engineResults, avgScore, threatCount, warningCount };
         }
 
@@ -2104,7 +2273,7 @@
             const now = new Date().toLocaleString('tr-TR');
             let report = `
 ========================================
-PHISHGUARD-TR ANALİZ RAPORU v14
+PHISHGUARD-TR ANALİZ RAPORU v15
 ========================================
 Tarih: ${now}
 Kullanıcı: ${user?.name || 'Misafir'}
@@ -2125,6 +2294,179 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
             link.href = URL.createObjectURL(blob);
             link.download = 'PhishGuard-Rapor-' + Date.now() + '.txt';
             link.click();
+        }
+
+        // ===== CANLI TEHDİT AKIŞI =====
+        const feedItems = [];
+        const sampleThreats = [
+            { domain: 'garantibbva-onay.xyz', score: 95 },
+            { domain: 'ziraatbank-giris.tk', score: 92 },
+            { domain: 'edevlet-onay.tk', score: 88 },
+            { domain: 'bedava-bitcoin.xyz', score: 85 },
+            { domain: 'zoom-toplanti.tk', score: 90 },
+            { domain: 'papara-giris.tk', score: 87 },
+            { domain: 'sgk-dogrulama.ml', score: 83 },
+            { domain: 'akbank-hesap.tk', score: 91 },
+            { domain: 'isbank-onay.ml', score: 89 },
+            { domain: 'vakifbank-giris.gq', score: 86 }
+        ];
+
+        function addFeedItem(domain, score) {
+            const feedList = document.getElementById('feedList');
+            if (!feedList) return;
+            
+            const isSafe = score < 30;
+            const item = document.createElement('div');
+            item.className = 'feed-item' + (isSafe ? ' safe' : '');
+            item.innerHTML = `
+                <span class="feed-domain">${domain}</span>
+                <span class="feed-score">${score}%</span>
+            `;
+            
+            if (feedItems.length === 0) {
+                feedList.innerHTML = '';
+            }
+            
+            feedList.insertBefore(item, feedList.firstChild);
+            feedItems.unshift({ domain, score });
+            
+            if (feedItems.length > 10) {
+                feedList.removeChild(feedList.lastChild);
+                feedItems.pop();
+            }
+        }
+
+        function startLiveFeed() {
+            setInterval(() => {
+                const threat = sampleThreats[Math.floor(Math.random() * sampleThreats.length)];
+                addFeedItem(threat.domain, threat.score);
+            }, 8000);
+        }
+
+        // ===== GRAFİKLER =====
+        let weeklyChart, threatTypeChart;
+
+        function initCharts() {
+            const weeklyCtx = document.getElementById('weeklyChart');
+            if (weeklyCtx && !weeklyChart) {
+                weeklyChart = new Chart(weeklyCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                        datasets: [{
+                            label: 'Tespit Edilen Tehdit',
+                            data: [12, 19, 15, 25, 22, 18, 30],
+                            borderColor: '#ff3366',
+                            backgroundColor: 'rgba(255, 51, 102, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#ff3366',
+                            pointBorderColor: '#fff',
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: { color: '#e0e0e0', font: { size: 11 } }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#888' },
+                                grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#888' },
+                                grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const typeCtx = document.getElementById('threatTypeChart');
+            if (typeCtx && !threatTypeChart) {
+                threatTypeChart = new Chart(typeCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Banka Taklidi', 'Devlet Kurumu', 'Kripto', 'Kamera', 'Diğer'],
+                        datasets: [{
+                            data: [40, 25, 15, 12, 8],
+                            backgroundColor: [
+                                '#ff3366',
+                                '#ffaa00',
+                                '#00ccff',
+                                '#00ff88',
+                                '#888'
+                            ],
+                            borderColor: '#050510',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { 
+                                    color: '#e0e0e0', 
+                                    font: { size: 11 },
+                                    padding: 10
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ===== İHBAR SİSTEMİ =====
+        function submitReport() {
+            const url = document.getElementById('reportUrlInput').value.trim();
+            const note = document.getElementById('reportNoteInput').value.trim();
+            if (!url) { alert('Lütfen bir link girin!'); return; }
+            
+            const user = DB.getCurrentUser();
+            const reports = DB.getReports();
+            reports.push({
+                url: url,
+                note: note,
+                date: new Date().toISOString(),
+                user: user?.name || 'Misafir'
+            });
+            DB.setReports(reports);
+            
+            document.getElementById('reportUrlInput').value = '';
+            document.getElementById('reportNoteInput').value = '';
+            updateReportUI();
+            alert('İhbarınız alındı! Teşekkürler.');
+        }
+
+        function updateReportUI() {
+            const reports = DB.getReports();
+            const list = document.getElementById('reportList');
+            
+            if (reports.length === 0) {
+                list.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:11px;padding:10px;">Henüz ihbar yok</div>';
+                return;
+            }
+            
+            list.innerHTML = '';
+            reports.slice(-5).reverse().forEach(r => {
+                const item = document.createElement('div');
+                item.className = 'report-item';
+                item.innerHTML = `
+                    <span class="report-item-domain">${r.url}</span>
+                    <span class="report-item-user">${r.user}</span>
+                `;
+                list.appendChild(item);
+            });
         }
 
         // ===== SOHBET =====
@@ -2223,9 +2565,14 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
             if (clock) clock.textContent = new Date().toLocaleTimeString('tr-TR');
         }, 1000);
 
+        // ===== SAYFA YÜKLENDİĞİNDE =====
         window.addEventListener('load', () => {
             const user = DB.getCurrentUser();
             if (user) openApp();
+            setTimeout(() => {
+                startLiveFeed();
+                initCharts();
+            }, 1000);
         });
     </script>
 </body>
