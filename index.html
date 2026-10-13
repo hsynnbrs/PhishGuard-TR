@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v12.1</title>
+    <title>PhishGuard-TR | Siber Tehdit Analiz Platformu v14</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <style>
@@ -784,7 +784,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v12.1</span>
+                    <span>CANLI SİSTEM • v14</span>
                     <span id="clock">--:--:--</span>
                 </div>
                 <div class="top-buttons">
@@ -810,7 +810,7 @@
                     <span class="logo-icon">🛡️</span>
                     <span class="logo-text">PhishGuard-TR</span>
                 </div>
-                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v12.1</p>
+                <p class="tagline">Türkiye'nin Siber Tehdit Analiz Platformu v14</p>
             </div>
 
             <div id="scanView">
@@ -1052,7 +1052,7 @@
             </div>
 
             <div class="footer">
-                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v12.1<br>
+                <strong>PhishGuard-TR</strong> — TÜBİTAK 2204-A Projesi v14<br>
                 Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
             </div>
         </div>
@@ -1090,6 +1090,157 @@
             columns = canvas.width / fontSize;
             drops = Array(Math.floor(columns)).fill(1);
         });
+
+        // ===== ZARARLI LİNK VERİTABANI (USOM + Domain Formatlı) =====
+        const knownMaliciousLinks = [
+            // ===== USOM IP ADRESLİ ZARARLI LİNKLER (100) =====
+            "104.168.170.48/inj20/tr_garantibank.php",
+            "185.254.121.132/ijuygu/tr_garantibank.php",
+            "185.33.234.76/cepteteb",
+            "185.33.234.76/garanti",
+            "185.33.234.76/isbank",
+            "185.33.234.76/teb",
+            "178.17.171.207/~aakkan",
+            "178.17.171.207/~yapikredim",
+            "209.250.239.152/vakıf",
+            "173.214.162.246/egm-portal/index.php",
+            "173.214.162.246/eposta.mfa.gov.tr",
+            "173.214.162.246/portal",
+            "185.99.1.94/~ehgs/online/hgs-yukleme",
+            "185.99.1.94/~onlinehgs",
+            "185.99.1.94/~kredikartisorgul",
+            "185.99.1.94/~hgso/online/hgs-yukleme/",
+            "185.99.1.94/~hgss/online/hgs-yukleme",
+            "185.99.1.94/~ihgs",
+            "185.99.1.94/~paymenthgs",
+            "185.99.1.94/~veryhgs",
+            "143.95.233.41/~hgsodeme/",
+            "143.95.233.41/~bankasisorgu",
+            "143.95.233.41/~faturaodeme",
+            "143.95.233.41/~guncelodemeniz",
+            "143.95.233.41/~guncelsorgulama",
+            "143.95.233.41/~kolaysorgu12",
+            "143.95.233.41/~kolaysorgu13",
+            "143.95.233.41/~odemeislem",
+            "143.95.233.41/~onlinesorgu",
+            "143.95.233.41/~sorgubank",
+            "143.95.233.41/~sorgulama",
+            "143.95.233.41/~sorgularim",
+            "143.95.233.41/~sorgularima",
+            "143.95.233.41/~sorgularm/",
+            "143.95.233.41/~yapisorgu",
+            "143.95.234.31/~guvenliislem",
+            "143.95.234.31/~hgsislem",
+            "143.95.234.31/~onlinehgs",
+            "154.16.3.99/~faturamatik",
+            "154.16.3.99/~hgsislem",
+            "154.16.3.99/~kredikartiislem",
+            "154.16.3.99/~onlinesorgu",
+            "154.16.3.99/~sorgukart",
+            "154.16.3.99/~sorgupaykredikar",
+            "154.16.3.99/~sorguplay",
+            "154.16.3.99/~trafikislem",
+            "154.16.3.99/~trafiksistemi",
+            "154.16.3.99/~trafiktislem",
+            "154.16.3.99/~trafkislemleri",
+            "134.0.117.224/1300/1300.exe",
+            "190.14.39.239/hediyeinternet.apk",
+            "205.185.127.140/googlesecurity_patch_3092.apk",
+            "209.141.40.93/wp_poczta.apk",
+            
+            // ===== DOMAIN FORMATLI BANKA TAKLİDİ (40) =====
+            "garanti-bbva-giris.tk",
+            "garantibbva-onay.xyz",
+            "garantibbva-dogrula.ml",
+            "garanti-giris.tk",
+            "garanti-onay.xyz",
+            "ziraatbank-giris.tk",
+            "ziraat-onay.xyz",
+            "ziraatbank-dogrula.ml",
+            "ziraat-giris.tk",
+            "ziraat-hesap.xyz",
+            "akbank-hesap.tk",
+            "akbank-dogrula.xyz",
+            "akbank-giris.tk",
+            "akbank-onay.ml",
+            "isbank-giris.tk",
+            "isbank-onay.ml",
+            "isbank-dogrula.xyz",
+            "isbank-hesap.tk",
+            "yapikredi-hesap.tk",
+            "yapikredi-giris.xyz",
+            "yapikredi-onay.ml",
+            "halkbank-onay.tk",
+            "halkbank-giris.xyz",
+            "vakifbank-giris.ml",
+            "vakifbank-onay.tk",
+            "qnb-dogrula.tk",
+            "qnb-giris.xyz",
+            "denizbank-hesap.xyz",
+            "denizbank-giris.tk",
+            "teb-giris.tk",
+            "teb-onay.xyz",
+            "ing-onay.ml",
+            "ing-giris.tk",
+            "enpara-giris.tk",
+            "enpara-onay.xyz",
+            "papara-onay.xyz",
+            "papara-giris.tk",
+            "ininal-dogrula.tk",
+            "tosla-hesap.ml",
+            "cepteteb-giris.tk",
+            "kuveytturk-onay.xyz",
+            "albaraka-giris.tk",
+            "turkiyefinans-dogrula.ml",
+            "sekerbank-giris.tk",
+            "odeabank-onay.xyz",
+            
+            // ===== DOMAIN FORMATLI DEVLET KURUMU TAKLİDİ (20) =====
+            "edevlet-giris.tk",
+            "edevlet-onay.xyz",
+            "edevlet-dogrula.ml",
+            "turkiye-gov-dogrula.ml",
+            "turkiye-gov-onay.tk",
+            "sgk-giris.tk",
+            "sgk-onay.xyz",
+            "sgk-dogrulama.ml",
+            "ptt-kargo.tk",
+            "ptt-takip.xyz",
+            "gib-vergi.xyz",
+            "gib-iade.tk",
+            "nvi-kimlik.tk",
+            "nvi-dogrula.xyz",
+            "meb-giris.ml",
+            "eokul-giris.tk",
+            "osym-sinav.tk",
+            "yokatlas-dogrula.xyz",
+            "enabiz-giris.tk",
+            "uyap-dava.ml",
+            
+            // ===== DOMAIN FORMATLI KRİPTO DOLANDIRICILIĞI (10) =====
+            "bedava-bitcoin.tk",
+            "bitcoin-katla.xyz",
+            "kripto-kazanc.ml",
+            "ethereum-hediye.tk",
+            "binance-onay.xyz",
+            "metamask-cuzdan.tk",
+            "trustwallet-dogrula.xyz",
+            "bedava-btc.ml",
+            "kripto-katla.tk",
+            "coin-hediye.xyz",
+            
+            // ===== DOMAIN FORMATLI KAMERA TUZAĞI (10) =====
+            "zoom-toplanti.tk",
+            "canli-gorusme.xyz",
+            "kamera-ac.ml",
+            "online-meeting.tk",
+            "video-chat.xyz",
+            "goruntulu-konusma.tk",
+            "webcam-test.ml",
+            "face-time.xyz",
+            "canli-yayin.tk",
+            "kamera-izle.ml"
+        ];
 
         // ===== VERİTABANI =====
         const DB = {
@@ -1544,7 +1695,7 @@
             { id: 'sosyal', name: '📱 Sosyal Medya Motoru' },
             { id: 'is', name: '💼 İş İlanı Motoru' },
             { id: 'ai', name: '🤖 Yapay Zeka Motoru' },
-            { id: 'community', name: '👥 Topluluk Motoru' },
+            { id: 'community', name: '👥 Topluluk & USOM Motoru' },
             { id: 'tld', name: '🌍 TLD Risk Motoru' },
             { id: 'phishing', name: '🎣 Oltalama Motoru' }
         ];
@@ -1704,9 +1855,26 @@
                         if (aiScore > 0) findings.push('AI analizi: ' + aiScore + ' puan');
                         break;
                     case 'community':
+                        // ===== USOM + DOMAIN ZARARLI LİNK VERİTABANI KONTROLÜ =====
+                        const inputClean = input.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
+                        const inputFull = input.toLowerCase();
+                        
+                        const isInUsomList = knownMaliciousLinks.some(link => {
+                            const linkLower = link.toLowerCase();
+                            return inputFull.includes(linkLower) || 
+                                   linkLower.includes(inputClean) ||
+                                   inputClean.includes(linkLower.split('/')[0]);
+                        });
+                        
+                        if (isInUsomList) {
+                            score = 100;
+                            findings.push('🚨 USOM/ZARARLI VERİTABANINDA KAYITLI LİNK!');
+                        }
+                        
+                        // Kullanıcı ihbarları
                         const reports = DB.getReports();
                         if (reports.some(r => input.includes(r.url))) {
-                            score = 95; 
+                            score = Math.max(score, 95);
                             findings.push('🚨 Topluluk tarafından ihbar edilmiş!');
                         }
                         break;
@@ -1759,10 +1927,10 @@
                 'SSL sertifikası kontrol ediliyor...',
                 'Banka taklit motoru çalışıyor...',
                 'Devlet kurumu taklit motoru çalışıyor...',
+                'USOM veritabanı kontrol ediliyor...',
                 'Kripto dolandırıcılık motoru çalışıyor...',
                 'Kamera tuzağı motoru çalışıyor...',
                 'Yapay zeka motoru analiz ediyor...',
-                'Topluluk veritabanı kontrol ediliyor...',
                 'Sonuçlar derleniyor...'
             ];
             let i = 0;
@@ -1779,17 +1947,14 @@
             }, 200);
         }
 
-        // ===== SONUÇ GÖSTER (DÜZELTİLMİŞ) =====
         function showResults(input, isUrl) {
             const engineResults = runEngineAnalysis(input, isUrl);
             const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
             const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
             
-            // ===== AĞIRLIKLI ORTALAMA (İlgisiz motorları sayma) =====
             let weightedSum = 0;
             let weightTotal = 0;
             engineResults.forEach(e => {
-                // %0 puan veren motorları ortalamaya katma (ilgisiz motor)
                 if (e.score === 0) return;
                 let weight = 1;
                 if (e.verdict === 'danger') weight = 4;
@@ -1799,7 +1964,6 @@
             });
             let avgScore = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0;
 
-            // Tehdit sayısı fazlaysa minimum puan garantile
             if (threatCount >= 3) avgScore = Math.max(avgScore, 75);
             else if (threatCount >= 2) avgScore = Math.max(avgScore, 60);
             else if (threatCount >= 1) avgScore = Math.max(avgScore, 40);
@@ -1940,7 +2104,7 @@
             const now = new Date().toLocaleString('tr-TR');
             let report = `
 ========================================
-PHISHGUARD-TR ANALİZ RAPORU v12.1
+PHISHGUARD-TR ANALİZ RAPORU v14
 ========================================
 Tarih: ${now}
 Kullanıcı: ${user?.name || 'Misafir'}
@@ -1972,6 +2136,7 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
             'link': 'Şüpheli linkleri "Tarama" bölümünde analiz edin.',
             'hash': 'Hash, bir dosyanın parmak izidir. MD5 (32) veya SHA256 (64) karakterdir.',
             'qr': 'QR kodları okutmadan önce URL\'yi kontrol edin.',
+            'usom': 'USOM, Ulusal Siber Olaylara Müdahale Merkezi\'dir. Zararlı linkleri resmi olarak yayınlar.',
             'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?',
             'teşekkür': 'Rica ederim!'
         };
