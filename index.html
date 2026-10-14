@@ -974,6 +974,254 @@
             color: var(--text-dim); font-size: 18px; cursor: pointer;
         }
 
+        /* HAKKINDA SAYFASI */
+        .about-hero {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05));
+            border-radius: 20px;
+            margin-bottom: 22px;
+            border: 2px solid var(--border);
+        }
+        .about-hero-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 30px var(--neon));
+        }
+        .about-hero h1 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon), #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        .about-hero p {
+            color: var(--text-dim);
+            font-size: 14px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+        .about-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .about-card h3 {
+            color: var(--neon);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .about-card p, .about-card li {
+            color: var(--text);
+            opacity: 0.85;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        .about-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .about-card ul li::before {
+            content: '▸ ';
+            color: var(--neon);
+            font-weight: bold;
+        }
+        .about-dev-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 14px;
+            margin-bottom: 15px;
+        }
+        .about-dev-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--neon), #00ccff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+        }
+        .about-dev-info h4 {
+            color: var(--text);
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .about-dev-info p {
+            color: var(--text-dim);
+            font-size: 13px;
+        }
+        .about-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text);
+        }
+        .about-contact-item .icon {
+            font-size: 20px;
+        }
+
+        /* REHBER SAYFASI */
+        .guide-step {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .guide-step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--neon), var(--neon-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            color: #050510;
+            flex-shrink: 0;
+        }
+        .guide-step-content h3 {
+            color: var(--neon);
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .guide-step-content p {
+            color: var(--text);
+            opacity: 0.85;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+        .guide-step-content .tip {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 3px solid var(--neon);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--neon);
+            margin-top: 10px;
+        }
+
+        /* İSTATİSTİK SAYFASI */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+        .stats-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stats-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.15);
+        }
+        .stats-card-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        .stats-card-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--neon);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .stats-card-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        .stats-charts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .stats-chart-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 22px;
+        }
+        .stats-chart-card h4 {
+            color: var(--neon);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .stats-chart-container {
+            position: relative;
+            height: 250px;
+        }
+        .stats-info-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05));
+            border: 2px solid var(--neon);
+            border-radius: 18px;
+            padding: 22px;
+            margin-top: 18px;
+        }
+        .stats-info-box h3 {
+            color: var(--neon);
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stats-info-box p {
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
         /* ADMIN */
         .admin-grid {
             display: grid;
@@ -1109,6 +1357,9 @@
         @media (max-width: 900px) {
             .admin-grid { grid-template-columns: repeat(2, 1fr); }
             .charts-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-charts { grid-template-columns: 1fr; }
             .logo-text { font-size: 26px; }
             .logo-icon { font-size: 34px; }
             .search-input-group { flex-direction: column; }
@@ -1124,6 +1375,9 @@
             .logo-icon { font-size: 26px; }
             .engines-grid { grid-template-columns: 1fr; }
             .gate-card { padding: 28px 18px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .about-dev-info { flex-direction: column; text-align: center; }
+            .guide-step { flex-direction: column; }
         }
     </style>
 </head>
@@ -1195,6 +1449,9 @@
                     <button class="icon-btn" onclick="switchView('report')">📢 İhbar</button>
                     <button class="icon-btn" onclick="switchView('chat')">💬 Asistan</button>
                     <button class="icon-btn" onclick="switchView('edu')">🎓 Eğitim</button>
+                    <button class="icon-btn" onclick="switchView('about')">ℹ️ Hakkında</button>
+                    <button class="icon-btn" onclick="switchView('guide')">📖 Rehber</button>
+                    <button class="icon-btn" onclick="switchView('stats')">📊 İstatistik</button>
                     <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn">🔇</button>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <button class="icon-btn" onclick="logout()">🚪</button>
@@ -1373,7 +1630,7 @@
                 </div>
 
                 <div class="card">
-                    <div class="side-title"><span>🔐</span> Dosya Hash Kontrolü (Manuel)</div>
+                    <div class="side-title"><span>🔐</span> Dosya Hash Kontrolü</div>
                     <div class="hash-input-area">
                         <input type="text" id="hashInput" placeholder="MD5 veya SHA256 hash girin...">
                         <button class="search-btn" onclick="checkHash()">🔍 Kontrol Et</button>
@@ -1525,6 +1782,182 @@
                 </div>
             </div>
 
+            <!-- HAKKINDA GÖRÜNÜMÜ -->
+            <div id="aboutView" style="display:none;">
+                <div class="about-hero">
+                    <div class="about-hero-icon">🛡️</div>
+                    <h1>PhishGuard-TR</h1>
+                    <p>Türkiye'nin ilk kapsamlı oltalama ve siber tehdit analiz platformu. 15 farklı motor ile linkleri, metinleri ve dosyaları analiz eder.</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3>🎯 Projenin Amacı</h3>
+                        <p>Türkiye'de hızla artan oltalama (phishing) saldırılarına karşı farkındalık oluşturmak ve kullanıcıların şüpheli linkleri analiz ederek saldırıyı fark etmelerini sağlamak.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>⚙️ Nasıl Çalışır?</h3>
+                        <ul>
+                            <li>15 farklı analiz motoru</li>
+                            <li>105+ zararlı link veritabanı</li>
+                            <li>USOM entegrasyonu</li>
+                            <li>Banka/devlet kurumu taklit tespiti</li>
+                            <li>Kamera/mikrofon tuzağı tespiti</li>
+                            <li>Kripto dolandırıcılığı tespiti</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>🏆 Özellikler</h3>
+                        <ul>
+                            <li>Link, metin ve e-posta analizi</li>
+                            <li>Dosya hash tarayıcısı</li>
+                            <li>Mobil uygulama (PWA)</li>
+                            <li>Canlı tehdit akışı</li>
+                            <li>Eğitim modülü + quiz</li>
+                            <li>Şifre analizi + üretici</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>📅 Proje Bilgileri</h3>
+                        <ul>
+                            <li>Yarışma: TÜBİTAK 2204-A</li>
+                            <li>Alan: Yazılım</li>
+                            <li>Tematik Alan: Siber Güvenlik</li>
+                            <li>İl: Şanlıurfa</li>
+                            <li>Bölge: Malatya</li>
+                            <li>Sürüm: v18</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <h3>👨‍💻 Geliştirici</h3>
+                    <div class="about-dev-info">
+                        <div class="about-dev-avatar">👨‍💻</div>
+                        <div>
+                            <h4>Hüseyin Barış [SOYADIN]</h4>
+                            <p>12-A Sınıfı Öğrencisi</p>
+                            <p>[OKULUNUN TAM ADI]</p>
+                        </div>
+                    </div>
+                    <div class="about-contact-item">
+                        <span class="icon">👨‍🏫</span>
+                        <span><strong>Danışman Öğretmen:</strong> Elvan Kutlu</span>
+                    </div>
+                    <div class="about-contact-item">
+                        <span class="icon">📧</span>
+                        <span><strong>E-posta:</strong> [E-POSTA ADRESİN]</span>
+                    </div>
+                    <div class="about-contact-item">
+                        <span class="icon">🌐</span>
+                        <span><strong>Web:</strong> https://phishguardtr.dpdns.org</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REHBER GÖRÜNÜMÜ -->
+            <div id="guideView" style="display:none;">
+                <div class="guide-step">
+                    <div class="guide-step-number">1</div>
+                    <div class="guide-step-content">
+                        <h3>🔗 Link Analizi</h3>
+                        <p>"Tarama" sekmesine gidin, "Link" sekmesini seçin. Şüpheli linki yapıştırın ve "Tara" butonuna basın. Sistem 15 farklı motorla linki analiz eder.</p>
+                        <div class="tip">💡 İpucu: Şüpheli linke tıklamadan önce mutlaka analiz edin!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">2</div>
+                    <div class="guide-step-content">
+                        <h3>📧 Metin Analizi</h3>
+                        <p>Şüpheli bir e-posta veya mesaj aldığınızda, metni kopyalayıp "Metin" sekmesine yapıştırın. Sistem metin içindeki oltalama kalıplarını arar.</p>
+                        <div class="tip">💡 İpucu: "Acil", "hesabınız askıya alındı" gibi ifadeler varsa dikkatli olun!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">3</div>
+                    <div class="guide-step-content">
+                        <h3>📁 Dosya Hash Tarayıcısı</h3>
+                        <p>"Araçlar" sekmesine gidin. "Dosya Hash Tarayıcısı" bölümüne şüpheli bir dosya yükleyin. Sistem dosyanın MD5 ve SHA256 hash'ini hesaplar.</p>
+                        <div class="tip">💡 İpucu: Özellikle .exe, .apk gibi dosyaları analiz edin!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">4</div>
+                    <div class="guide-step-content">
+                        <h3>🔑 Şifre Güç Analizi</h3>
+                        <p>"Araçlar" sekmesinde "Şifre Güç Analizi" bölümüne şifrenizi girin. Sistem şifrenizin ne kadar güçlü olduğunu ve ne kadar sürede kırılabileceğini gösterir.</p>
+                        <div class="tip">💡 İpucu: Güçlü şifre en az 12 karakter, harf+rakam+özel karakter içermelidir!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">5</div>
+                    <div class="guide-step-content">
+                        <h3>📢 İhbar Sistemi</h3>
+                        <p>Şüpheli bir link bulduğunuzda "İhbar" sekmesinden bildirin. İhbarlar topluluk veritabanına eklenir ve diğer kullanıcılar korunur.</p>
+                        <div class="tip">💡 İpucu: İhbar ettiğiniz linkler diğer kullanıcıların da korunmasını sağlar!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">6</div>
+                    <div class="guide-step-content">
+                        <h3>📲 Mobil Uygulama</h3>
+                        <p>Sağ üstteki "📲 Uygulamayı Yükle" butonuna basarak PhishGuard-TR'yi telefonunuza yükleyebilirsiniz. İnternet olmadan da çalışır.</p>
+                        <div class="tip">💡 İpucu: Mobil uygulama ile her yerden analiz yapabilirsiniz!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İSTATİSTİK GÖRÜNÜMÜ -->
+            <div id="statsView" style="display:none;">
+                <div class="stats-grid">
+                    <div class="stats-card">
+                        <div class="stats-card-icon">🔍</div>
+                        <div class="stats-card-value" id="statsTotalAnalyses">0</div>
+                        <div class="stats-card-label">Toplam Analiz</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">🚨</div>
+                        <div class="stats-card-value" id="statsTotalThreats" style="color:var(--danger);">0</div>
+                        <div class="stats-card-label">Tespit Edilen Tehdit</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">📷</div>
+                        <div class="stats-card-value" id="statsTotalCamera" style="color:var(--warning);">0</div>
+                        <div class="stats-card-label">Kamera Riski</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">📢</div>
+                        <div class="stats-card-value" id="statsTotalReports">0</div>
+                        <div class="stats-card-label">Topluluk İhbarı</div>
+                    </div>
+                </div>
+
+                <div class="stats-charts">
+                    <div class="stats-chart-card">
+                        <h4>📊 Haftalık Analiz Grafiği</h4>
+                        <div class="stats-chart-container">
+                            <canvas id="statsWeeklyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="stats-chart-card">
+                        <h4>📈 Tespit Edilen Tehdit Türleri</h4>
+                        <div class="stats-chart-container">
+                            <canvas id="statsThreatChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-info-box">
+                    <h3>💡 İstatistikler Hakkında</h3>
+                    <p>Bu istatistikler, PhishGuard-TR platformunun kullanımına ilişkin verileri gösterir. Toplam analiz sayısı, tespit edilen tehdit sayısı ve topluluk ihbarları gibi metrikler, sistemin etkinliğini değerlendirmek için kullanılır.</p>
+                </div>
+            </div>
+
             <!-- ADMIN GÖRÜNÜMÜ -->
             <div id="adminView" style="display:none;">
                 <div class="card">
@@ -1615,6 +2048,9 @@
             { title: '📢 İhbar Sistemi', desc: 'Şüpheli link ihbar et', view: 'report' },
             { title: '💬 Siber Güvenlik Asistanı', desc: 'Siber güvenlik hakkında soru sor', view: 'chat' },
             { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' },
+            { title: 'ℹ️ Hakkında', desc: 'Proje hakkında bilgi', view: 'about' },
+            { title: '📖 Rehber', desc: 'Nasıl kullanılır?', view: 'guide' },
+            { title: '📊 İstatistik', desc: 'Kullanım istatistikleri', view: 'stats' },
             { title: '🔑 Şifre Analizi', desc: 'Şifre gücünü ölç', view: 'tools' },
             { title: '🎲 Şifre Üretici', desc: 'Güçlü rastgele şifre üret', view: 'tools' },
             { title: '📱 QR Kod Okuyucu', desc: 'QR kod içeriğini oku', view: 'tools' }
@@ -1930,12 +2366,16 @@
         }
 
         function switchView(view) {
-            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'adminView'].forEach(v => {
+            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => {
                 document.getElementById(v).style.display = 'none';
             });
             document.getElementById(view + 'View').style.display = 'block';
             if (view === 'admin') updateAdminPanel();
             if (view === 'report') updateReportUI();
+            if (view === 'stats') {
+                loadStatsData();
+                setTimeout(initStatsCharts, 100);
+            }
         }
 
         function switchSearchTab(tab, event) {
@@ -2883,6 +3323,107 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
                     }
                 });
             }
+        }
+
+        // ===== İSTATİSTİK SAYFASI GRAFİKLERİ =====
+        let statsWeeklyChart, statsThreatChart;
+
+        function initStatsCharts() {
+            const weeklyCtx = document.getElementById('statsWeeklyChart');
+            if (weeklyCtx && !statsWeeklyChart) {
+                statsWeeklyChart = new Chart(weeklyCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                        datasets: [{
+                            label: 'Analiz Sayısı',
+                            data: [45, 62, 58, 78, 85, 92, 110],
+                            backgroundColor: 'rgba(0, 255, 136, 0.6)',
+                            borderColor: '#00ff88',
+                            borderWidth: 2,
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: '#e0e0e0', font: { size: 12 } } }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { color: '#888' },
+                                grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#888' },
+                                grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            const threatCtx = document.getElementById('statsThreatChart');
+            if (threatCtx && !statsThreatChart) {
+                statsThreatChart = new Chart(threatCtx, {
+                    type: 'polarArea',
+                    data: {
+                        labels: ['Banka Taklidi', 'Devlet Kurumu', 'Kripto', 'Kamera', 'Diğer'],
+                        datasets: [{
+                            data: [45, 30, 15, 8, 2],
+                            backgroundColor: [
+                                'rgba(255, 51, 102, 0.7)',
+                                'rgba(255, 170, 0, 0.7)',
+                                'rgba(0, 204, 255, 0.7)',
+                                'rgba(0, 255, 136, 0.7)',
+                                'rgba(136, 136, 136, 0.7)'
+                            ],
+                            borderColor: '#050510',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 }
+                            }
+                        },
+                        scales: {
+                            r: {
+                                ticks: { color: '#888', backdropColor: 'transparent' },
+                                grid: { color: 'rgba(0, 255, 136, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // ===== İSTATİSTİK VERİLERİNİ YÜKLE =====
+        function loadStatsData() {
+            const users = DB.getUsers();
+            const reports = DB.getReports();
+            
+            let totalAnalyses = 0;
+            let totalThreats = 0;
+            let totalCamera = 0;
+            
+            users.forEach(u => {
+                const s = DB.getUserStats(u.email);
+                totalAnalyses += s.total;
+                totalThreats += s.threats;
+                totalCamera += s.camera;
+            });
+            
+            document.getElementById('statsTotalAnalyses').textContent = totalAnalyses;
+            document.getElementById('statsTotalThreats').textContent = totalThreats;
+            document.getElementById('statsTotalCamera').textContent = totalCamera;
+            document.getElementById('statsTotalReports').textContent = reports.length;
         }
 
         // ===== İHBAR SİSTEMİ =====
