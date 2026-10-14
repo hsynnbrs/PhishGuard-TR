@@ -1,7 +1,7 @@
-// ===== PHISHGUARD-TR SERVICE WORKER =====
+// ===== PHISHGUARD-TR SERVICE WORKER v18 =====
 // Offline çalışma ve cache yönetimi
 
-const CACHE_NAME = 'phishguard-v17';
+const CACHE_NAME = 'phishguard-v18';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -11,20 +11,26 @@ const urlsToCache = [
 
 // ===== KURULUM =====
 self.addEventListener('install', (event) => {
-    console.log('🛡️ PhishGuard Service Worker kuruluyor...');
+    console.log('🛡️ PhishGuard Service Worker v18 kuruluyor...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('📦 Cache açıldı');
+                console.log('📦 Cache açıldı:', CACHE_NAME);
                 return cache.addAll(urlsToCache);
             })
-            .then(() => self.skipWaiting())
+            .then(() => {
+                console.log('✅ Cache dolduruldu');
+                return self.skipWaiting();
+            })
+            .catch((error) => {
+                console.log('❌ Cache hatası:', error);
+            })
     );
 });
 
 // ===== AKTİVASYON =====
 self.addEventListener('activate', (event) => {
-    console.log('✅ PhishGuard Service Worker aktif');
+    console.log('✅ PhishGuard Service Worker v18 aktif');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
@@ -35,7 +41,10 @@ self.addEventListener('activate', (event) => {
                     }
                 })
             );
-        }).then(() => self.clients.claim())
+        }).then(() => {
+            console.log('🧹 Eski cache temizlendi');
+            return self.clients.claim();
+        })
     );
 });
 
@@ -48,7 +57,9 @@ self.addEventListener('fetch', (event) => {
     const url = event.request.url;
     if (url.includes('cdn.jsdelivr.net') || 
         url.includes('fonts.googleapis.com') || 
-        url.includes('fonts.gstatic.com')) {
+        url.includes('fonts.gstatic.com') ||
+        url.includes('virustotal.com') ||
+        url.includes('usom.gov.tr')) {
         return;
     }
     
@@ -85,8 +96,9 @@ self.addEventListener('fetch', (event) => {
     );
 });
 
-// ===== BİLDİRİM =====
+// ===== BİLDİRİM TIKLAMA =====
 self.addEventListener('notificationclick', (event) => {
+    console.log('🔔 Bildirime tıklandı');
     event.notification.close();
     event.waitUntil(
         clients.openWindow('/')
@@ -96,6 +108,34 @@ self.addEventListener('notificationclick', (event) => {
 // ===== MESAJ DİNLEYİCİ =====
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
+        console.log('⏩ skipWaiting komutu alındı');
         self.skipWaiting();
     }
+    if (event.data && event.data.action === 'clearCache') {
+        console.log('🗑️ Cache temizleme komutu alındı');
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => caches.delete(cacheName))
+            );
+        });
+    }
 });
+
+// ===== PUSH BİLDİRİMİ =====
+self.addEventListener('push', (event) => {
+    console.log('📩 Push bildirimi alındı');
+    const data = event.data ? event.data.json() : {};
+    const title = data.title || '🛡️ PhishGuard-TR';
+    const options = {
+        body: data.body || 'Yeni bir tehdit tespit edildi!',
+        icon: '/icons/icon-192.png',
+        badge: '/icons/icon-192.png',
+        vibrate: [200, 100, 200],
+        data: { url: data.url || '/' }
+    };
+    event.waitUntil(
+        self.registration.showNotification(title, options)
+    );
+});
+
+console.log('🛡️ PhishGuard-TR Service Worker v18 yüklendi');
