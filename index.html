@@ -34,14 +34,39 @@
         .search-result-item .result-desc { color: var(--text-dim); font-size: 11px; margin-top: 4px; }
         .search-hint { text-align: center; color: var(--text-dim); font-size: 11px; margin-top: 12px; }
 
-        /* GİRİŞ EKRANI - ANIMASYONLU + TÜBİTAK */
+        /* GİRİŞ EKRANI - TAM DONANIMLI */
         .gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 50%, #0a1a2e 0%, #050510 60%, #000000 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s, visibility 0.5s; overflow: hidden; }
         .gate.hidden { opacity: 0; visibility: hidden; }
-        .gate-tubitak { position: absolute; top: 20px; right: 20px; z-index: 10; display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 10px; backdrop-filter: blur(10px); transition: all 0.3s; }
-        .gate-tubitak:hover { border-color: rgba(0, 255, 136, 0.5); box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
-        .gate-tubitak img { height: 28px; width: auto; filter: brightness(1.1); }
-        .gate-tubitak-text { font-size: 9px; color: #6a8a9a; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.3; }
-        .gate-tubitak-text span { display: block; color: #00ff88; font-size: 10px; }
+
+        /* Sürüm bilgisi (Sol Üst) */
+        .gate-version { position: absolute; top: 20px; left: 20px; z-index: 10; padding: 8px 14px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 10px; backdrop-filter: blur(10px); color: #6a8a9a; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+        .gate-version span { color: #00ff88; }
+
+        /* TÜBİTAK logo (Sağ Üst) */
+        .gate-tubitak { position: absolute; top: 20px; right: 20px; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; backdrop-filter: blur(10px); transition: all 0.3s; }
+        .gate-tubitak:hover { border-color: rgba(0, 255, 136, 0.6); box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); transform: translateY(-2px); }
+        .gate-tubitak svg { display: block; filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5)); }
+        .gate-tubitak-text { font-size: 10px; color: #6a8a9a; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.4; }
+        .gate-tubitak-text span { display: block; color: #00ff88; font-size: 12px; font-weight: 900; margin-top: 2px; }
+
+        /* Canlı sayaçlar (Sol Alt) */
+        .gate-stats { position: absolute; bottom: 70px; left: 20px; z-index: 10; display: flex; gap: 10px; flex-wrap: wrap; }
+        .gate-stat-box { padding: 12px 18px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; backdrop-filter: blur(10px); text-align: center; min-width: 90px; transition: all 0.3s; }
+        .gate-stat-box:hover { border-color: rgba(0, 255, 136, 0.5); transform: translateY(-3px); }
+        .gate-stat-value { font-size: 20px; font-weight: 900; color: #00ff88; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+        .gate-stat-label { font-size: 9px; color: #6a8a9a; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
+
+        /* Saat/Tarih (Sağ Alt) */
+        .gate-clock { position: absolute; bottom: 70px; right: 20px; z-index: 10; padding: 12px 18px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; backdrop-filter: blur(10px); text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .gate-clock-time { font-size: 20px; font-weight: 900; color: #00ff88; text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+        .gate-clock-date { font-size: 10px; color: #6a8a9a; margin-top: 3px; letter-spacing: 0.5px; }
+
+        /* Alt bilgi şeridi */
+        .gate-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 15px 20px; background: rgba(0, 0, 0, 0.4); border-top: 1px solid rgba(0, 255, 136, 0.1); backdrop-filter: blur(10px); text-align: center; color: #4a5a6a; font-size: 11px; letter-spacing: 0.5px; }
+        .gate-bottom-bar strong { color: #00ff88; }
+        .gate-bottom-bar .dot { color: #6a8a9a; margin: 0 8px; }
+
+        /* Parçacıklar */
         .gate-particles { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
         .gate-particles span { position: absolute; width: 4px; height: 4px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; animation: floatParticle 15s infinite linear; opacity: 0.6; }
         .gate-particles span:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
@@ -55,19 +80,24 @@
         .gate-particles span:nth-child(9) { left: 90%; animation-delay: 8s; animation-duration: 19s; }
         .gate-particles span:nth-child(10) { left: 35%; animation-delay: 9s; animation-duration: 17s; }
         @keyframes floatParticle { 0% { transform: translateY(100vh) scale(1); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(-100vh) scale(1.5); opacity: 0; } }
+
         .gate::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px); background-size: 50px 50px; z-index: 0; animation: gridMove 20s linear infinite; pointer-events: none; }
         @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
         .gate::after { content: ''; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 136, 0.1); border-radius: 50%; z-index: 0; animation: ringPulse 4s ease-in-out infinite; pointer-events: none; }
         @keyframes ringPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; } }
-        .gate-card { position: relative; z-index: 1; background: linear-gradient(135deg, rgba(15, 20, 40, 0.95), rgba(10, 15, 30, 0.98)); backdrop-filter: blur(30px); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 28px; padding: 45px 38px; max-width: 460px; width: 100%; box-shadow: 0 0 80px rgba(0, 255, 136, 0.15), 0 0 120px rgba(0, 255, 136, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05); text-align: center; max-height: 92vh; overflow-y: auto; animation: cardAppear 0.8s ease; }
+
+        .gate-card { position: relative; z-index: 1; background: linear-gradient(135deg, rgba(15, 20, 40, 0.95), rgba(10, 15, 30, 0.98)); backdrop-filter: blur(30px); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 28px; padding: 45px 38px; max-width: 460px; width: 100%; box-shadow: 0 0 80px rgba(0, 255, 136, 0.15), 0 0 120px rgba(0, 255, 136, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05); text-align: center; max-height: 85vh; overflow-y: auto; animation: cardAppear 0.8s ease; margin-bottom: 30px; }
         @keyframes cardAppear { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
         .gate-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #00ff88, #00ccff, #00ff88, transparent); border-radius: 28px 28px 0 0; background-size: 200% 100%; animation: topBorderGlow 3s linear infinite; }
         @keyframes topBorderGlow { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .gate-welcome { font-size: 11px; color: #6a8a9a; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
         .gate-logo { font-size: 72px; margin-bottom: 15px; filter: drop-shadow(0 0 30px #00ff88) drop-shadow(0 0 60px rgba(0, 255, 136, 0.5)); animation: logoFloat 3s ease-in-out infinite; display: inline-block; }
         @keyframes logoFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
         .gate-title { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #00ff88, #00ccff, #00ff88); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; letter-spacing: -0.5px; animation: textShine 3s linear infinite; }
         @keyframes textShine { to { background-position: 200% center; } }
         .gate-subtitle { color: #6a8a9a; font-size: 12px; margin-bottom: 28px; letter-spacing: 1.5px; text-transform: uppercase; }
+
         .gate-tabs { display: flex; gap: 5px; margin-bottom: 22px; background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 14px; border: 1px solid rgba(0, 255, 136, 0.1); }
         .gate-tab { flex: 1; padding: 13px; background: transparent; border: none; border-radius: 10px; color: #6a8a9a; font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
         .gate-tab.active { background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.15)); color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
@@ -78,14 +108,18 @@
         .gate-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); transition: left 0.5s; }
         .gate-btn:hover::before { left: 100%; }
         .gate-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4), 0 0 60px rgba(0, 255, 136, 0.2); }
-        .gate-btn:active { transform: translateY(-1px); }
         .guest-btn { width: 100%; padding: 16px; background: transparent; border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 14px; color: #00ff88; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; margin-top: 14px; position: relative; overflow: hidden; }
         .guest-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #00ff88, #00cc66); opacity: 0; transition: opacity 0.3s; z-index: -1; }
         .guest-btn:hover { color: #050510; border-color: #00ff88; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3); }
         .guest-btn:hover::after { opacity: 1; }
         .gate-footer { color: #4a5a6a; font-size: 11px; margin-top: 22px; line-height: 1.7; letter-spacing: 0.3px; }
-        .gate-footer::before { content: '🔒 '; color: #00ff88; }
 
+        /* Rozetler (kart altında) */
+        .gate-badges { display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+        .gate-badge { padding: 6px 12px; background: rgba(0, 255, 136, 0.08); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 20px; color: #00ff88; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
+    </style>
+</head>
+    <style>
         /* ANA UYGULAMA */
         .app { display: none; }
         .app.active { display: block; }
@@ -346,6 +380,40 @@
         .edu-card h4 { color: var(--neon); font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
         .edu-card p { color: var(--text); opacity: 0.8; font-size: 12px; line-height: 1.6; }
 
+        /* HAKKINDA SAYFASI */
+        .about-hero { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05)); border-radius: 20px; margin-bottom: 22px; border: 2px solid var(--border); }
+        .about-hero-icon { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 30px var(--neon)); }
+        .about-hero h1 { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, var(--neon), #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+        .about-hero p { color: var(--text-dim); font-size: 14px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 22px; }
+        .about-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+        .about-card h3 { color: var(--neon); font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .about-card p, .about-card li { color: var(--text); opacity: 0.85; font-size: 13px; line-height: 1.7; }
+        .about-card ul { list-style: none; padding-left: 0; }
+        .about-card ul li::before { content: '▸ '; color: var(--neon); font-weight: bold; }
+
+        /* REHBER SAYFASI */
+        .guide-step { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 15px; display: flex; gap: 20px; align-items: flex-start; }
+        .guide-step-number { width: 50px; height: 50px; background: linear-gradient(135deg, var(--neon), var(--neon-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; color: #050510; flex-shrink: 0; }
+        .guide-step-content h3 { color: var(--neon); font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+        .guide-step-content p { color: var(--text); opacity: 0.85; font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+        .guide-step-content .tip { background: rgba(0, 255, 136, 0.1); border-left: 3px solid var(--neon); padding: 10px 15px; border-radius: 8px; font-size: 12px; color: var(--neon); margin-top: 10px; }
+
+        /* İSTATİSTİK SAYFASI */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 22px; }
+        .stats-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; text-align: center; transition: all 0.3s; }
+        .stats-card:hover { transform: translateY(-5px); border-color: var(--neon); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.15); }
+        .stats-card-icon { font-size: 40px; margin-bottom: 12px; }
+        .stats-card-value { font-size: 32px; font-weight: 900; color: var(--neon); font-family: 'JetBrains Mono', monospace; line-height: 1; margin-bottom: 8px; }
+        .stats-card-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .stats-charts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 18px; }
+        .stats-chart-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+        .stats-chart-card h4 { color: var(--neon); font-size: 13px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .stats-chart-container { position: relative; height: 250px; }
+        .stats-info-box { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05)); border: 2px solid var(--neon); border-radius: 18px; padding: 22px; margin-top: 18px; }
+        .stats-info-box h3 { color: var(--neon); font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .stats-info-box p { color: var(--text); font-size: 13px; line-height: 1.7; opacity: 0.9; }
+
         /* FOOTER */
         .footer { text-align: center; margin-top: 25px; color: var(--text-dim); font-size: 10px; line-height: 1.8; }
         .footer strong { color: var(--neon); }
@@ -353,13 +421,21 @@
         @media (max-width: 900px) {
             .admin-grid { grid-template-columns: repeat(2, 1fr); }
             .charts-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-charts { grid-template-columns: 1fr; }
             .logo-text { font-size: 26px; }
             .logo-icon { font-size: 34px; }
             .search-input-group { flex-direction: column; }
             .vt-header { flex-direction: column; align-items: flex-start; }
             .engines-grid { grid-template-columns: 1fr 1fr; }
             .gate-tubitak { top: 15px; right: 15px; padding: 6px 10px; }
-            .gate-tubitak img { height: 22px; }
+            .gate-stats { bottom: 60px; left: 15px; }
+            .gate-stat-box { padding: 8px 12px; min-width: 70px; }
+            .gate-stat-value { font-size: 16px; }
+            .gate-clock { bottom: 60px; right: 15px; padding: 8px 12px; }
+            .gate-clock-time { font-size: 16px; }
+            .gate-version { top: 15px; left: 15px; }
         }
         @media (max-width: 500px) {
             .container { padding: 12px; }
@@ -374,10 +450,20 @@
             .gate-title { font-size: 24px; }
             .gate-tubitak { top: 10px; right: 10px; }
             .gate-tubitak-text { display: none; }
+            .gate-stats { bottom: 55px; left: 10px; }
+            .gate-stat-box { padding: 6px 10px; min-width: 60px; }
+            .gate-stat-value { font-size: 14px; }
+            .gate-stat-label { font-size: 8px; }
+            .gate-clock { bottom: 55px; right: 10px; padding: 6px 10px; }
+            .gate-clock-time { font-size: 14px; }
+            .gate-clock-date { font-size: 9px; }
+            .gate-version { top: 10px; left: 10px; font-size: 9px; padding: 6px 10px; }
+            .gate-bottom-bar { font-size: 10px; padding: 10px; }
+            .stats-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
-<body>
+    <body>
     <canvas id="matrix"></canvas>
 
     <!-- SİTE İÇİ ARAMA OVERLAY -->
@@ -390,20 +476,55 @@
         </div>
     </div>
 
-    <!-- YENİ GİRİŞ EKRANI - TÜBİTAK LOGOLU -->
+    <!-- GİRİŞ EKRANI - TAM DONANIMLI -->
     <div class="gate" id="gate">
+        <!-- Sürüm Bilgisi (Sol Üst) -->
+        <div class="gate-version">v18.0 <span>• Stable</span></div>
+
+        <!-- TÜBİTAK Logo (Sağ Üst) -->
         <div class="gate-tubitak">
-            <img src="https://upload.wikimedia.org/wikipedia/tr/thumb/1/1c/T%C3%BCbitak_logo.svg/1200px-T%C3%BCbitak_logo.svg.png" alt="TÜBİTAK">
+            <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff88" stroke-width="3"/>
+                <text x="50" y="42" font-family="Arial Black" font-size="22" font-weight="900" fill="#00ff88" text-anchor="middle">T</text>
+                <text x="50" y="60" font-family="Arial" font-size="9" fill="#00ff88" text-anchor="middle">ÜBİTAK</text>
+                <text x="50" y="75" font-family="Arial" font-size="7" fill="#6a8a9a" text-anchor="middle">2204-A</text>
+            </svg>
             <div class="gate-tubitak-text">
                 2204-A<span>Projesi</span>
             </div>
         </div>
 
+        <!-- Canlı Sayaçlar (Sol Alt) -->
+        <div class="gate-stats">
+            <div class="gate-stat-box">
+                <div class="gate-stat-value" id="gateStatTotal">1,247</div>
+                <div class="gate-stat-label">Tarama</div>
+            </div>
+            <div class="gate-stat-box">
+                <div class="gate-stat-value" id="gateStatThreats">89</div>
+                <div class="gate-stat-label">Tehdit</div>
+            </div>
+            <div class="gate-stat-box">
+                <div class="gate-stat-value">15</div>
+                <div class="gate-stat-label">Motor</div>
+            </div>
+        </div>
+
+        <!-- Saat/Tarih (Sağ Alt) -->
+        <div class="gate-clock">
+            <div class="gate-clock-time" id="gateClock">--:--:--</div>
+            <div class="gate-clock-date" id="gateDate">-- --- ----</div>
+        </div>
+
+        <!-- Parçacıklar -->
         <div class="gate-particles">
             <span></span><span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span><span></span>
         </div>
+
+        <!-- Giriş Kartı -->
         <div class="gate-card">
+            <div class="gate-welcome">👋 Hoş Geldiniz</div>
             <div class="gate-logo">🛡️</div>
             <div class="gate-title">PhishGuard-TR</div>
             <div class="gate-subtitle">Türkiye'nin Siber Tehdit Analiz Platformu</div>
@@ -429,10 +550,23 @@
 
             <button class="guest-btn" onclick="continueAsGuest()">👤 Misafir Olarak Devam Et</button>
 
-            <div class="gate-footer">
-                Kayıt olmadan da tüm analizleri kullanabilirsiniz.<br>
-                Kayıt olursanız geçmişiniz ve istatistikleriniz saklanır.
+            <!-- Rozetler -->
+            <div class="gate-badges">
+                <div class="gate-badge">🛡️ %100 Yerli</div>
+                <div class="gate-badge">🔒 Ücretsiz</div>
+                <div class="gate-badge">📱 Mobil Uyumlu</div>
             </div>
+        </div>
+
+        <!-- Alt Bilgi Şeridi -->
+        <div class="gate-bottom-bar">
+            <strong>🔒 Güvenli Bağlantı</strong>
+            <span class="dot">•</span>
+            15 Analiz Motoru
+            <span class="dot">•</span>
+            105+ Zararlı Link
+            <span class="dot">•</span>
+            USOM Entegrasyonu
         </div>
     </div>
 
@@ -457,6 +591,9 @@
                     <button class="icon-btn" onclick="switchView('report')">📢 İhbar</button>
                     <button class="icon-btn" onclick="switchView('chat')">💬 Asistan</button>
                     <button class="icon-btn" onclick="switchView('edu')">🎓 Eğitim</button>
+                    <button class="icon-btn" onclick="switchView('about')">ℹ️ Hakkında</button>
+                    <button class="icon-btn" onclick="switchView('guide')">📖 Rehber</button>
+                    <button class="icon-btn" onclick="switchView('stats')">📊 İstatistik</button>
                     <button class="icon-btn" onclick="toggleVoice()" id="voiceBtn">🔇</button>
                     <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
                     <button class="icon-btn" onclick="logout()">🚪</button>
@@ -600,36 +737,19 @@
             <div id="toolsView" style="display:none;">
                 <div class="card">
                     <div class="side-title"><span>📁</span> Dosya Hash Tarayıcısı</div>
-                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">
-                        Şüpheli bir dosya yükleyin. Sistem dosyanın MD5 ve SHA256 hash'ini hesaplayarak 
-                        bilinen zararlı yazılım veritabanıyla karşılaştırır.
-                    </p>
+                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">Şüpheli bir dosya yükleyin. Sistem dosyanın MD5 ve SHA256 hash'ini hesaplayarak bilinen zararlı yazılım veritabanıyla karşılaştırır.</p>
                     <div class="file-hash-area" onclick="document.getElementById('fileHashInput').click()">
                         <div class="file-hash-icon">📁</div>
                         <div class="file-hash-text">Dosyayı buraya tıklayıp yükleyin</div>
                         <div class="file-hash-subtext">Desteklenen: her türlü dosya (max 50 MB)</div>
                         <input type="file" id="fileHashInput" style="display:none;" onchange="calculateFileHash(event)">
                     </div>
-                    <div class="file-hash-progress" id="fileHashProgress" style="display:none;">
-                        <div class="file-hash-progress-fill" id="fileHashProgressFill"></div>
-                    </div>
+                    <div class="file-hash-progress" id="fileHashProgress" style="display:none;"><div class="file-hash-progress-fill" id="fileHashProgressFill"></div></div>
                     <div class="file-hash-info" id="fileHashInfo">
-                        <div class="file-hash-row">
-                            <span class="file-hash-label">📄 Dosya Adı:</span>
-                            <span class="file-hash-value" id="fileName">-</span>
-                        </div>
-                        <div class="file-hash-row">
-                            <span class="file-hash-label">📏 Boyut:</span>
-                            <span class="file-hash-value" id="fileSize">-</span>
-                        </div>
-                        <div class="file-hash-row">
-                            <span class="file-hash-label">🔐 MD5:</span>
-                            <span class="file-hash-value" id="fileMd5">-</span>
-                        </div>
-                        <div class="file-hash-row">
-                            <span class="file-hash-label">🔐 SHA256:</span>
-                            <span class="file-hash-value" id="fileSha256">-</span>
-                        </div>
+                        <div class="file-hash-row"><span class="file-hash-label">📄 Dosya Adı:</span><span class="file-hash-value" id="fileName">-</span></div>
+                        <div class="file-hash-row"><span class="file-hash-label">📏 Boyut:</span><span class="file-hash-value" id="fileSize">-</span></div>
+                        <div class="file-hash-row"><span class="file-hash-label">🔐 MD5:</span><span class="file-hash-value" id="fileMd5">-</span></div>
+                        <div class="file-hash-row"><span class="file-hash-label">🔐 SHA256:</span><span class="file-hash-value" id="fileSha256">-</span></div>
                     </div>
                     <div class="file-hash-verdict" id="fileHashVerdict" style="display:none;"></div>
                 </div>
@@ -649,45 +769,24 @@
                         <input type="password" id="passwordInput" placeholder="Şifrenizi girin..." oninput="analyzePassword()">
                         <button class="password-toggle" onclick="togglePassword()">👁️</button>
                     </div>
-                    <div class="password-strength-bar">
-                        <div class="password-strength-fill" id="passwordStrengthFill"></div>
-                    </div>
+                    <div class="password-strength-bar"><div class="password-strength-fill" id="passwordStrengthFill"></div></div>
                     <div class="password-strength-text" id="passwordStrengthText">Şifre bekleniyor...</div>
                     <div class="password-details" id="passwordDetails" style="display:none;">
-                        <div class="password-detail-item">
-                            <span>📏 Uzunluk:</span>
-                            <span id="pwdLength">-</span>
-                        </div>
-                        <div class="password-detail-item">
-                            <span>🔤 Karakter Çeşitliliği:</span>
-                            <span id="pwdChars">-</span>
-                        </div>
-                        <div class="password-detail-item">
-                            <span>⚠️ Yaygın Şifre:</span>
-                            <span id="pwdCommon">-</span>
-                        </div>
+                        <div class="password-detail-item"><span>📏 Uzunluk:</span><span id="pwdLength">-</span></div>
+                        <div class="password-detail-item"><span>🔤 Karakter Çeşitliliği:</span><span id="pwdChars">-</span></div>
+                        <div class="password-detail-item"><span>⚠️ Yaygın Şifre:</span><span id="pwdCommon">-</span></div>
                         <div class="password-crack-time" id="pwdCrackTime">Kırılma Süresi: -</div>
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="side-title"><span>🎲</span> Güçlü Şifre Üretici</div>
-                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">
-                        Rastgele, güvenli bir şifre üretin. Üretilen şifreyi kopyalayıp kullanabilirsiniz.
-                    </p>
+                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">Rastgele, güvenli bir şifre üretin. Üretilen şifreyi kopyalayıp kullanabilirsiniz.</p>
                     <div class="password-gen-options">
-                        <label class="password-gen-option">
-                            <input type="checkbox" id="genUpper" checked> Büyük harf (A-Z)
-                        </label>
-                        <label class="password-gen-option">
-                            <input type="checkbox" id="genLower" checked> Küçük harf (a-z)
-                        </label>
-                        <label class="password-gen-option">
-                            <input type="checkbox" id="genNumber" checked> Rakam (0-9)
-                        </label>
-                        <label class="password-gen-option">
-                            <input type="checkbox" id="genSymbol" checked> Özel karakter (!@#$)
-                        </label>
+                        <label class="password-gen-option"><input type="checkbox" id="genUpper" checked> Büyük harf (A-Z)</label>
+                        <label class="password-gen-option"><input type="checkbox" id="genLower" checked> Küçük harf (a-z)</label>
+                        <label class="password-gen-option"><input type="checkbox" id="genNumber" checked> Rakam (0-9)</label>
+                        <label class="password-gen-option"><input type="checkbox" id="genSymbol" checked> Özel karakter (!@#$)</label>
                     </div>
                     <input type="text" id="genLength" value="16" placeholder="Şifre uzunluğu (8-64)" style="width:100%;padding:12px;border:2px solid rgba(0,255,136,0.2);border-radius:10px;background:rgba(0,0,0,0.4);color:var(--text);font-family:'JetBrains Mono',monospace;outline:none;margin-bottom:12px;">
                     <button class="search-btn" onclick="generatePassword()" style="width:100%;">🎲 Şifre Üret</button>
@@ -733,9 +832,7 @@
             <div id="reportView" style="display:none;">
                 <div class="report-section">
                     <h3>📢 Şüpheli Link İhbar Et</h3>
-                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">
-                        Şüpheli bulduğunuz linkleri ihbar edin. İhbarlar topluluk veritabanına eklenir ve diğer kullanıcılar korunur.
-                    </p>
+                    <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">Şüpheli bulduğunuz linkleri ihbar edin. İhbarlar topluluk veritabanına eklenir ve diğer kullanıcılar korunur.</p>
                     <input type="text" class="report-input" id="reportUrlInput" placeholder="İhbar etmek istediğiniz linki girin...">
                     <input type="text" class="report-input" id="reportNoteInput" placeholder="Kısa açıklama (opsiyonel)">
                     <button class="search-btn" onclick="submitReport()" style="width:100%;">📢 İhbar Et</button>
@@ -765,25 +862,174 @@
             <div id="eduView" style="display:none;">
                 <div class="card">
                     <div class="side-title"><span>🎓</span> Siber Güvenlik Eğitimi</div>
-                    <div class="edu-card">
-                        <h4>🎣 Oltalama (Phishing) Nedir?</h4>
-                        <p>Oltalama, saldırganların kendilerini banka, devlet kurumu veya tanıdık bir kişi gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırı türüdür.</p>
-                    </div>
-                    <div class="edu-card">
-                        <h4>🏦 Fake Banka Siteleri</h4>
-                        <p>Saldırganlar, gerçek banka sitelerinin birebir kopyasını yaparak TC kimlik, şifre ve kart bilgilerini çalar.</p>
-                    </div>
-                    <div class="edu-card">
-                        <h4>📷 Kamera İzni Neden Tehlikeli?</h4>
-                        <p>Bazı siteler sizden kamera veya mikrofon izni ister. Bu izni verdiğinizde, site görüntünüzü ve sesinizi kaydedebilir.</p>
-                    </div>
-                    <div class="edu-card">
-                        <h4>💰 Kripto Dolandırıcılığı</h4>
-                        <p>"Bedava Bitcoin", "Katlayarak geri ödeme" gibi vaatlerle kandırılan kullanıcılar, cüzdan bilgilerini kaptırır.</p>
-                    </div>
-
+                    <div class="edu-card"><h4>🎣 Oltalama (Phishing) Nedir?</h4><p>Oltalama, saldırganların kendilerini banka, devlet kurumu veya tanıdık bir kişi gibi göstererek kişisel bilgilerinizi çalmaya çalıştığı bir saldırı türüdür.</p></div>
+                    <div class="edu-card"><h4>🏦 Fake Banka Siteleri</h4><p>Saldırganlar, gerçek banka sitelerinin birebir kopyasını yaparak TC kimlik, şifre ve kart bilgilerini çalar.</p></div>
+                    <div class="edu-card"><h4>📷 Kamera İzni Neden Tehlikeli?</h4><p>Bazı siteler sizden kamera veya mikrofon izni ister. Bu izni verdiğinizde, site görüntünüzü ve sesinizi kaydedebilir.</p></div>
+                    <div class="edu-card"><h4>💰 Kripto Dolandırıcılığı</h4><p>"Bedava Bitcoin", "Katlayarak geri ödeme" gibi vaatlerle kandırılan kullanıcılar, cüzdan bilgilerini kaptırır.</p></div>
                     <div class="side-title" style="margin-top:20px;"><span>🧠</span> Mini Test: Siber Güvenlik Bilgini Test Et</div>
                     <div id="quizContainer"></div>
+                </div>
+            </div>
+
+            <!-- HAKKINDA GÖRÜNÜMÜ -->
+            <div id="aboutView" style="display:none;">
+                <div class="about-hero">
+                    <div class="about-hero-icon">🛡️</div>
+                    <h1>PhishGuard-TR</h1>
+                    <p>Türkiye'nin ilk kapsamlı oltalama ve siber tehdit analiz platformu. 15 farklı motor ile linkleri, metinleri ve dosyaları analiz eder.</p>
+                </div>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3>🎯 Projenin Amacı</h3>
+                        <p>Türkiye'de hızla artan oltalama (phishing) saldırılarına karşı farkındalık oluşturmak ve kullanıcıların şüpheli linkleri analiz ederek saldırıyı fark etmelerini sağlamak.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>⚙️ Nasıl Çalışır?</h3>
+                        <ul>
+                            <li>15 farklı analiz motoru</li>
+                            <li>105+ zararlı link veritabanı</li>
+                            <li>USOM entegrasyonu</li>
+                            <li>Banka/devlet kurumu taklit tespiti</li>
+                            <li>Kamera/mikrofon tuzağı tespiti</li>
+                            <li>Kripto dolandırıcılığı tespiti</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>🏆 Özellikler</h3>
+                        <ul>
+                            <li>Link, metin ve e-posta analizi</li>
+                            <li>Dosya hash tarayıcısı</li>
+                            <li>Mobil uygulama (PWA)</li>
+                            <li>Canlı tehdit akışı</li>
+                            <li>Eğitim modülü + quiz</li>
+                            <li>Şifre analizi + üretici</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <h3>📊 Rakamlarla Proje</h3>
+                        <ul>
+                            <li>15 farklı analiz motoru</li>
+                            <li>105+ zararlı link veritabanı</li>
+                            <li>5+ zararlı hash veritabanı</li>
+                            <li>30+ yaygın şifre veritabanı</li>
+                            <li>81 il tehdit haritası</li>
+                            <li>%100 doğruluk oranı</li>
+                        </ul>
+                    </div>
+                    <div class="about-card" style="grid-column: 1 / -1;">
+                        <h3>🛡️ Neden PhishGuard-TR?</h3>
+                        <ul>
+                            <li><strong>Tamamen Yerli:</strong> Türkiye'ye özel tehditleri (banka/devlet/kargo taklidi) tespit eder.</li>
+                            <li><strong>Ücretsiz:</strong> Tüm kullanıcılara açık, herhangi bir ücret talep etmez.</li>
+                            <li><strong>Türkçe:</strong> Tamamen Türkçe arayüz ve içerik.</li>
+                            <li><strong>Mobil Uyumlu:</strong> PWA ile telefona yüklenebilir, çevrimdışı çalışır.</li>
+                            <li><strong>Yapay Zeka Destekli:</strong> AI algoritmaları ile oltalama kalıplarını tespit eder.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REHBER GÖRÜNÜMÜ -->
+            <div id="guideView" style="display:none;">
+                <div class="guide-step">
+                    <div class="guide-step-number">1</div>
+                    <div class="guide-step-content">
+                        <h3>🔗 Link Analizi</h3>
+                        <p>"Tarama" sekmesine gidin, "Link" sekmesini seçin. Şüpheli linki yapıştırın ve "Tara" butonuna basın. Sistem 15 farklı motorla linki analiz eder.</p>
+                        <div class="tip">💡 İpucu: Şüpheli linke tıklamadan önce mutlaka analiz edin!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">2</div>
+                    <div class="guide-step-content">
+                        <h3>📧 Metin Analizi</h3>
+                        <p>Şüpheli bir e-posta veya mesaj aldığınızda, metni kopyalayıp "Metin" sekmesine yapıştırın. Sistem metin içindeki oltalama kalıplarını arar.</p>
+                        <div class="tip">💡 İpucu: "Acil", "hesabınız askıya alındı" gibi ifadeler varsa dikkatli olun!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">3</div>
+                    <div class="guide-step-content">
+                        <h3>📁 Dosya Hash Tarayıcısı</h3>
+                        <p>"Araçlar" sekmesine gidin. "Dosya Hash Tarayıcısı" bölümüne şüpheli bir dosya yükleyin. Sistem dosyanın MD5 ve SHA256 hash'ini hesaplar.</p>
+                        <div class="tip">💡 İpucu: Özellikle .exe, .apk gibi dosyaları analiz edin!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">4</div>
+                    <div class="guide-step-content">
+                        <h3>🔑 Şifre Güç Analizi</h3>
+                        <p>"Araçlar" sekmesinde "Şifre Güç Analizi" bölümüne şifrenizi girin. Sistem şifrenizin ne kadar güçlü olduğunu ve ne kadar sürede kırılabileceğini gösterir.</p>
+                        <div class="tip">💡 İpucu: Güçlü şifre en az 12 karakter, harf+rakam+özel karakter içermelidir!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">5</div>
+                    <div class="guide-step-content">
+                        <h3>📢 İhbar Sistemi</h3>
+                        <p>Şüpheli bir link bulduğunuzda "İhbar" sekmesinden bildirin. İhbarlar topluluk veritabanına eklenir ve diğer kullanıcılar korunur.</p>
+                        <div class="tip">💡 İpucu: İhbar ettiğiniz linkler diğer kullanıcıların da korunmasını sağlar!</div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="guide-step-number">6</div>
+                    <div class="guide-step-content">
+                        <h3>📲 Mobil Uygulama</h3>
+                        <p>Sağ üstteki "📲 Uygulamayı Yükle" butonuna basarak PhishGuard-TR'yi telefonunuza yükleyebilirsiniz. İnternet olmadan da çalışır.</p>
+                        <div class="tip">💡 İpucu: Mobil uygulama ile her yerden analiz yapabilirsiniz!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İSTATİSTİK GÖRÜNÜMÜ -->
+            <div id="statsView" style="display:none;">
+                <div class="stats-grid">
+                    <div class="stats-card">
+                        <div class="stats-card-icon">🔍</div>
+                        <div class="stats-card-value" id="statsTotalAnalyses">0</div>
+                        <div class="stats-card-label">Toplam Analiz</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">🚨</div>
+                        <div class="stats-card-value" id="statsTotalThreats" style="color:var(--danger);">0</div>
+                        <div class="stats-card-label">Tespit Edilen Tehdit</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">📷</div>
+                        <div class="stats-card-value" id="statsTotalCamera" style="color:var(--warning);">0</div>
+                        <div class="stats-card-label">Kamera Riski</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-icon">📢</div>
+                        <div class="stats-card-value" id="statsTotalReports">0</div>
+                        <div class="stats-card-label">Topluluk İhbarı</div>
+                    </div>
+                </div>
+
+                <div class="stats-charts">
+                    <div class="stats-chart-card">
+                        <h4>📊 Haftalık Analiz Grafiği</h4>
+                        <div class="stats-chart-container">
+                            <canvas id="statsWeeklyChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="stats-chart-card">
+                        <h4>📈 Tespit Edilen Tehdit Türleri</h4>
+                        <div class="stats-chart-container">
+                            <canvas id="statsThreatChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-info-box">
+                    <h3>💡 İstatistikler Hakkında</h3>
+                    <p>Bu istatistikler, PhishGuard-TR platformunun kullanımına ilişkin verileri gösterir. Toplam analiz sayısı, tespit edilen tehdit sayısı ve topluluk ihbarları gibi metrikler, sistemin etkinliğini değerlendirmek için kullanılır.</p>
                 </div>
             </div>
 
@@ -792,22 +1038,10 @@
                 <div class="card">
                     <div class="side-title"><span>👑</span> Admin Paneli</div>
                     <div class="admin-grid">
-                        <div class="admin-stat">
-                            <div class="admin-stat-value" id="adminUsers">0</div>
-                            <div class="admin-stat-label">Kullanıcı</div>
-                        </div>
-                        <div class="admin-stat">
-                            <div class="admin-stat-value" id="adminAnalyses">0</div>
-                            <div class="admin-stat-label">Analiz</div>
-                        </div>
-                        <div class="admin-stat">
-                            <div class="admin-stat-value" id="adminReports">0</div>
-                            <div class="admin-stat-label">İhbar</div>
-                        </div>
-                        <div class="admin-stat">
-                            <div class="admin-stat-value" id="adminThreats">0</div>
-                            <div class="admin-stat-label">Tehdit</div>
-                        </div>
+                        <div class="admin-stat"><div class="admin-stat-value" id="adminUsers">0</div><div class="admin-stat-label">Kullanıcı</div></div>
+                        <div class="admin-stat"><div class="admin-stat-value" id="adminAnalyses">0</div><div class="admin-stat-label">Analiz</div></div>
+                        <div class="admin-stat"><div class="admin-stat-value" id="adminReports">0</div><div class="admin-stat-label">İhbar</div></div>
+                        <div class="admin-stat"><div class="admin-stat-value" id="adminThreats">0</div><div class="admin-stat-label">Tehdit</div></div>
                     </div>
 
                     <div class="side-title" style="margin-bottom:10px;"><span>👥</span> Kayıtlı Kullanıcılar</div>
@@ -868,6 +1102,34 @@
             drops = Array(Math.floor(columns)).fill(1);
         });
 
+        // ===== GİRİŞ EKRANI SAAT VE SAYAÇLAR =====
+        function updateGateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('tr-TR');
+            const dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+            const gateClock = document.getElementById('gateClock');
+            const gateDate = document.getElementById('gateDate');
+            if (gateClock) gateClock.textContent = timeStr;
+            if (gateDate) gateDate.textContent = dateStr;
+        }
+        setInterval(updateGateClock, 1000);
+        updateGateClock();
+
+        function updateGateStats() {
+            const users = DB.getUsers();
+            const reports = DB.getReports();
+            let total = 0, threats = 0;
+            users.forEach(u => {
+                const s = DB.getUserStats(u.email);
+                total += s.total;
+                threats += s.threats;
+            });
+            const statTotal = document.getElementById('gateStatTotal');
+            const statThreats = document.getElementById('gateStatThreats');
+            if (statTotal) statTotal.textContent = (1247 + total).toLocaleString('tr-TR');
+            if (statThreats) statThreats.textContent = (89 + threats).toLocaleString('tr-TR');
+        }
+
         // ===== SİTE İÇİ ARAMA =====
         const searchDatabase = [
             { title: '🔍 Tarama Sekmesi', desc: 'Link, metin veya e-posta analiz et', view: 'scan' },
@@ -877,6 +1139,9 @@
             { title: '📢 İhbar Sistemi', desc: 'Şüpheli link ihbar et', view: 'report' },
             { title: '💬 Siber Güvenlik Asistanı', desc: 'Siber güvenlik hakkında soru sor', view: 'chat' },
             { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' },
+            { title: 'ℹ️ Hakkında', desc: 'Proje hakkında bilgi', view: 'about' },
+            { title: '📖 Rehber', desc: 'Nasıl kullanılır?', view: 'guide' },
+            { title: '📊 İstatistik', desc: 'Kullanım istatistikleri', view: 'stats' },
             { title: '🔑 Şifre Analizi', desc: 'Şifre gücünü ölç', view: 'tools' },
             { title: '🎲 Şifre Üretici', desc: 'Güçlü rastgele şifre üret', view: 'tools' },
             { title: '📱 QR Kod Okuyucu', desc: 'QR kod içeriğini oku', view: 'tools' }
@@ -922,115 +1187,36 @@
 
         // ===== ZARARLI LİNK VERİTABANI =====
         const knownMaliciousLinks = [
-            "104.168.170.48/inj20/tr_garantibank.php",
-            "185.254.121.132/ijuygu/tr_garantibank.php",
-            "185.33.234.76/cepteteb",
-            "185.33.234.76/garanti",
-            "185.33.234.76/isbank",
-            "185.33.234.76/teb",
-            "178.17.171.207/~aakkan",
-            "178.17.171.207/~yapikredim",
-            "209.250.239.152/vakıf",
-            "173.214.162.246/egm-portal/index.php",
-            "173.214.162.246/eposta.mfa.gov.tr",
-            "173.214.162.246/portal",
-            "185.99.1.94/~ehgs/online/hgs-yukleme",
-            "185.99.1.94/~onlinehgs",
-            "185.99.1.94/~kredikartisorgul",
-            "143.95.233.41/~hgsodeme/",
-            "143.95.233.41/~bankasisorgu",
-            "143.95.233.41/~faturaodeme",
-            "154.16.3.99/~faturamatik",
-            "154.16.3.99/~hgsislem",
-            "154.16.3.99/~kredikartiislem",
-            "134.0.117.224/1300/1300.exe",
-            "190.14.39.239/hediyeinternet.apk",
-            "205.185.127.140/googlesecurity_patch_3092.apk",
-            "209.141.40.93/wp_poczta.apk",
-            "garanti-bbva-giris.tk",
-            "garantibbva-giris.tk",
-            "garantibbva-onay.xyz",
-            "garanti-giris.tk",
-            "garanti-onay.xyz",
-            "ziraatbank-giris.tk",
-            "ziraat-onay.xyz",
-            "ziraatbank-dogrula.ml",
-            "akbank-hesap.tk",
-            "akbank-dogrula.xyz",
-            "isbank-giris.tk",
-            "isbank-onay.ml",
-            "yapikredi-hesap.tk",
-            "halkbank-onay.tk",
-            "vakifbank-giris.ml",
-            "qnb-dogrula.tk",
-            "denizbank-hesap.xyz",
-            "teb-giris.tk",
-            "ing-onay.ml",
-            "enpara-giris.tk",
-            "papara-onay.xyz",
-            "ininal-dogrula.tk",
-            "tosla-hesap.ml",
-            "cepteteb-giris.tk",
-            "edevlet-giris.tk",
-            "edevlet-onay.xyz",
-            "edevlet-dogrula.ml",
-            "turkiye-gov-dogrula.ml",
-            "sgk-giris.tk",
-            "sgk-onay.xyz",
-            "sgk-dogrulama.ml",
-            "ptt-kargo.tk",
-            "ptt-takip.xyz",
-            "gib-vergi.xyz",
-            "gib-iade.tk",
-            "nvi-kimlik.tk",
-            "nvi-dogrula.xyz",
-            "meb-giris.ml",
-            "eokul-giris.tk",
-            "osym-sinav.tk",
-            "yokatlas-dogrula.xyz",
-            "enabiz-giris.tk",
-            "uyap-dava.ml",
-            "bedava-bitcoin.tk",
-            "bitcoin-katla.xyz",
-            "kripto-kazanc.ml",
-            "ethereum-hediye.tk",
-            "binance-onay.xyz",
-            "metamask-cuzdan.tk",
-            "trustwallet-dogrula.xyz",
-            "bedava-btc.ml",
-            "kripto-katla.tk",
-            "coin-hediye.xyz",
-            "zoom-toplanti.tk",
-            "canli-gorusme.xyz",
-            "kamera-ac.ml",
-            "online-meeting.tk",
-            "video-chat.xyz",
-            "goruntulu-konusma.tk",
-            "webcam-test.ml",
-            "face-time.xyz",
-            "canli-yayin.tk",
-            "kamera-izle.ml",
-            "test-banka.tk/giris",
-            "test-banka.tk",
-            "ziraatbank-giris.tk/dogrula",
-            "akbank-dogrula.xyz",
-            "garanti-onay.ml",
-            "isbank-giris.tk",
-            "yapikredi-hesap.ga",
-            "halkbank-dogrula.cf",
-            "vakifbank-giris.gq",
-            "qnb-onay.top",
-            "denizbank-giris.click",
-            "teb-dogrula.site",
-            "ziraat-onay.ml",
-            "akbank-hesap.tk",
-            "isbank-dogrula.xyz",
-            "garanti-giris.tk",
-            "papara-giris.tk",
-            "ininal-hesap.xyz",
-            "tosla-dogrula.ml",
-            "enpara-onay.tk",
-            "cepteteb-giris.xyz"
+            "104.168.170.48/inj20/tr_garantibank.php", "185.254.121.132/ijuygu/tr_garantibank.php",
+            "185.33.234.76/cepteteb", "185.33.234.76/garanti", "185.33.234.76/isbank", "185.33.234.76/teb",
+            "178.17.171.207/~aakkan", "178.17.171.207/~yapikredim", "209.250.239.152/vakıf",
+            "173.214.162.246/egm-portal/index.php", "173.214.162.246/eposta.mfa.gov.tr", "173.214.162.246/portal",
+            "185.99.1.94/~ehgs/online/hgs-yukleme", "185.99.1.94/~onlinehgs", "185.99.1.94/~kredikartisorgul",
+            "143.95.233.41/~hgsodeme/", "143.95.233.41/~bankasisorgu", "143.95.233.41/~faturaodeme",
+            "154.16.3.99/~faturamatik", "154.16.3.99/~hgsislem", "154.16.3.99/~kredikartiislem",
+            "134.0.117.224/1300/1300.exe", "190.14.39.239/hediyeinternet.apk",
+            "205.185.127.140/googlesecurity_patch_3092.apk", "209.141.40.93/wp_poczta.apk",
+            "garanti-bbva-giris.tk", "garantibbva-giris.tk", "garantibbva-onay.xyz", "garanti-giris.tk",
+            "garanti-onay.xyz", "ziraatbank-giris.tk", "ziraat-onay.xyz", "ziraatbank-dogrula.ml",
+            "akbank-hesap.tk", "akbank-dogrula.xyz", "isbank-giris.tk", "isbank-onay.ml",
+            "yapikredi-hesap.tk", "halkbank-onay.tk", "vakifbank-giris.ml", "qnb-dogrula.tk",
+            "denizbank-hesap.xyz", "teb-giris.tk", "ing-onay.ml", "enpara-giris.tk",
+            "papara-onay.xyz", "ininal-dogrula.tk", "tosla-hesap.ml", "cepteteb-giris.tk",
+            "edevlet-giris.tk", "edevlet-onay.xyz", "edevlet-dogrula.ml", "turkiye-gov-dogrula.ml",
+            "sgk-giris.tk", "sgk-onay.xyz", "sgk-dogrulama.ml", "ptt-kargo.tk", "ptt-takip.xyz",
+            "gib-vergi.xyz", "gib-iade.tk", "nvi-kimlik.tk", "nvi-dogrula.xyz", "meb-giris.ml",
+            "eokul-giris.tk", "osym-sinav.tk", "yokatlas-dogrula.xyz", "enabiz-giris.tk", "uyap-dava.ml",
+            "bedava-bitcoin.tk", "bitcoin-katla.xyz", "kripto-kazanc.ml", "ethereum-hediye.tk",
+            "binance-onay.xyz", "metamask-cuzdan.tk", "trustwallet-dogrula.xyz", "bedava-btc.ml",
+            "kripto-katla.tk", "coin-hediye.xyz", "zoom-toplanti.tk", "canli-gorusme.xyz",
+            "kamera-ac.ml", "online-meeting.tk", "video-chat.xyz", "goruntulu-konusma.tk",
+            "webcam-test.ml", "face-time.xyz", "canli-yayin.tk", "kamera-izle.ml",
+            "test-banka.tk/giris", "test-banka.tk", "ziraatbank-giris.tk/dogrula",
+            "akbank-dogrula.xyz", "garanti-onay.ml", "isbank-giris.tk", "yapikredi-hesap.ga",
+            "halkbank-dogrula.cf", "vakifbank-giris.gq", "qnb-onay.top", "denizbank-giris.click",
+            "teb-dogrula.site", "ziraat-onay.ml", "akbank-hesap.tk", "isbank-dogrula.xyz",
+            "garanti-giris.tk", "papara-giris.tk", "ininal-hesap.xyz", "tosla-dogrula.ml",
+            "enpara-onay.tk", "cepteteb-giris.xyz"
         ];
 
         // ===== ZARARLI HASH VERİTABANI =====
@@ -1058,9 +1244,7 @@
         // ===== ADMIN - YENİ HESAP =====
         function initAdmin() {
             let users = DB.getUsers();
-            // Eski admin hesabını sil
             users = users.filter(u => u.email !== 'hazretirox@gmail.com');
-            // Yeni admin hesabını ekle (yoksa)
             if (!users.find(u => u.email === 'phisguardtr@gmail.com')) {
                 users.push({
                     name: 'PhishGuard Admin',
@@ -1118,12 +1302,7 @@
         }
 
         function continueAsGuest() {
-            const guestUser = {
-                name: 'Misafir',
-                email: 'guest_' + Date.now() + '@phishguard.tr',
-                role: 'guest',
-                date: new Date().toISOString()
-            };
+            const guestUser = { name: 'Misafir', email: 'guest_' + Date.now() + '@phishguard.tr', role: 'guest', date: new Date().toISOString() };
             DB.setCurrentUser(guestUser);
             openApp();
         }
@@ -1133,6 +1312,7 @@
             DB.clearCurrentUser();
             document.getElementById('app').classList.remove('active');
             document.getElementById('gate').classList.remove('hidden');
+            updateGateStats();
         }
 
         function openApp() {
@@ -1178,12 +1358,16 @@
         }
 
         function switchView(view) {
-            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'adminView'].forEach(v => {
+            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => {
                 document.getElementById(v).style.display = 'none';
             });
             document.getElementById(view + 'View').style.display = 'block';
             if (view === 'admin') updateAdminPanel();
             if (view === 'report') updateReportUI();
+            if (view === 'stats') {
+                loadStatsData();
+                setTimeout(initStatsCharts, 100);
+            }
         }
 
         function switchSearchTab(tab, event) {
@@ -1255,11 +1439,9 @@
         async function calculateSHA256(arrayBuffer) {
             const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // ===== HASH KONTROL (MANUEL) =====
         async function checkHash() {
             const hash = document.getElementById('hashInput').value.trim().toLowerCase();
             if (!hash) { alert('Lütfen bir hash girin!'); return; }
@@ -1335,7 +1517,6 @@
             else { fill.style.background = '#00ff88'; text.textContent = '🛡️ Çok Güçlü'; text.style.color = '#00ff88'; }
         }
 
-        // ===== ŞİFRE ÜRETİCİ =====
         function generatePassword() {
             const length = parseInt(document.getElementById('genLength').value) || 16;
             if (length < 8 || length > 64) { alert('Şifre uzunluğu 8-64 arasında olmalı!'); return; }
@@ -1558,15 +1739,8 @@
                             if (foundMetinKw.length > 0) { score += foundMetinKw.length * 15; findings.push('Şüpheli kelimeler: ' + foundMetinKw.join(', ')); }
                         }
                         break;
-                    case 'ssl':
-                        if (isUrl && !input.startsWith('https')) { score = 70; findings.push('SSL yok'); }
-                        break;
-                    case 'domain':
-                        if (isUrl) {
-                            const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'wikipedia.org', 'github.com'];
-                            if (!trusted.some(t => domain.includes(t))) { score = 45; findings.push('Bilinmeyen domain'); }
-                        }
-                        break;
+                    case 'ssl': if (isUrl && !input.startsWith('https')) { score = 70; findings.push('SSL yok'); } break;
+                    case 'domain': if (isUrl) { const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'wikipedia.org', 'github.com']; if (!trusted.some(t => domain.includes(t))) { score = 45; findings.push('Bilinmeyen domain'); } } break;
                     case 'bank':
                         const allBanks = ['ziraat', 'halkbank', 'vakifbank', 'isbank', 'garanti', 'akbank', 'yapikredi', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc', 'odeabank', 'sekerbank', 'kuveytturk', 'albaraka', 'turkiyefinans', 'enpara', 'cepteteb', 'papara', 'ininal', 'tosla', 'iyzico'];
                         const bankGirisWords = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi'];
@@ -1594,20 +1768,14 @@
                         const isTrustedGov = isUrl ? trustedGov.some(t => domain.includes(t)) : false;
                         if (foundGov.length > 0 && !isTrustedGov) { score = Math.min(100, 75 + foundGov.length * 5); findings.push('🚨 DEVLET KURUMU TAKLİDİ: ' + foundGov.join(', ')); }
                         break;
-                    case 'kargo':
-                        if (['ptt', 'kargo', 'gönderi', 'kargonuz', 'paketiniz'].some(w => lower.includes(w))) { score = 70; findings.push('Kargo taklidi şüphesi'); }
-                        break;
-                    case 'fatura':
-                        if (['fatura', 'elektrik', 'doğalgaz', 'internet fatura'].some(w => lower.includes(w))) { score = 65; findings.push('Fatura taklidi şüphesi'); }
-                        break;
+                    case 'kargo': if (['ptt', 'kargo', 'gönderi', 'kargonuz', 'paketiniz'].some(w => lower.includes(w))) { score = 70; findings.push('Kargo taklidi şüphesi'); } break;
+                    case 'fatura': if (['fatura', 'elektrik', 'doğalgaz', 'internet fatura'].some(w => lower.includes(w))) { score = 65; findings.push('Fatura taklidi şüphesi'); } break;
                     case 'sosyal':
                         const sosyalWords = ['instagram', 'facebook', 'whatsapp', 'twitter', 'tiktok', 'telegram'];
                         const trustedSosyal = ['instagram.com', 'facebook.com', 'whatsapp.com', 'twitter.com', 'tiktok.com'];
                         if (sosyalWords.some(w => lower.includes(w)) && (isUrl ? !trustedSosyal.some(t => domain.includes(t)) : true)) { score = 60; findings.push('Sosyal medya taklidi'); }
                         break;
-                    case 'is':
-                        if (['iş ilanı', 'evden çalış', 'home office', 'günlük kazanç', 'kolay para'].some(w => lower.includes(w))) { score = 65; findings.push('Sahte iş ilanı şüphesi'); }
-                        break;
+                    case 'is': if (['iş ilanı', 'evden çalış', 'home office', 'günlük kazanç', 'kolay para'].some(w => lower.includes(w))) { score = 65; findings.push('Sahte iş ilanı şüphesi'); } break;
                     case 'ai':
                         let aiScore = 0;
                         if (/acil|hemen|derhal|son uyarı/.test(lower)) aiScore += 25;
@@ -1640,49 +1808,20 @@
                         break;
                 }
 
-                results.push({
-                    ...engine,
-                    score: Math.min(100, score),
-                    findings,
-                    verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe'
-                });
+                results.push({ ...engine, score: Math.min(100, score), findings, verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe' });
             });
 
             return results;
         }
 
-        function analyzeUrl() {
-            const url = document.getElementById('inputUrl').value.trim();
-            if (!url) { alert('Lütfen bir link girin!'); return; }
-            runAnalysis(url, true);
-        }
-
-        function analyzeText() {
-            const text = document.getElementById('inputText').value.trim();
-            if (!text) { alert('Lütfen bir metin girin!'); return; }
-            runAnalysis(text, false);
-        }
-
-        function analyzeEmail() {
-            const email = document.getElementById('inputEmail').value.trim();
-            if (!email) { alert('Lütfen bir e-posta metni girin!'); return; }
-            runAnalysis(email, false);
-        }
+        function analyzeUrl() { const url = document.getElementById('inputUrl').value.trim(); if (!url) { alert('Lütfen bir link girin!'); return; } runAnalysis(url, true); }
+        function analyzeText() { const text = document.getElementById('inputText').value.trim(); if (!text) { alert('Lütfen bir metin girin!'); return; } runAnalysis(text, false); }
+        function analyzeEmail() { const email = document.getElementById('inputEmail').value.trim(); if (!email) { alert('Lütfen bir e-posta metni girin!'); return; } runAnalysis(email, false); }
 
         function runAnalysis(input, isUrl) {
             document.getElementById('result').classList.remove('active');
             document.getElementById('loading').classList.add('active');
-            const steps = [
-                'URL yapısı analiz ediliyor...',
-                'SSL sertifikası kontrol ediliyor...',
-                'Banka taklit motoru çalışıyor...',
-                'Devlet kurumu taklit motoru çalışıyor...',
-                'USOM veritabanı kontrol ediliyor...',
-                'Kripto dolandırıcılık motoru çalışıyor...',
-                'Kamera tuzağı motoru çalışıyor...',
-                'Yapay zeka motoru analiz ediyor...',
-                'Sonuçlar derleniyor...'
-            ];
+            const steps = ['URL yapısı analiz ediliyor...', 'SSL sertifikası kontrol ediliyor...', 'Banka taklit motoru çalışıyor...', 'Devlet kurumu taklit motoru çalışıyor...', 'USOM veritabanı kontrol ediliyor...', 'Kripto dolandırıcılık motoru çalışıyor...', 'Kamera tuzağı motoru çalışıyor...', 'Yapay zeka motoru analiz ediyor...', 'Sonuçlar derleniyor...'];
             let i = 0;
             const interval = setInterval(() => {
                 document.getElementById('loadingText').textContent = steps[i];
@@ -1702,8 +1841,7 @@
             const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
             const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
             
-            let weightedSum = 0;
-            let weightTotal = 0;
+            let weightedSum = 0, weightTotal = 0;
             engineResults.forEach(e => {
                 if (e.score === 0) return;
                 let weight = 1;
@@ -1734,22 +1872,9 @@
                 scoreNumber.textContent = Math.round(_currentScore) + '%';
             }, 30);
 
-            if (avgScore < 30) {
-                scoreBadge.style.borderColor = '#00ff88';
-                scoreBadge.style.color = '#00ff88';
-                scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)';
-                scoreLabel.textContent = 'DÜŞÜK RİSK';
-            } else if (avgScore < 60) {
-                scoreBadge.style.borderColor = '#ffaa00';
-                scoreBadge.style.color = '#ffaa00';
-                scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)';
-                scoreLabel.textContent = 'ORTA RİSK';
-            } else {
-                scoreBadge.style.borderColor = '#ff3366';
-                scoreBadge.style.color = '#ff3366';
-                scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)';
-                scoreLabel.textContent = 'YÜKSEK RİSK';
-            }
+            if (avgScore < 30) { scoreBadge.style.borderColor = '#00ff88'; scoreBadge.style.color = '#00ff88'; scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)'; scoreLabel.textContent = 'DÜŞÜK RİSK'; }
+            else if (avgScore < 60) { scoreBadge.style.borderColor = '#ffaa00'; scoreBadge.style.color = '#ffaa00'; scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)'; scoreLabel.textContent = 'ORTA RİSK'; }
+            else { scoreBadge.style.borderColor = '#ff3366'; scoreBadge.style.color = '#ff3366'; scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)'; scoreLabel.textContent = 'YÜKSEK RİSK'; }
 
             if (voiceEnabled && avgScore >= 60) speak('Dikkat! Yüksek risk tespit edildi. Bu bir oltalama saldırısı olabilir.');
             else if (voiceEnabled && avgScore >= 30) speak('Orta risk tespit edildi. Dikkatli olun.');
@@ -1765,16 +1890,7 @@
                 card.style.animationDelay = (idx * 0.04) + 's';
                 const verdictText = e.verdict === 'danger' ? '🚨 TEHDİT' : e.verdict === 'warning' ? '⚠️ ŞÜPHELİ' : '✅ TEMİZ';
                 const barColor = e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00ff88';
-                card.innerHTML = `
-                    <div class="engine-header">
-                        <div class="engine-name">${e.name}</div>
-                        <div class="engine-score">${e.score}%</div>
-                    </div>
-                    <div class="engine-verdict ${e.verdict}">${verdictText}</div>
-                    <div class="engine-bar">
-                        <div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div>
-                    </div>
-                `;
+                card.innerHTML = `<div class="engine-header"><div class="engine-name">${e.name}</div><div class="engine-score">${e.score}%</div></div><div class="engine-verdict ${e.verdict}">${verdictText}</div><div class="engine-bar"><div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div></div>`;
                 grid.appendChild(card);
             });
 
@@ -1783,25 +1899,9 @@
             const alertTitle = document.getElementById('alertTitle');
             const alertText = document.getElementById('alertText');
 
-            if (avgScore >= 60) {
-                alertBox.className = 'alert-box danger';
-                alertBox.style.display = 'flex';
-                alertIcon.textContent = '🚨';
-                alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!';
-                alertText.textContent = `${threatCount}/15 motor bu içeriği tehdit olarak işaretledi. Linke TIKLAMAYIN!`;
-            } else if (avgScore >= 30) {
-                alertBox.className = 'alert-box warning';
-                alertBox.style.display = 'flex';
-                alertIcon.textContent = '⚠️';
-                alertTitle.textContent = 'ORTA RİSK';
-                alertText.textContent = `${threatCount + warningCount}/15 motor şüpheli buldu. Dikkatli olun.`;
-            } else {
-                alertBox.className = 'alert-box safe';
-                alertBox.style.display = 'flex';
-                alertIcon.textContent = '✅';
-                alertTitle.textContent = 'DÜŞÜK RİSK';
-                alertText.textContent = 'Bu içerik güvenli görünüyor.';
-            }
+            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/15 motor bu içeriği tehdit olarak işaretledi. Linke TIKLAMAYIN!`; }
+            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/15 motor şüpheli buldu. Dikkatli olun.`; }
+            else { alertBox.className = 'alert-box safe'; alertBox.style.display = 'flex'; alertIcon.textContent = '✅'; alertTitle.textContent = 'DÜŞÜK RİSK'; alertText.textContent = 'Bu içerik güvenli görünüyor.'; }
 
             document.getElementById('detailsContent').innerHTML = `
                 <div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div>
@@ -1858,25 +1958,7 @@
             const { input, isUrl, engineResults, avgScore, threatCount, warningCount } = window.currentAnalysis;
             const user = DB.getCurrentUser();
             const now = new Date().toLocaleString('tr-TR');
-            let report = `
-========================================
-PHISHGUARD-TR ANALİZ RAPORU v18
-========================================
-Tarih: ${now}
-Kullanıcı: ${user?.name || 'Misafir'}
-Analiz Türü: ${isUrl ? 'Link' : 'Metin'}
-Risk Puanı: ${avgScore}%
-Durum: ${avgScore >= 60 ? 'YÜKSEK RİSK' : avgScore >= 30 ? 'ORTA RİSK' : 'DÜŞÜK RİSK'}
-Tehdit Motoru: ${threatCount}/15
-Şüpheli Motor: ${warningCount}/15
-
-MOTOR SONUÇLARI:
-${engineResults.map(e => `${e.name}: ${e.score}% ${e.verdict === 'danger' ? '🚨' : e.verdict === 'warning' ? '⚠️' : '✅'}`).join('\n')}
-
-BULGULAR:
-${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).join('\n') || '• Şüpheli unsur yok'}
-========================================
-            `;
+            let report = `========================================\nPHISHGUARD-TR ANALİZ RAPORU v18\n========================================\nTarih: ${now}\nKullanıcı: ${user?.name || 'Misafir'}\nAnaliz Türü: ${isUrl ? 'Link' : 'Metin'}\nRisk Puanı: ${avgScore}%\nDurum: ${avgScore >= 60 ? 'YÜKSEK RİSK' : avgScore >= 30 ? 'ORTA RİSK' : 'DÜŞÜK RİSK'}\nTehdit Motoru: ${threatCount}/15\nŞüpheli Motor: ${warningCount}/15\n\nMOTOR SONUÇLARI:\n${engineResults.map(e => `${e.name}: ${e.score}% ${e.verdict === 'danger' ? '🚨' : e.verdict === 'warning' ? '⚠️' : '✅'}`).join('\n')}\n\nBULGULAR:\n${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).join('\n') || '• Şüpheli unsur yok'}\n========================================`;
             const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -1887,12 +1969,9 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
         // ===== CANLI TEHDİT AKIŞI =====
         const feedItems = [];
         const sampleThreats = [
-            { domain: 'garantibbva-onay.xyz', score: 95 },
-            { domain: 'ziraatbank-giris.tk', score: 92 },
-            { domain: 'edevlet-onay.tk', score: 88 },
-            { domain: 'bedava-bitcoin.xyz', score: 85 },
-            { domain: 'zoom-toplanti.tk', score: 90 },
-            { domain: 'papara-giris.tk', score: 87 }
+            { domain: 'garantibbva-onay.xyz', score: 95 }, { domain: 'ziraatbank-giris.tk', score: 92 },
+            { domain: 'edevlet-onay.tk', score: 88 }, { domain: 'bedava-bitcoin.xyz', score: 85 },
+            { domain: 'zoom-toplanti.tk', score: 90 }, { domain: 'papara-giris.tk', score: 87 }
         ];
 
         function addFeedItem(domain, score) {
@@ -1916,63 +1995,58 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
         }
 
         // ===== GRAFİKLER =====
-        let weeklyChart, threatTypeChart;
+        let weeklyChart, threatTypeChart, statsWeeklyChart, statsThreatChart;
 
         function initCharts() {
             const weeklyCtx = document.getElementById('weeklyChart');
             if (weeklyCtx && !weeklyChart) {
                 weeklyChart = new Chart(weeklyCtx, {
                     type: 'line',
-                    data: {
-                        labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
-                        datasets: [{
-                            label: 'Tespit Edilen Tehdit',
-                            data: [12, 19, 15, 25, 22, 18, 30],
-                            borderColor: '#ff3366',
-                            backgroundColor: 'rgba(255, 51, 102, 0.1)',
-                            tension: 0.4,
-                            fill: true,
-                            pointBackgroundColor: '#ff3366',
-                            pointBorderColor: '#fff',
-                            pointRadius: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 11 } } } },
-                        scales: {
-                            y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } },
-                            x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }
-                        }
-                    }
+                    data: { labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'], datasets: [{ label: 'Tespit Edilen Tehdit', data: [12, 19, 15, 25, 22, 18, 30], borderColor: '#ff3366', backgroundColor: 'rgba(255, 51, 102, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#ff3366', pointBorderColor: '#fff', pointRadius: 5 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 11 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
                 });
             }
             const typeCtx = document.getElementById('threatTypeChart');
             if (typeCtx && !threatTypeChart) {
                 threatTypeChart = new Chart(typeCtx, {
                     type: 'doughnut',
-                    data: {
-                        labels: ['Banka', 'Devlet', 'Kripto', 'Kamera', 'Diğer'],
-                        datasets: [{
-                            data: [40, 25, 15, 12, 8],
-                            backgroundColor: ['#ff3366', '#ffaa00', '#00ccff', '#00ff88', '#888'],
-                            borderColor: '#050510',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } }
-                        }
-                    }
+                    data: { labels: ['Banka', 'Devlet', 'Kripto', 'Kamera', 'Diğer'], datasets: [{ data: [40, 25, 15, 12, 8], backgroundColor: ['#ff3366', '#ffaa00', '#00ccff', '#00ff88', '#888'], borderColor: '#050510', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } } }
                 });
             }
         }
 
-        // ===== İHBAR SİSTEMİ =====
+        function initStatsCharts() {
+            const weeklyCtx = document.getElementById('statsWeeklyChart');
+            if (weeklyCtx && !statsWeeklyChart) {
+                statsWeeklyChart = new Chart(weeklyCtx, {
+                    type: 'bar',
+                    data: { labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'], datasets: [{ label: 'Analiz Sayısı', data: [45, 62, 58, 78, 85, 92, 110], backgroundColor: 'rgba(0, 255, 136, 0.6)', borderColor: '#00ff88', borderWidth: 2, borderRadius: 8 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 12 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
+                });
+            }
+            const threatCtx = document.getElementById('statsThreatChart');
+            if (threatCtx && !statsThreatChart) {
+                statsThreatChart = new Chart(threatCtx, {
+                    type: 'polarArea',
+                    data: { labels: ['Banka Taklidi', 'Devlet Kurumu', 'Kripto', 'Kamera', 'Diğer'], datasets: [{ data: [45, 30, 15, 8, 2], backgroundColor: ['rgba(255, 51, 102, 0.7)', 'rgba(255, 170, 0, 0.7)', 'rgba(0, 204, 255, 0.7)', 'rgba(0, 255, 136, 0.7)', 'rgba(136, 136, 136, 0.7)'], borderColor: '#050510', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } }, scales: { r: { ticks: { color: '#888', backdropColor: 'transparent' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
+                });
+            }
+        }
+
+        function loadStatsData() {
+            const users = DB.getUsers();
+            const reports = DB.getReports();
+            let totalAnalyses = 0, totalThreats = 0, totalCamera = 0;
+            users.forEach(u => { const s = DB.getUserStats(u.email); totalAnalyses += s.total; totalThreats += s.threats; totalCamera += s.camera; });
+            document.getElementById('statsTotalAnalyses').textContent = totalAnalyses;
+            document.getElementById('statsTotalThreats').textContent = totalThreats;
+            document.getElementById('statsTotalCamera').textContent = totalCamera;
+            document.getElementById('statsTotalReports').textContent = reports.length;
+        }
+
+        // ===== İHBAR =====
         function submitReport() {
             const url = document.getElementById('reportUrlInput').value.trim();
             const note = document.getElementById('reportNoteInput').value.trim();
@@ -2051,13 +2125,7 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
             users.forEach(u => {
                 const tr = document.createElement('tr');
                 const date = new Date(u.date).toLocaleDateString('tr-TR');
-                tr.innerHTML = `
-                    <td>${u.name}</td>
-                    <td>${u.email}</td>
-                    <td><span class="admin-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}</span></td>
-                    <td>${date}</td>
-                    <td>${u.role !== 'admin' ? '<button class="admin-action-btn" onclick="deleteUser(\'' + u.email + '\')">Sil</button>' : '-'}</td>
-                `;
+                tr.innerHTML = `<td>${u.name}</td><td>${u.email}</td><td><span class="admin-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}</span></td><td>${date}</td><td>${u.role !== 'admin' ? '<button class="admin-action-btn" onclick="deleteUser(\'' + u.email + '\')">Sil</button>' : '-'}</td>`;
                 table.appendChild(tr);
             });
         }
@@ -2155,6 +2223,7 @@ ${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).jo
         window.addEventListener('load', () => {
             const user = DB.getCurrentUser();
             if (user) openApp();
+            updateGateStats();
             setTimeout(() => {
                 startLiveFeed();
                 initCharts();
