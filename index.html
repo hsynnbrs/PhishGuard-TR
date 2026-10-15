@@ -15,170 +15,124 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --neon: #00ff88; --neon-dark: #00cc66; --danger: #ff3366; --warning: #ffaa00; --bg-dark: #050510; --bg-card: rgba(15, 15, 35, 0.8); --border: rgba(0, 255, 136, 0.15); --text: #e0e0e0; --text-dim: #888; }
-        body.light-mode { --bg-dark: #f0f4f8; --bg-card: rgba(255, 255, 255, 0.9); --border: rgba(0, 150, 80, 0.2); --text: #1a1a2e; --text-dim: #666; --neon: #00aa66; --neon-dark: #008844; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: background 0.4s, color 0.4s; }
-        #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.04; }
-
-        /* SİTE İÇİ ARAMA */
-        .search-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 99999; justify-content: center; align-items: flex-start; padding-top: 15vh; }
+        :root { --neon: #00ff88; --neon-dark: #00cc66; --danger: #ff3366; --warning: #ffaa00; --bg-dark: #050510; --bg-card: rgba(15, 15, 35, 0.95); --border: rgba(0, 255, 136, 0.15); --text: #e0e0e0; --text-dim: #888; }
+        body.light-mode { --bg-dark: #f0f4f8; --bg-card: rgba(255, 255, 255, 0.95); --border: rgba(0, 150, 80, 0.2); --text: #1a1a2e; --text-dim: #666; --neon: #00aa66; --neon-dark: #008844; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
+        #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.03; }
+        .search-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 99999; justify-content: center; align-items: flex-start; padding-top: 15vh; }
         .search-overlay.active { display: flex; }
-        .search-overlay-content { background: rgba(15, 15, 35, 0.98); border: 2px solid var(--neon); border-radius: 20px; padding: 25px; width: 90%; max-width: 600px; box-shadow: 0 0 60px rgba(0, 255, 136, 0.3); }
+        .search-overlay-content { background: rgba(15, 15, 35, 0.99); border: 2px solid var(--neon); border-radius: 20px; padding: 25px; width: 90%; max-width: 600px; }
         .search-overlay-content h3 { color: var(--neon); font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .search-overlay-input { width: 100%; padding: 16px 20px; border: 2px solid rgba(0, 255, 136, 0.3); border-radius: 12px; background: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; font-family: 'Inter', sans-serif; outline: none; }
         .search-overlay-input:focus { border-color: var(--neon); }
         .search-results { margin-top: 15px; max-height: 300px; overflow-y: auto; }
-        .search-result-item { padding: 12px 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.3s; border-left: 3px solid var(--neon); }
-        .search-result-item:hover { background: rgba(0, 255, 136, 0.1); transform: translateX(5px); }
+        .search-result-item { padding: 12px 15px; background: rgba(0, 0, 0, 0.3); border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; border-left: 3px solid var(--neon); }
+        .search-result-item:hover { background: rgba(0, 255, 136, 0.1); }
         .search-result-item .result-title { color: var(--text); font-size: 13px; font-weight: 600; }
         .search-result-item .result-desc { color: var(--text-dim); font-size: 11px; margin-top: 4px; }
         .search-hint { text-align: center; color: var(--text-dim); font-size: 11px; margin-top: 12px; }
 
-        /* GİRİŞ EKRANI - TAM DONANIMLI */
-        .gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 50%, #0a1a2e 0%, #050510 60%, #000000 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s, visibility 0.5s; overflow: hidden; }
+        .gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 50%, #0a1a2e 0%, #050510 60%, #000000 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.3s, visibility 0.3s; overflow: hidden; }
         .gate.hidden { opacity: 0; visibility: hidden; }
-
-        /* Sürüm bilgisi (Sol Üst) */
-        .gate-version { position: absolute; top: 20px; left: 20px; z-index: 10; padding: 8px 14px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 10px; backdrop-filter: blur(10px); color: #6a8a9a; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+        .gate-version { position: absolute; top: 20px; left: 20px; z-index: 10; padding: 8px 14px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 10px; color: #6a8a9a; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
         .gate-version span { color: #00ff88; }
-
-        /* TÜBİTAK logo (Sağ Üst) */
-        .gate-tubitak { position: absolute; top: 20px; right: 20px; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; backdrop-filter: blur(10px); transition: all 0.3s; }
-        .gate-tubitak:hover { border-color: rgba(0, 255, 136, 0.6); box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); transform: translateY(-2px); }
-        .gate-tubitak svg { display: block; filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5)); }
+        .gate-tubitak { position: absolute; top: 20px; right: 20px; z-index: 10; display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 12px; transition: border-color 0.2s; }
+        .gate-tubitak:hover { border-color: rgba(0, 255, 136, 0.6); }
+        .gate-tubitak svg { display: block; }
         .gate-tubitak-text { font-size: 10px; color: #6a8a9a; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; line-height: 1.4; }
         .gate-tubitak-text span { display: block; color: #00ff88; font-size: 12px; font-weight: 900; margin-top: 2px; }
-
-        /* Canlı sayaçlar (Sol Alt) */
         .gate-stats { position: absolute; bottom: 70px; left: 20px; z-index: 10; display: flex; gap: 10px; flex-wrap: wrap; }
-        .gate-stat-box { padding: 12px 18px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; backdrop-filter: blur(10px); text-align: center; min-width: 90px; transition: all 0.3s; }
-        .gate-stat-box:hover { border-color: rgba(0, 255, 136, 0.5); transform: translateY(-3px); }
-        .gate-stat-value { font-size: 20px; font-weight: 900; color: #00ff88; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+        .gate-stat-box { padding: 12px 18px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; text-align: center; min-width: 90px; }
+        .gate-stat-value { font-size: 20px; font-weight: 900; color: #00ff88; font-family: 'JetBrains Mono', monospace; }
         .gate-stat-label { font-size: 9px; color: #6a8a9a; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
-
-        /* Saat/Tarih (Sağ Alt) */
-        .gate-clock { position: absolute; bottom: 70px; right: 20px; z-index: 10; padding: 12px 18px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; backdrop-filter: blur(10px); text-align: right; font-family: 'JetBrains Mono', monospace; }
-        .gate-clock-time { font-size: 20px; font-weight: 900; color: #00ff88; text-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+        .gate-clock { position: absolute; bottom: 70px; right: 20px; z-index: 10; padding: 12px 18px; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; text-align: right; font-family: 'JetBrains Mono', monospace; }
+        .gate-clock-time { font-size: 20px; font-weight: 900; color: #00ff88; }
         .gate-clock-date { font-size: 10px; color: #6a8a9a; margin-top: 3px; letter-spacing: 0.5px; }
-
-        /* Alt bilgi şeridi */
-        .gate-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 15px 20px; background: rgba(0, 0, 0, 0.4); border-top: 1px solid rgba(0, 255, 136, 0.1); backdrop-filter: blur(10px); text-align: center; color: #4a5a6a; font-size: 11px; letter-spacing: 0.5px; }
+        .gate-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; padding: 15px 20px; background: rgba(0, 0, 0, 0.5); border-top: 1px solid rgba(0, 255, 136, 0.1); text-align: center; color: #4a5a6a; font-size: 11px; letter-spacing: 0.5px; }
         .gate-bottom-bar strong { color: #00ff88; }
         .gate-bottom-bar .dot { color: #6a8a9a; margin: 0 8px; }
-
-        /* Parçacıklar */
         .gate-particles { position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
-        .gate-particles span { position: absolute; width: 4px; height: 4px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88; animation: floatParticle 15s infinite linear; opacity: 0.6; }
-        .gate-particles span:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
-        .gate-particles span:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 18s; }
-        .gate-particles span:nth-child(3) { left: 40%; animation-delay: 4s; animation-duration: 15s; }
-        .gate-particles span:nth-child(4) { left: 55%; animation-delay: 1s; animation-duration: 20s; }
-        .gate-particles span:nth-child(5) { left: 70%; animation-delay: 3s; animation-duration: 14s; }
-        .gate-particles span:nth-child(6) { left: 85%; animation-delay: 5s; animation-duration: 16s; }
-        .gate-particles span:nth-child(7) { left: 15%; animation-delay: 6s; animation-duration: 22s; }
-        .gate-particles span:nth-child(8) { left: 60%; animation-delay: 7s; animation-duration: 13s; }
-        .gate-particles span:nth-child(9) { left: 90%; animation-delay: 8s; animation-duration: 19s; }
-        .gate-particles span:nth-child(10) { left: 35%; animation-delay: 9s; animation-duration: 17s; }
-        @keyframes floatParticle { 0% { transform: translateY(100vh) scale(1); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(-100vh) scale(1.5); opacity: 0; } }
-
-        .gate::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px); background-size: 50px 50px; z-index: 0; animation: gridMove 20s linear infinite; pointer-events: none; }
-        @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
-        .gate::after { content: ''; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 136, 0.1); border-radius: 50%; z-index: 0; animation: ringPulse 4s ease-in-out infinite; pointer-events: none; }
-        @keyframes ringPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.1; } }
-
-        .gate-card { position: relative; z-index: 1; background: linear-gradient(135deg, rgba(15, 20, 40, 0.95), rgba(10, 15, 30, 0.98)); backdrop-filter: blur(30px); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 28px; padding: 45px 38px; max-width: 460px; width: 100%; box-shadow: 0 0 80px rgba(0, 255, 136, 0.15), 0 0 120px rgba(0, 255, 136, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.05); text-align: center; max-height: 85vh; overflow-y: auto; animation: cardAppear 0.8s ease; margin-bottom: 30px; }
-        @keyframes cardAppear { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .gate-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #00ff88, #00ccff, #00ff88, transparent); border-radius: 28px 28px 0 0; background-size: 200% 100%; animation: topBorderGlow 3s linear infinite; }
-        @keyframes topBorderGlow { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
+        .gate-particles span { position: absolute; width: 3px; height: 3px; background: #00ff88; border-radius: 50%; animation: floatParticle 25s infinite linear; opacity: 0.4; }
+        .gate-particles span:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .gate-particles span:nth-child(2) { left: 25%; animation-delay: 3s; }
+        .gate-particles span:nth-child(3) { left: 40%; animation-delay: 6s; }
+        .gate-particles span:nth-child(4) { left: 55%; animation-delay: 2s; }
+        .gate-particles span:nth-child(5) { left: 70%; animation-delay: 5s; }
+        .gate-particles span:nth-child(6) { left: 85%; animation-delay: 8s; }
+        .gate-particles span:nth-child(7) { left: 15%; animation-delay: 10s; }
+        .gate-particles span:nth-child(8) { left: 60%; animation-delay: 12s; }
+        .gate-particles span:nth-child(9) { left: 90%; animation-delay: 15s; }
+        .gate-particles span:nth-child(10) { left: 35%; animation-delay: 18s; }
+        @keyframes floatParticle { 0% { transform: translateY(100vh); opacity: 0; } 10% { opacity: 0.4; } 90% { opacity: 0.4; } 100% { transform: translateY(-100vh); opacity: 0; } }
+        .gate::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px); background-size: 50px 50px; z-index: 0; pointer-events: none; }
+        .gate::after { content: ''; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; transform: translate(-50%, -50%); border: 1px solid rgba(0, 255, 136, 0.08); border-radius: 50%; z-index: 0; pointer-events: none; }
+        .gate-card { position: relative; z-index: 1; background: linear-gradient(135deg, rgba(15, 20, 40, 0.98), rgba(10, 15, 30, 0.99)); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 28px; padding: 45px 38px; max-width: 460px; width: 100%; box-shadow: 0 0 60px rgba(0, 255, 136, 0.1); text-align: center; max-height: 85vh; overflow-y: auto; margin-bottom: 30px; }
+        .gate-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, #00ff88, #00ccff, #00ff88, transparent); border-radius: 28px 28px 0 0; }
         .gate-welcome { font-size: 11px; color: #6a8a9a; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
-        .gate-logo { font-size: 72px; margin-bottom: 15px; filter: drop-shadow(0 0 30px #00ff88) drop-shadow(0 0 60px rgba(0, 255, 136, 0.5)); animation: logoFloat 3s ease-in-out infinite; display: inline-block; }
-        @keyframes logoFloat { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-10px) scale(1.05); } }
-        .gate-title { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #00ff88, #00ccff, #00ff88); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; letter-spacing: -0.5px; animation: textShine 3s linear infinite; }
-        @keyframes textShine { to { background-position: 200% center; } }
+        .gate-logo { font-size: 72px; margin-bottom: 15px; display: inline-block; }
+        .gate-title { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, #00ff88, #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; letter-spacing: -0.5px; }
         .gate-subtitle { color: #6a8a9a; font-size: 12px; margin-bottom: 28px; letter-spacing: 1.5px; text-transform: uppercase; }
-
         .gate-tabs { display: flex; gap: 5px; margin-bottom: 22px; background: rgba(0, 0, 0, 0.5); padding: 5px; border-radius: 14px; border: 1px solid rgba(0, 255, 136, 0.1); }
-        .gate-tab { flex: 1; padding: 13px; background: transparent; border: none; border-radius: 10px; color: #6a8a9a; font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
-        .gate-tab.active { background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.15)); color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.2); }
-        .gate-form input { width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 255, 136, 0.15); border-radius: 14px; background: rgba(0, 0, 0, 0.4); color: #fff; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: all 0.3s; margin-bottom: 12px; }
-        .gate-form input:focus { border-color: #00ff88; box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1), 0 0 30px rgba(0, 255, 136, 0.15); background: rgba(0, 255, 136, 0.03); }
+        .gate-tab { flex: 1; padding: 13px; background: transparent; border: none; border-radius: 10px; color: #6a8a9a; font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
+        .gate-tab.active { background: rgba(0, 255, 136, 0.15); color: #00ff88; }
+        .gate-form input { width: 100%; padding: 16px 18px; border: 2px solid rgba(0, 255, 136, 0.15); border-radius: 14px; background: rgba(0, 0, 0, 0.4); color: #fff; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.2s; margin-bottom: 12px; }
+        .gate-form input:focus { border-color: #00ff88; }
         .gate-form input::placeholder { color: #4a5a6a; }
-        .gate-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #00ff88, #00cc66); border: none; border-radius: 14px; color: #050510; font-size: 15px; font-weight: 800; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; position: relative; overflow: hidden; }
-        .gate-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); transition: left 0.5s; }
-        .gate-btn:hover::before { left: 100%; }
-        .gate-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4), 0 0 60px rgba(0, 255, 136, 0.2); }
-        .guest-btn { width: 100%; padding: 16px; background: transparent; border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 14px; color: #00ff88; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 2px; margin-top: 14px; position: relative; overflow: hidden; }
-        .guest-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, #00ff88, #00cc66); opacity: 0; transition: opacity 0.3s; z-index: -1; }
-        .guest-btn:hover { color: #050510; border-color: #00ff88; transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3); }
-        .guest-btn:hover::after { opacity: 1; }
-        .gate-footer { color: #4a5a6a; font-size: 11px; margin-top: 22px; line-height: 1.7; letter-spacing: 0.3px; }
-
-        /* Rozetler (kart altında) */
+        .gate-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, #00ff88, #00cc66); border: none; border-radius: 14px; color: #050510; font-size: 15px; font-weight: 800; font-family: 'Inter', sans-serif; cursor: pointer; transition: transform 0.2s; text-transform: uppercase; letter-spacing: 2px; margin-top: 8px; }
+        .gate-btn:hover { transform: translateY(-2px); }
+        .guest-btn { width: 100%; padding: 16px; background: transparent; border: 2px solid rgba(0, 255, 136, 0.4); border-radius: 14px; color: #00ff88; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 2px; margin-top: 14px; }
+        .guest-btn:hover { color: #050510; background: #00ff88; }
         .gate-badges { display: flex; justify-content: center; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
         .gate-badge { padding: 6px 12px; background: rgba(0, 255, 136, 0.08); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 20px; color: #00ff88; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; }
-    </style>
-</head>
-    <style>
-        /* ANA UYGULAMA */
+
         .app { display: none; }
         .app.active { display: block; }
         .container { max-width: 1300px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding: 0 8px; flex-wrap: wrap; gap: 10px; }
         .top-bar-left { display: flex; align-items: center; gap: 12px; color: var(--text-dim); font-size: 11px; font-family: 'JetBrains Mono', monospace; flex-wrap: wrap; }
         .live-dot { width: 8px; height: 8px; background: var(--neon); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--neon); } 50% { opacity: 0.5; box-shadow: 0 0 0 8px transparent; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         .top-buttons { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-        .icon-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; color: var(--text); cursor: pointer; font-size: 12px; transition: all 0.3s; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 5px; }
-        .icon-btn:hover { border-color: var(--neon); transform: scale(1.05); }
+        .icon-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; color: var(--text); cursor: pointer; font-size: 12px; transition: border-color 0.2s; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 5px; }
+        .icon-btn:hover { border-color: var(--neon); }
         .user-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon); border-radius: 20px; color: var(--neon); font-size: 11px; font-weight: 600; }
         .user-badge.guest { background: rgba(255, 170, 0, 0.1); border-color: var(--warning); color: var(--warning); }
         .header { text-align: center; margin-bottom: 22px; }
         .logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-        .logo-icon { font-size: 42px; filter: drop-shadow(0 0 20px var(--neon)); }
+        .logo-icon { font-size: 42px; }
         .logo-text { font-size: 36px; font-weight: 900; background: linear-gradient(135deg, var(--neon), #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -1px; }
         .tagline { color: var(--text-dim); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
-
-        /* ARAMA */
-        .search-hero { background: var(--bg-card); backdrop-filter: blur(20px); border: 2px solid var(--border); border-radius: 22px; padding: 30px; margin-bottom: 22px; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); position: relative; overflow: hidden; }
-        .search-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon), #00ccff, var(--neon)); animation: gradientMove 3s linear infinite; }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+        .search-hero { background: var(--bg-card); border: 2px solid var(--border); border-radius: 22px; padding: 30px; margin-bottom: 22px; text-align: center; position: relative; overflow: hidden; }
+        .search-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon), #00ccff, var(--neon)); }
         .search-hero h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; color: var(--text); }
         .search-hero p { color: var(--text-dim); font-size: 12px; margin-bottom: 22px; }
         .search-tabs { display: flex; gap: 5px; margin-bottom: 18px; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 14px; max-width: 700px; margin-left: auto; margin-right: auto; flex-wrap: wrap; }
         body.light-mode .search-tabs { background: rgba(0, 0, 0, 0.05); }
-        .search-tab { flex: 1; min-width: 80px; padding: 11px; background: transparent; border: none; border-radius: 10px; color: var(--text-dim); font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .search-tab.active { background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 204, 102, 0.1)); color: var(--neon); }
+        .search-tab { flex: 1; min-width: 80px; padding: 11px; background: transparent; border: none; border-radius: 10px; color: var(--text-dim); font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .search-tab.active { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
         .search-input-group { display: flex; gap: 8px; max-width: 780px; margin: 0 auto; }
-        .search-input-group input, .search-input-group textarea { flex: 1; padding: 16px 20px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 14px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 14px; font-family: 'JetBrains Mono', monospace; outline: none; transition: all 0.3s; resize: none; }
+        .search-input-group input, .search-input-group textarea { flex: 1; padding: 16px 20px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 14px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 14px; font-family: 'JetBrains Mono', monospace; outline: none; transition: border-color 0.2s; resize: none; }
         body.light-mode .search-input-group input, body.light-mode .search-input-group textarea { background: rgba(255, 255, 255, 0.8); }
-        .search-input-group input:focus, .search-input-group textarea:focus { border-color: var(--neon); box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.1); }
-        .search-btn { padding: 16px 28px; background: linear-gradient(135deg, var(--neon), var(--neon-dark)); border: none; border-radius: 14px; color: #050510; font-size: 14px; font-weight: 800; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
-        .search-btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4); }
+        .search-input-group input:focus, .search-input-group textarea:focus { border-color: var(--neon); }
+        .search-btn { padding: 16px 28px; background: linear-gradient(135deg, var(--neon), var(--neon-dark)); border: none; border-radius: 14px; color: #050510; font-size: 14px; font-weight: 800; font-family: 'Inter', sans-serif; cursor: pointer; transition: transform 0.2s; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+        .search-btn:hover { transform: translateY(-2px); }
         .quick-stats { display: flex; justify-content: center; gap: 30px; margin-top: 22px; flex-wrap: wrap; }
         .quick-stat { text-align: center; }
         .quick-stat-value { font-size: 20px; font-weight: 900; color: var(--neon); font-family: 'JetBrains Mono', monospace; }
         .quick-stat-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
-
-        /* CANLI TEHDİT AKIŞI */
-        .live-feed { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-bottom: 18px; max-height: 320px; overflow-y: auto; }
+        .live-feed { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-bottom: 18px; max-height: 320px; overflow-y: auto; }
         .live-feed-title { color: var(--neon); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .live-dot-feed { width: 8px; height: 8px; background: var(--danger); border-radius: 50%; animation: pulse 1.5s infinite; }
-        .feed-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 6px; font-size: 11px; border-left: 3px solid var(--danger); animation: slideInFeed 0.5s ease; }
-        @keyframes slideInFeed { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .feed-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 6px; font-size: 11px; border-left: 3px solid var(--danger); }
         .feed-item .feed-domain { color: var(--text); font-family: 'JetBrains Mono', monospace; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 8px; }
         .feed-item .feed-score { color: var(--danger); font-weight: 800; font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
         .feed-item.safe { border-left-color: var(--neon); }
         .feed-item.safe .feed-score { color: var(--neon); }
-
-        /* GRAFİKLER */
         .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 18px; }
-        .chart-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 18px; }
+        .chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; }
         .chart-card h4 { color: var(--neon); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .chart-container { position: relative; height: 200px; }
-
-        /* İHBAR */
-        .report-section { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
+        .report-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; }
         .report-section h3 { color: var(--neon); font-size: 14px; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
         .report-input { width: 100%; padding: 14px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 12px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 13px; font-family: 'JetBrains Mono', monospace; outline: none; margin-bottom: 12px; }
         body.light-mode .report-input { background: rgba(255, 255, 255, 0.8); }
@@ -187,35 +141,27 @@
         .report-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 6px; font-size: 11px; border-left: 3px solid var(--warning); }
         .report-item-domain { color: var(--text); font-family: 'JetBrains Mono', monospace; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 8px; }
         .report-item-user { color: var(--text-dim); font-size: 10px; flex-shrink: 0; }
-
-        /* YÜKLENİYOR */
         .loading { display: none; text-align: center; padding: 35px; }
         .loading.active { display: block; }
         .spinner { width: 45px; height: 45px; border: 3px solid rgba(0, 255, 136, 0.2); border-top-color: var(--neon); border-radius: 50%; margin: 0 auto 12px; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-text { color: var(--neon); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
-
-        /* SONUÇ */
         .result { display: none; }
-        .result.active { display: block; animation: fadeIn 0.6s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .vt-result-panel { background: var(--bg-card); backdrop-filter: blur(20px); border: 2px solid var(--border); border-radius: 22px; padding: 26px; margin-bottom: 18px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); }
+        .result.active { display: block; }
+        .vt-result-panel { background: var(--bg-card); border: 2px solid var(--border); border-radius: 22px; padding: 26px; margin-bottom: 18px; }
         .vt-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 15px; }
         .vt-header-left h3 { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
         .vt-header-left p { color: var(--text-dim); font-size: 11px; font-family: 'JetBrains Mono', monospace; word-break: break-all; }
         .vt-score-badge { display: flex; align-items: center; gap: 12px; padding: 12px 22px; border-radius: 14px; background: rgba(0, 0, 0, 0.3); border: 2px solid; }
         .vt-score-number { font-size: 36px; font-weight: 900; line-height: 1; font-family: 'JetBrains Mono', monospace; }
         .vt-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
-
-        /* MOTOR GRID */
         .engines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 22px; }
-        .engine-card { background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 13px; border-left: 4px solid var(--neon); transition: all 0.3s; animation: slideIn 0.4s ease backwards; }
+        .engine-card { background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 13px; border-left: 4px solid var(--neon); transition: all 0.2s; }
         body.light-mode .engine-card { background: rgba(0, 0, 0, 0.04); }
         .engine-card.danger { border-left-color: var(--danger); }
         .engine-card.warning { border-left-color: var(--warning); }
         .engine-card.safe { border-left-color: var(--neon); }
-        .engine-card:hover { transform: translateX(4px); background: rgba(0, 255, 136, 0.05); }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .engine-card:hover { background: rgba(0, 255, 136, 0.05); }
         .engine-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
         .engine-name { font-size: 11px; font-weight: 700; color: var(--text); }
         .engine-score { font-size: 11px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
@@ -224,15 +170,13 @@
         .engine-verdict.warning { color: var(--warning); }
         .engine-verdict.safe { color: var(--neon); }
         .engine-bar { height: 3px; background: rgba(0, 0, 0, 0.3); border-radius: 2px; overflow: hidden; margin-top: 7px; }
-        .engine-bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
-
-        /* VT SEKMELERİ */
+        .engine-bar-fill { height: 100%; border-radius: 2px; }
         .vt-tabs { display: flex; gap: 5px; margin-bottom: 18px; background: rgba(0, 0, 0, 0.3); padding: 5px; border-radius: 12px; flex-wrap: wrap; }
         body.light-mode .vt-tabs { background: rgba(0, 0, 0, 0.05); }
-        .vt-tab { flex: 1; min-width: 90px; padding: 10px; background: transparent; border: none; border-radius: 9px; color: var(--text-dim); font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
+        .vt-tab { flex: 1; min-width: 90px; padding: 10px; background: transparent; border: none; border-radius: 9px; color: var(--text-dim); font-size: 11px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
         .vt-tab.active { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
         .vt-tab-content { display: none; }
-        .vt-tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        .vt-tab-content.active { display: block; }
         .detail-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 12px; gap: 15px; }
         .detail-row:last-child { border-bottom: none; }
         .detail-label { color: var(--text-dim); font-weight: 600; flex-shrink: 0; }
@@ -240,22 +184,18 @@
         .detail-value.danger { color: var(--danger); }
         .detail-value.safe { color: var(--neon); }
         .detail-value.warning { color: var(--warning); }
-
-        /* UYARI */
         .alert-box { border-radius: 16px; padding: 18px; margin-bottom: 18px; display: flex; gap: 13px; align-items: flex-start; }
-        .alert-box.danger { background: linear-gradient(135deg, rgba(255, 51, 102, 0.15), rgba(255, 51, 102, 0.05)); border: 2px solid var(--danger); }
-        .alert-box.warning { background: linear-gradient(135deg, rgba(255, 170, 0, 0.15), rgba(255, 170, 0, 0.05)); border: 2px solid var(--warning); }
-        .alert-box.safe { background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05)); border: 2px solid var(--neon); }
+        .alert-box.danger { background: rgba(255, 51, 102, 0.1); border: 2px solid var(--danger); }
+        .alert-box.warning { background: rgba(255, 170, 0, 0.1); border: 2px solid var(--warning); }
+        .alert-box.safe { background: rgba(0, 255, 136, 0.1); border: 2px solid var(--neon); }
         .alert-icon { font-size: 26px; flex-shrink: 0; }
         .alert-content h4 { font-size: 14px; font-weight: 800; margin-bottom: 5px; }
         .alert-box.danger .alert-content h4 { color: var(--danger); }
         .alert-box.warning .alert-content h4 { color: var(--warning); }
         .alert-box.safe .alert-content h4 { color: var(--neon); }
         .alert-content p { font-size: 12px; line-height: 1.6; color: var(--text); opacity: 0.9; }
-
-        /* DOSYA HASH */
-        .file-hash-area { border: 2px dashed var(--neon); border-radius: 14px; padding: 40px 30px; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0, 255, 136, 0.03); margin-bottom: 15px; }
-        .file-hash-area:hover { background: rgba(0, 255, 136, 0.08); border-color: var(--neon-dark); }
+        .file-hash-area { border: 2px dashed var(--neon); border-radius: 14px; padding: 40px 30px; text-align: center; cursor: pointer; transition: background 0.2s; background: rgba(0, 255, 136, 0.03); margin-bottom: 15px; }
+        .file-hash-area:hover { background: rgba(0, 255, 136, 0.08); }
         .file-hash-icon { font-size: 60px; margin-bottom: 15px; color: var(--neon); }
         .file-hash-text { color: var(--text-dim); font-size: 14px; margin-bottom: 10px; }
         .file-hash-subtext { color: var(--text-dim); font-size: 11px; opacity: 0.7; }
@@ -270,8 +210,6 @@
         .file-hash-verdict.danger { background: rgba(255, 51, 102, 0.15); border: 2px solid var(--danger); color: var(--danger); }
         .file-hash-progress { height: 8px; border-radius: 4px; background: rgba(0, 0, 0, 0.3); overflow: hidden; margin-top: 15px; }
         .file-hash-progress-fill { height: 100%; background: linear-gradient(90deg, var(--neon), #00ccff); width: 0%; transition: width 0.3s; }
-
-        /* HASH */
         .hash-input-area { display: flex; gap: 8px; margin-bottom: 15px; }
         .hash-input-area input { flex: 1; padding: 14px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 12px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 13px; font-family: 'JetBrains Mono', monospace; outline: none; }
         body.light-mode .hash-input-area input { background: rgba(255, 255, 255, 0.8); }
@@ -282,65 +220,53 @@
         .hash-row:last-child { border-bottom: none; }
         .hash-label { color: var(--neon); font-weight: 700; }
         .hash-value { color: var(--text); word-break: break-all; text-align: right; }
-
-        /* ŞİFRE */
         .password-input-area { position: relative; margin-bottom: 15px; }
         .password-input-area input { width: 100%; padding: 14px 45px 14px 14px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 12px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 14px; font-family: 'JetBrains Mono', monospace; outline: none; }
         body.light-mode .password-input-area input { background: rgba(255, 255, 255, 0.8); }
         .password-input-area input:focus { border-color: var(--neon); }
         .password-toggle { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; }
         .password-strength-bar { height: 8px; border-radius: 4px; margin-top: 12px; background: rgba(0, 0, 0, 0.3); overflow: hidden; }
-        .password-strength-fill { height: 100%; border-radius: 4px; transition: width 0.5s, background 0.5s; width: 0%; }
+        .password-strength-fill { height: 100%; border-radius: 4px; transition: width 0.3s, background 0.3s; width: 0%; }
         .password-strength-text { text-align: center; margin-top: 10px; font-size: 14px; font-weight: 700; }
         .password-details { margin-top: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 12px; padding: 15px; }
         body.light-mode .password-details { background: rgba(0, 0, 0, 0.04); }
         .password-detail-item { display: flex; justify-content: space-between; padding: 7px 0; font-size: 12px; border-bottom: 1px solid var(--border); }
         .password-detail-item:last-child { border-bottom: none; }
         .password-crack-time { text-align: center; font-size: 18px; font-weight: 900; margin-top: 15px; color: var(--danger); }
-
-        /* ŞİFRE ÜRETİCİ */
         .password-gen-result { margin-top: 15px; padding: 20px; background: rgba(0, 255, 136, 0.1); border: 2px solid var(--neon); border-radius: 12px; display: none; }
         .password-gen-result.active { display: block; }
         .password-gen-output { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--neon); text-align: center; padding: 15px; background: rgba(0, 0, 0, 0.4); border-radius: 10px; margin-bottom: 12px; word-break: break-all; letter-spacing: 1px; }
         .password-gen-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
         .password-gen-option { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text); cursor: pointer; }
         .password-gen-option input { width: auto; margin: 0; cursor: pointer; }
-        .password-gen-copy { width: 100%; padding: 12px; background: var(--neon); border: none; border-radius: 10px; color: #050510; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
-        .password-gen-copy:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.4); }
-
-        /* QR */
-        .qr-area { border: 2px dashed var(--neon); border-radius: 14px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s; background: rgba(0, 255, 136, 0.03); }
-        .qr-area:hover { background: rgba(0, 255, 136, 0.08); border-color: var(--neon-dark); }
+        .password-gen-copy { width: 100%; padding: 12px; background: var(--neon); border: none; border-radius: 10px; color: #050510; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: transform 0.2s; }
+        .password-gen-copy:hover { transform: translateY(-2px); }
+        .qr-area { border: 2px dashed var(--neon); border-radius: 14px; padding: 30px; text-align: center; cursor: pointer; transition: background 0.2s; background: rgba(0, 255, 136, 0.03); }
+        .qr-area:hover { background: rgba(0, 255, 136, 0.08); }
         .qr-icon { font-size: 50px; margin-bottom: 12px; color: var(--neon); }
         .qr-text { color: var(--text-dim); font-size: 13px; }
         .qr-result { margin-top: 15px; padding: 15px; background: rgba(0, 255, 136, 0.1); border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); word-break: break-all; display: none; }
         .qr-preview { max-width: 200px; margin: 15px auto; border-radius: 10px; display: none; }
-
-        /* QUIZ */
         .quiz-question { background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 20px; margin-bottom: 15px; }
         body.light-mode .quiz-question { background: rgba(0, 0, 0, 0.04); }
         .quiz-question h4 { color: var(--text); font-size: 14px; margin-bottom: 15px; font-weight: 700; }
-        .quiz-option { display: block; width: 100%; text-align: left; padding: 12px 16px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
+        .quiz-option { display: block; width: 100%; text-align: left; padding: 12px 16px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; }
         .quiz-option:hover { border-color: var(--neon); background: rgba(0, 255, 136, 0.1); }
         .quiz-option.correct { background: rgba(0, 255, 136, 0.2); border-color: var(--neon); color: var(--neon); }
         .quiz-option.wrong { background: rgba(255, 51, 102, 0.2); border-color: var(--danger); color: var(--danger); }
         .quiz-result { text-align: center; padding: 20px; background: rgba(0, 255, 136, 0.1); border: 2px solid var(--neon); border-radius: 14px; margin-top: 15px; }
         .quiz-result h3 { color: var(--neon); font-size: 20px; margin-bottom: 8px; }
-
-        /* HARİTA */
         .map-container { background: rgba(0, 0, 0, 0.4); border-radius: 14px; padding: 10px; margin-bottom: 12px; position: relative; overflow: hidden; }
         body.light-mode .map-container { background: rgba(240, 248, 255, 0.6); }
         #turkeyMap { width: 100%; height: auto; max-height: 550px; display: block; }
         .map-legend { display: flex; justify-content: center; gap: 15px; margin-top: 10px; font-size: 10px; color: var(--text-dim); flex-wrap: wrap; }
         .legend-item { display: flex; align-items: center; gap: 5px; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .city-info-popup { position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.95); border: 2px solid var(--neon); border-radius: 12px; padding: 15px; min-width: 220px; display: none; z-index: 10; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+        .city-info-popup { position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.95); border: 2px solid var(--neon); border-radius: 12px; padding: 15px; min-width: 220px; display: none; z-index: 10; }
         body.light-mode .city-info-popup { background: rgba(255, 255, 255, 0.98); }
         .city-info-popup h4 { color: var(--neon); font-size: 14px; margin-bottom: 8px; }
         .city-info-popup p { color: var(--text); font-size: 12px; line-height: 1.6; }
         .city-info-close { position: absolute; top: 8px; right: 10px; background: transparent; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; }
-
-        /* ADMIN */
         .admin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
         .admin-stat { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 12px; padding: 15px; text-align: center; }
         body.light-mode .admin-stat { background: rgba(0, 0, 0, 0.04); }
@@ -353,14 +279,10 @@
         .admin-badge.admin { background: rgba(255, 51, 102, 0.2); color: var(--danger); }
         .admin-badge.user { background: rgba(0, 255, 136, 0.15); color: var(--neon); }
         .admin-badge.guest { background: rgba(255, 170, 0, 0.15); color: var(--warning); }
-        .admin-action-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--danger); background: transparent; color: var(--danger); font-size: 9px; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .admin-action-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--danger); background: transparent; color: var(--danger); font-size: 9px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
         .admin-action-btn:hover { background: var(--danger); color: #fff; }
-
-        /* KART */
-        .card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 20px; padding: 22px; margin-bottom: 18px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 22px; margin-bottom: 18px; }
         .side-title { color: var(--neon); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-
-        /* SOHBET */
         .chat-container { height: 380px; display: flex; flex-direction: column; background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 15px; }
         body.light-mode .chat-container { background: rgba(0, 0, 0, 0.04); }
         .chat-messages { flex: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 12px; }
@@ -371,53 +293,42 @@
         .chat-input { flex: 1; padding: 12px; border: 2px solid rgba(0, 255, 136, 0.2); border-radius: 10px; background: rgba(0, 0, 0, 0.4); color: var(--text); font-size: 12px; font-family: 'Inter', sans-serif; outline: none; }
         body.light-mode .chat-input { background: rgba(255, 255, 255, 0.8); }
         .chat-input:focus { border-color: var(--neon); }
-        .chat-send { padding: 12px 20px; background: var(--neon); border: none; border-radius: 10px; color: #050510; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.3s; }
+        .chat-send { padding: 12px 20px; background: var(--neon); border: none; border-radius: 10px; color: #050510; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; transition: transform 0.2s; }
         .chat-send:hover { transform: scale(1.05); }
-
-        /* EĞİTİM */
         .edu-card { background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 16px; margin-bottom: 10px; border-left: 3px solid var(--neon); }
         body.light-mode .edu-card { background: rgba(0, 0, 0, 0.03); }
         .edu-card h4 { color: var(--neon); font-size: 13px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
         .edu-card p { color: var(--text); opacity: 0.8; font-size: 12px; line-height: 1.6; }
-
-        /* HAKKINDA SAYFASI */
-        .about-hero { text-align: center; padding: 40px 20px; background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05)); border-radius: 20px; margin-bottom: 22px; border: 2px solid var(--border); }
-        .about-hero-icon { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 30px var(--neon)); }
+        .about-hero { text-align: center; padding: 40px 20px; background: rgba(0, 255, 136, 0.05); border-radius: 20px; margin-bottom: 22px; border: 2px solid var(--border); }
+        .about-hero-icon { font-size: 80px; margin-bottom: 20px; }
         .about-hero h1 { font-size: 32px; font-weight: 900; background: linear-gradient(135deg, var(--neon), #00ccff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
         .about-hero p { color: var(--text-dim); font-size: 14px; max-width: 600px; margin: 0 auto; line-height: 1.6; }
         .about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 22px; }
-        .about-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+        .about-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
         .about-card h3 { color: var(--neon); font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .about-card p, .about-card li { color: var(--text); opacity: 0.85; font-size: 13px; line-height: 1.7; }
         .about-card ul { list-style: none; padding-left: 0; }
         .about-card ul li::before { content: '▸ '; color: var(--neon); font-weight: bold; }
-
-        /* REHBER SAYFASI */
-        .guide-step { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 15px; display: flex; gap: 20px; align-items: flex-start; }
+        .guide-step { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 15px; display: flex; gap: 20px; align-items: flex-start; }
         .guide-step-number { width: 50px; height: 50px; background: linear-gradient(135deg, var(--neon), var(--neon-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 900; color: #050510; flex-shrink: 0; }
         .guide-step-content h3 { color: var(--neon); font-size: 16px; font-weight: 800; margin-bottom: 8px; }
         .guide-step-content p { color: var(--text); opacity: 0.85; font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
         .guide-step-content .tip { background: rgba(0, 255, 136, 0.1); border-left: 3px solid var(--neon); padding: 10px 15px; border-radius: 8px; font-size: 12px; color: var(--neon); margin-top: 10px; }
-
-        /* İSTATİSTİK SAYFASI */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 22px; }
-        .stats-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; text-align: center; transition: all 0.3s; }
-        .stats-card:hover { transform: translateY(-5px); border-color: var(--neon); box-shadow: 0 15px 40px rgba(0, 255, 136, 0.15); }
+        .stats-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; text-align: center; transition: border-color 0.2s; }
+        .stats-card:hover { border-color: var(--neon); }
         .stats-card-icon { font-size: 40px; margin-bottom: 12px; }
         .stats-card-value { font-size: 32px; font-weight: 900; color: var(--neon); font-family: 'JetBrains Mono', monospace; line-height: 1; margin-bottom: 8px; }
         .stats-card-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         .stats-charts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 18px; }
-        .stats-chart-card { background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
+        .stats-chart-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; }
         .stats-chart-card h4 { color: var(--neon); font-size: 13px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
         .stats-chart-container { position: relative; height: 250px; }
-        .stats-info-box { background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 102, 0.05)); border: 2px solid var(--neon); border-radius: 18px; padding: 22px; margin-top: 18px; }
+        .stats-info-box { background: rgba(0, 255, 136, 0.05); border: 2px solid var(--neon); border-radius: 18px; padding: 22px; margin-top: 18px; }
         .stats-info-box h3 { color: var(--neon); font-size: 15px; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .stats-info-box p { color: var(--text); font-size: 13px; line-height: 1.7; opacity: 0.9; }
-
-        /* FOOTER */
         .footer { text-align: center; margin-top: 25px; color: var(--text-dim); font-size: 10px; line-height: 1.8; }
         .footer strong { color: var(--neon); }
-
         @media (max-width: 900px) {
             .admin-grid { grid-template-columns: repeat(2, 1fr); }
             .charts-grid { grid-template-columns: 1fr; }
@@ -463,10 +374,9 @@
         }
     </style>
 </head>
-    <body>
+<body>
     <canvas id="matrix"></canvas>
 
-    <!-- SİTE İÇİ ARAMA OVERLAY -->
     <div class="search-overlay" id="searchOverlay">
         <div class="search-overlay-content">
             <h3>🔍 Site İçi Arama <span style="color:var(--text-dim);font-weight:400;font-size:11px;">(ESC ile kapat)</span></h3>
@@ -476,12 +386,9 @@
         </div>
     </div>
 
-    <!-- GİRİŞ EKRANI - TAM DONANIMLI -->
     <div class="gate" id="gate">
-        <!-- Sürüm Bilgisi (Sol Üst) -->
         <div class="gate-version">v18.0 <span>• Stable</span></div>
 
-        <!-- TÜBİTAK Logo (Sağ Üst) -->
         <div class="gate-tubitak">
             <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff88" stroke-width="3"/>
@@ -489,12 +396,9 @@
                 <text x="50" y="60" font-family="Arial" font-size="9" fill="#00ff88" text-anchor="middle">ÜBİTAK</text>
                 <text x="50" y="75" font-family="Arial" font-size="7" fill="#6a8a9a" text-anchor="middle">2204-A</text>
             </svg>
-            <div class="gate-tubitak-text">
-                2204-A<span>Projesi</span>
-            </div>
+            <div class="gate-tubitak-text">2204-A<span>Projesi</span></div>
         </div>
 
-        <!-- Canlı Sayaçlar (Sol Alt) -->
         <div class="gate-stats">
             <div class="gate-stat-box">
                 <div class="gate-stat-value" id="gateStatTotal">1,247</div>
@@ -510,19 +414,16 @@
             </div>
         </div>
 
-        <!-- Saat/Tarih (Sağ Alt) -->
         <div class="gate-clock">
             <div class="gate-clock-time" id="gateClock">--:--:--</div>
             <div class="gate-clock-date" id="gateDate">-- --- ----</div>
         </div>
 
-        <!-- Parçacıklar -->
         <div class="gate-particles">
             <span></span><span></span><span></span><span></span><span></span>
             <span></span><span></span><span></span><span></span><span></span>
         </div>
 
-        <!-- Giriş Kartı -->
         <div class="gate-card">
             <div class="gate-welcome">👋 Hoş Geldiniz</div>
             <div class="gate-logo">🛡️</div>
@@ -550,7 +451,6 @@
 
             <button class="guest-btn" onclick="continueAsGuest()">👤 Misafir Olarak Devam Et</button>
 
-            <!-- Rozetler -->
             <div class="gate-badges">
                 <div class="gate-badge">🛡️ %100 Yerli</div>
                 <div class="gate-badge">🔒 Ücretsiz</div>
@@ -558,7 +458,6 @@
             </div>
         </div>
 
-        <!-- Alt Bilgi Şeridi -->
         <div class="gate-bottom-bar">
             <strong>🔒 Güvenli Bağlantı</strong>
             <span class="dot">•</span>
@@ -667,15 +566,11 @@
                 <div class="charts-grid">
                     <div class="chart-card">
                         <h4>📊 Haftalık Tehdit İstatistikleri</h4>
-                        <div class="chart-container">
-                            <canvas id="weeklyChart"></canvas>
-                        </div>
+                        <div class="chart-container"><canvas id="weeklyChart"></canvas></div>
                     </div>
                     <div class="chart-card">
                         <h4>📈 Tehdit Türleri Dağılımı</h4>
-                        <div class="chart-container">
-                            <canvas id="threatTypeChart"></canvas>
-                        </div>
+                        <div class="chart-container"><canvas id="threatTypeChart"></canvas></div>
                     </div>
                 </div>
 
@@ -716,17 +611,9 @@
                             <button class="vt-tab" onclick="switchVtTab('recommendations', event)">💡 Öneriler</button>
                         </div>
 
-                        <div class="vt-tab-content active" id="detailsTab">
-                            <div id="detailsContent"></div>
-                        </div>
-
-                        <div class="vt-tab-content" id="findingsTab">
-                            <div id="findingsContent"></div>
-                        </div>
-
-                        <div class="vt-tab-content" id="recommendationsTab">
-                            <div id="recommendationsContent"></div>
-                        </div>
+                        <div class="vt-tab-content active" id="detailsTab"><div id="detailsContent"></div></div>
+                        <div class="vt-tab-content" id="findingsTab"><div id="findingsContent"></div></div>
+                        <div class="vt-tab-content" id="recommendationsTab"><div id="recommendationsContent"></div></div>
 
                         <button class="search-btn" style="margin-top:20px;width:100%;" onclick="downloadReport()">📄 Rapor İndir</button>
                     </div>
@@ -940,7 +827,6 @@
                         <div class="tip">💡 İpucu: Şüpheli linke tıklamadan önce mutlaka analiz edin!</div>
                     </div>
                 </div>
-
                 <div class="guide-step">
                     <div class="guide-step-number">2</div>
                     <div class="guide-step-content">
@@ -949,7 +835,6 @@
                         <div class="tip">💡 İpucu: "Acil", "hesabınız askıya alındı" gibi ifadeler varsa dikkatli olun!</div>
                     </div>
                 </div>
-
                 <div class="guide-step">
                     <div class="guide-step-number">3</div>
                     <div class="guide-step-content">
@@ -958,7 +843,6 @@
                         <div class="tip">💡 İpucu: Özellikle .exe, .apk gibi dosyaları analiz edin!</div>
                     </div>
                 </div>
-
                 <div class="guide-step">
                     <div class="guide-step-number">4</div>
                     <div class="guide-step-content">
@@ -967,7 +851,6 @@
                         <div class="tip">💡 İpucu: Güçlü şifre en az 12 karakter, harf+rakam+özel karakter içermelidir!</div>
                     </div>
                 </div>
-
                 <div class="guide-step">
                     <div class="guide-step-number">5</div>
                     <div class="guide-step-content">
@@ -976,7 +859,6 @@
                         <div class="tip">💡 İpucu: İhbar ettiğiniz linkler diğer kullanıcıların da korunmasını sağlar!</div>
                     </div>
                 </div>
-
                 <div class="guide-step">
                     <div class="guide-step-number">6</div>
                     <div class="guide-step-content">
@@ -1015,15 +897,11 @@
                 <div class="stats-charts">
                     <div class="stats-chart-card">
                         <h4>📊 Haftalık Analiz Grafiği</h4>
-                        <div class="stats-chart-container">
-                            <canvas id="statsWeeklyChart"></canvas>
-                        </div>
+                        <div class="stats-chart-container"><canvas id="statsWeeklyChart"></canvas></div>
                     </div>
                     <div class="stats-chart-card">
                         <h4>📈 Tespit Edilen Tehdit Türleri</h4>
-                        <div class="stats-chart-container">
-                            <canvas id="statsThreatChart"></canvas>
-                        </div>
+                        <div class="stats-chart-container"><canvas id="statsThreatChart"></canvas></div>
                     </div>
                 </div>
 
@@ -1070,13 +948,10 @@
     </div>
 
     <script>
-                // ===== MATRIX =====
+                // ===== MATRIX (Optimize) =====
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         resizeCanvas();
         const chars = '01アイウエオカキクケコサシスセソABCDEF';
         const fontSize = 14;
@@ -1095,40 +970,18 @@
                 drops[i]++;
             }
         }
-        setInterval(drawMatrix, 50);
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            columns = canvas.width / fontSize;
-            drops = Array(Math.floor(columns)).fill(1);
-        });
+        setInterval(drawMatrix, 100);
+        window.addEventListener('resize', () => { resizeCanvas(); columns = canvas.width / fontSize; drops = Array(Math.floor(columns)).fill(1); });
 
-        // ===== GİRİŞ EKRANI SAAT VE SAYAÇLAR =====
         function updateGateClock() {
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('tr-TR');
-            const dateStr = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
             const gateClock = document.getElementById('gateClock');
             const gateDate = document.getElementById('gateDate');
-            if (gateClock) gateClock.textContent = timeStr;
-            if (gateDate) gateDate.textContent = dateStr;
+            if (gateClock) gateClock.textContent = now.toLocaleTimeString('tr-TR');
+            if (gateDate) gateDate.textContent = now.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
         }
         setInterval(updateGateClock, 1000);
         updateGateClock();
-
-        function updateGateStats() {
-            const users = DB.getUsers();
-            const reports = DB.getReports();
-            let total = 0, threats = 0;
-            users.forEach(u => {
-                const s = DB.getUserStats(u.email);
-                total += s.total;
-                threats += s.threats;
-            });
-            const statTotal = document.getElementById('gateStatTotal');
-            const statThreats = document.getElementById('gateStatThreats');
-            if (statTotal) statTotal.textContent = (1247 + total).toLocaleString('tr-TR');
-            if (statThreats) statThreats.textContent = (89 + threats).toLocaleString('tr-TR');
-        }
 
         // ===== SİTE İÇİ ARAMA =====
         const searchDatabase = [
@@ -1141,24 +994,14 @@
             { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' },
             { title: 'ℹ️ Hakkında', desc: 'Proje hakkında bilgi', view: 'about' },
             { title: '📖 Rehber', desc: 'Nasıl kullanılır?', view: 'guide' },
-            { title: '📊 İstatistik', desc: 'Kullanım istatistikleri', view: 'stats' },
-            { title: '🔑 Şifre Analizi', desc: 'Şifre gücünü ölç', view: 'tools' },
-            { title: '🎲 Şifre Üretici', desc: 'Güçlü rastgele şifre üret', view: 'tools' },
-            { title: '📱 QR Kod Okuyucu', desc: 'QR kod içeriğini oku', view: 'tools' }
+            { title: '📊 İstatistik', desc: 'Kullanım istatistikleri', view: 'stats' }
         ];
-
         function performSearch() {
             const query = document.getElementById('searchOverlayInput').value.toLowerCase().trim();
             const results = document.getElementById('searchResults');
             if (query.length < 2) { results.innerHTML = ''; return; }
-            const filtered = searchDatabase.filter(item => 
-                item.title.toLowerCase().includes(query) || 
-                item.desc.toLowerCase().includes(query)
-            );
-            if (filtered.length === 0) {
-                results.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:15px;">Sonuç bulunamadı</div>';
-                return;
-            }
+            const filtered = searchDatabase.filter(item => item.title.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query));
+            if (filtered.length === 0) { results.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:12px;padding:15px;">Sonuç bulunamadı</div>'; return; }
             results.innerHTML = '';
             filtered.forEach(item => {
                 const div = document.createElement('div');
@@ -1168,58 +1011,31 @@
                 results.appendChild(div);
             });
         }
-
-        function openSearch() {
-            document.getElementById('searchOverlay').classList.add('active');
-            setTimeout(() => document.getElementById('searchOverlayInput').focus(), 100);
-        }
-
-        function closeSearch() {
-            document.getElementById('searchOverlay').classList.remove('active');
-            document.getElementById('searchOverlayInput').value = '';
-            document.getElementById('searchResults').innerHTML = '';
-        }
-
+        function openSearch() { document.getElementById('searchOverlay').classList.add('active'); setTimeout(() => document.getElementById('searchOverlayInput').focus(), 100); }
+        function closeSearch() { document.getElementById('searchOverlay').classList.remove('active'); document.getElementById('searchOverlayInput').value = ''; document.getElementById('searchResults').innerHTML = ''; }
         document.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
             if (e.key === 'Escape') { closeSearch(); }
         });
 
-        // ===== ZARARLI LİNK VERİTABANI =====
+        // ===== ZARARLI VERİTABANI =====
         const knownMaliciousLinks = [
-            "104.168.170.48/inj20/tr_garantibank.php", "185.254.121.132/ijuygu/tr_garantibank.php",
-            "185.33.234.76/cepteteb", "185.33.234.76/garanti", "185.33.234.76/isbank", "185.33.234.76/teb",
-            "178.17.171.207/~aakkan", "178.17.171.207/~yapikredim", "209.250.239.152/vakıf",
-            "173.214.162.246/egm-portal/index.php", "173.214.162.246/eposta.mfa.gov.tr", "173.214.162.246/portal",
-            "185.99.1.94/~ehgs/online/hgs-yukleme", "185.99.1.94/~onlinehgs", "185.99.1.94/~kredikartisorgul",
-            "143.95.233.41/~hgsodeme/", "143.95.233.41/~bankasisorgu", "143.95.233.41/~faturaodeme",
-            "154.16.3.99/~faturamatik", "154.16.3.99/~hgsislem", "154.16.3.99/~kredikartiislem",
-            "134.0.117.224/1300/1300.exe", "190.14.39.239/hediyeinternet.apk",
-            "205.185.127.140/googlesecurity_patch_3092.apk", "209.141.40.93/wp_poczta.apk",
-            "garanti-bbva-giris.tk", "garantibbva-giris.tk", "garantibbva-onay.xyz", "garanti-giris.tk",
-            "garanti-onay.xyz", "ziraatbank-giris.tk", "ziraat-onay.xyz", "ziraatbank-dogrula.ml",
-            "akbank-hesap.tk", "akbank-dogrula.xyz", "isbank-giris.tk", "isbank-onay.ml",
-            "yapikredi-hesap.tk", "halkbank-onay.tk", "vakifbank-giris.ml", "qnb-dogrula.tk",
-            "denizbank-hesap.xyz", "teb-giris.tk", "ing-onay.ml", "enpara-giris.tk",
-            "papara-onay.xyz", "ininal-dogrula.tk", "tosla-hesap.ml", "cepteteb-giris.tk",
-            "edevlet-giris.tk", "edevlet-onay.xyz", "edevlet-dogrula.ml", "turkiye-gov-dogrula.ml",
-            "sgk-giris.tk", "sgk-onay.xyz", "sgk-dogrulama.ml", "ptt-kargo.tk", "ptt-takip.xyz",
-            "gib-vergi.xyz", "gib-iade.tk", "nvi-kimlik.tk", "nvi-dogrula.xyz", "meb-giris.ml",
-            "eokul-giris.tk", "osym-sinav.tk", "yokatlas-dogrula.xyz", "enabiz-giris.tk", "uyap-dava.ml",
-            "bedava-bitcoin.tk", "bitcoin-katla.xyz", "kripto-kazanc.ml", "ethereum-hediye.tk",
-            "binance-onay.xyz", "metamask-cuzdan.tk", "trustwallet-dogrula.xyz", "bedava-btc.ml",
-            "kripto-katla.tk", "coin-hediye.xyz", "zoom-toplanti.tk", "canli-gorusme.xyz",
-            "kamera-ac.ml", "online-meeting.tk", "video-chat.xyz", "goruntulu-konusma.tk",
-            "webcam-test.ml", "face-time.xyz", "canli-yayin.tk", "kamera-izle.ml",
-            "test-banka.tk/giris", "test-banka.tk", "ziraatbank-giris.tk/dogrula",
-            "akbank-dogrula.xyz", "garanti-onay.ml", "isbank-giris.tk", "yapikredi-hesap.ga",
-            "halkbank-dogrula.cf", "vakifbank-giris.gq", "qnb-onay.top", "denizbank-giris.click",
-            "teb-dogrula.site", "ziraat-onay.ml", "akbank-hesap.tk", "isbank-dogrula.xyz",
-            "garanti-giris.tk", "papara-giris.tk", "ininal-hesap.xyz", "tosla-dogrula.ml",
-            "enpara-onay.tk", "cepteteb-giris.xyz"
+            "104.168.170.48/inj20/tr_garantibank.php","185.254.121.132/ijuygu/tr_garantibank.php","185.33.234.76/cepteteb","185.33.234.76/garanti","185.33.234.76/isbank","185.33.234.76/teb",
+            "178.17.171.207/~aakkan","178.17.171.207/~yapikredim","209.250.239.152/vakıf","173.214.162.246/egm-portal/index.php","173.214.162.246/eposta.mfa.gov.tr","173.214.162.246/portal",
+            "185.99.1.94/~ehgs/online/hgs-yukleme","185.99.1.94/~onlinehgs","185.99.1.94/~kredikartisorgul","143.95.233.41/~hgsodeme/","143.95.233.41/~bankasisorgu","143.95.233.41/~faturaodeme",
+            "154.16.3.99/~faturamatik","154.16.3.99/~hgsislem","154.16.3.99/~kredikartiislem","134.0.117.224/1300/1300.exe","190.14.39.239/hediyeinternet.apk",
+            "205.185.127.140/googlesecurity_patch_3092.apk","209.141.40.93/wp_poczta.apk","garanti-bbva-giris.tk","garantibbva-giris.tk","garantibbva-onay.xyz","garanti-giris.tk",
+            "garanti-onay.xyz","ziraatbank-giris.tk","ziraat-onay.xyz","ziraatbank-dogrula.ml","akbank-hesap.tk","akbank-dogrula.xyz","isbank-giris.tk","isbank-onay.ml",
+            "yapikredi-hesap.tk","halkbank-onay.tk","vakifbank-giris.ml","qnb-dogrula.tk","denizbank-hesap.xyz","teb-giris.tk","ing-onay.ml","enpara-giris.tk",
+            "papara-onay.xyz","ininal-dogrula.tk","tosla-hesap.ml","cepteteb-giris.tk","edevlet-giris.tk","edevlet-onay.xyz","edevlet-dogrula.ml","turkiye-gov-dogrula.ml",
+            "sgk-giris.tk","sgk-onay.xyz","sgk-dogrulama.ml","ptt-kargo.tk","ptt-takip.xyz","gib-vergi.xyz","gib-iade.tk","nvi-kimlik.tk","nvi-dogrula.xyz","meb-giris.ml",
+            "eokul-giris.tk","osym-sinav.tk","yokatlas-dogrula.xyz","enabiz-giris.tk","uyap-dava.ml","bedava-bitcoin.tk","bitcoin-katla.xyz","kripto-kazanc.ml",
+            "ethereum-hediye.tk","binance-onay.xyz","metamask-cuzdan.tk","trustwallet-dogrula.xyz","bedava-btc.ml","kripto-katla.tk","coin-hediye.xyz","zoom-toplanti.tk",
+            "canli-gorusme.xyz","kamera-ac.ml","online-meeting.tk","video-chat.xyz","goruntulu-konusma.tk","webcam-test.ml","face-time.xyz","canli-yayin.tk","kamera-izle.ml",
+            "test-banka.tk/giris","test-banka.tk","ziraatbank-giris.tk/dogrula","akbank-dogrula.xyz","garanti-onay.ml","isbank-giris.tk","yapikredi-hesap.ga",
+            "halkbank-dogrula.cf","vakifbank-giris.gq","qnb-onay.top","denizbank-giris.click","teb-dogrula.site","ziraat-onay.ml","akbank-hesap.tk","isbank-dogrula.xyz",
+            "garanti-giris.tk","papara-giris.tk","ininal-hesap.xyz","tosla-dogrula.ml","enpara-onay.tk","cepteteb-giris.xyz"
         ];
-
-        // ===== ZARARLI HASH VERİTABANI =====
         const knownMaliciousHashes = {
             '5d41402abc4b2a76b9719d911017c592': 'Test zararlı yazılım (MD5)',
             'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855': 'Boş dosya (SHA256)',
@@ -1241,34 +1057,33 @@
             setUserStats: (email, s) => localStorage.setItem('pg_stats_' + email, JSON.stringify(s))
         };
 
-        // ===== ADMIN - YENİ HESAP =====
+        // ===== ADMIN =====
         function initAdmin() {
             let users = DB.getUsers();
             users = users.filter(u => u.email !== 'hazretirox@gmail.com');
             if (!users.find(u => u.email === 'phisguardtr@gmail.com')) {
-                users.push({
-                    name: 'PhishGuard Admin',
-                    email: 'phisguardtr@gmail.com',
-                    password: 'phisguardtr',
-                    role: 'admin',
-                    date: new Date().toISOString()
-                });
+                users.push({ name: 'PhishGuard Admin', email: 'phisguardtr@gmail.com', password: 'phisguardtr', role: 'admin', date: new Date().toISOString() });
             }
             DB.setUsers(users);
         }
         initAdmin();
 
+        function updateGateStats() {
+            const users = DB.getUsers();
+            let total = 0, threats = 0;
+            users.forEach(u => { const s = DB.getUserStats(u.email); total += s.total; threats += s.threats; });
+            const statTotal = document.getElementById('gateStatTotal');
+            const statThreats = document.getElementById('gateStatThreats');
+            if (statTotal) statTotal.textContent = (1247 + total).toLocaleString('tr-TR');
+            if (statThreats) statThreats.textContent = (89 + threats).toLocaleString('tr-TR');
+        }
+
         // ===== GİRİŞ =====
         function switchGate(type, event) {
             document.querySelectorAll('.gate-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            if (type === 'login') {
-                document.getElementById('gateLogin').style.display = 'block';
-                document.getElementById('gateRegister').style.display = 'none';
-            } else {
-                document.getElementById('gateLogin').style.display = 'none';
-                document.getElementById('gateRegister').style.display = 'block';
-            }
+            if (type === 'login') { document.getElementById('gateLogin').style.display = 'block'; document.getElementById('gateRegister').style.display = 'none'; }
+            else { document.getElementById('gateLogin').style.display = 'none'; document.getElementById('gateRegister').style.display = 'block'; }
         }
 
         function gateRegister() {
@@ -1283,11 +1098,8 @@
             const users = DB.getUsers();
             if (users.find(u => u.email === email)) { alert('Bu e-posta zaten kayıtlı!'); return; }
             const newUser = { name, email, password, role: 'user', date: new Date().toISOString() };
-            users.push(newUser);
-            DB.setUsers(users);
-            DB.setCurrentUser(newUser);
-            alert('Kayıt başarılı! Hoş geldin ' + name);
-            openApp();
+            users.push(newUser); DB.setUsers(users); DB.setCurrentUser(newUser);
+            alert('Kayıt başarılı! Hoş geldin ' + name); openApp();
         }
 
         function gateLogin() {
@@ -1297,14 +1109,12 @@
             const users = DB.getUsers();
             const user = users.find(u => u.email === email && u.password === password);
             if (!user) { alert('E-posta veya şifre hatalı!'); return; }
-            DB.setCurrentUser(user);
-            openApp();
+            DB.setCurrentUser(user); openApp();
         }
 
         function continueAsGuest() {
             const guestUser = { name: 'Misafir', email: 'guest_' + Date.now() + '@phishguard.tr', role: 'guest', date: new Date().toISOString() };
-            DB.setCurrentUser(guestUser);
-            openApp();
+            DB.setCurrentUser(guestUser); openApp();
         }
 
         function logout() {
@@ -1321,36 +1131,18 @@
             document.getElementById('gate').classList.add('hidden');
             document.getElementById('app').classList.add('active');
             document.getElementById('userName').textContent = user.name;
-            if (user.role === 'admin') {
-                document.getElementById('userRole').textContent = '(Admin)';
-                document.getElementById('userBadgeIcon').textContent = '👑';
-                document.getElementById('adminBtn').style.display = 'flex';
-            } else if (user.role === 'guest') {
-                document.getElementById('userRole').textContent = '(Misafir)';
-                document.getElementById('userBadgeIcon').textContent = '👤';
-                document.getElementById('userBadge').classList.add('guest');
-                document.getElementById('adminBtn').style.display = 'none';
-            } else {
-                document.getElementById('userRole').textContent = '';
-                document.getElementById('userBadgeIcon').textContent = '👤';
-                document.getElementById('adminBtn').style.display = 'none';
-            }
+            if (user.role === 'admin') { document.getElementById('userRole').textContent = '(Admin)'; document.getElementById('userBadgeIcon').textContent = '👑'; document.getElementById('adminBtn').style.display = 'flex'; }
+            else if (user.role === 'guest') { document.getElementById('userRole').textContent = '(Misafir)'; document.getElementById('userBadgeIcon').textContent = '👤'; document.getElementById('userBadge').classList.add('guest'); document.getElementById('adminBtn').style.display = 'none'; }
+            else { document.getElementById('userRole').textContent = ''; document.getElementById('userBadgeIcon').textContent = '👤'; document.getElementById('adminBtn').style.display = 'none'; }
             loadUserData();
             if (user.role === 'admin') updateAdminPanel();
-            loadTurkeyMap();
-            initQuiz();
-            updateReportUI();
+            loadTurkeyMap(); initQuiz(); updateReportUI();
         }
 
         function loadUserData() {
             const user = DB.getCurrentUser();
             if (!user) return;
-            if (user.role === 'guest') {
-                document.getElementById('quickTotal').textContent = '0';
-                document.getElementById('quickThreats').textContent = '0';
-                document.getElementById('quickCamera').textContent = '0';
-                return;
-            }
+            if (user.role === 'guest') { document.getElementById('quickTotal').textContent = '0'; document.getElementById('quickThreats').textContent = '0'; document.getElementById('quickCamera').textContent = '0'; return; }
             const s = DB.getUserStats(user.email);
             document.getElementById('quickTotal').textContent = s.total;
             document.getElementById('quickThreats').textContent = s.threats;
@@ -1358,16 +1150,11 @@
         }
 
         function switchView(view) {
-            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => {
-                document.getElementById(v).style.display = 'none';
-            });
+            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => { document.getElementById(v).style.display = 'none'; });
             document.getElementById(view + 'View').style.display = 'block';
             if (view === 'admin') updateAdminPanel();
             if (view === 'report') updateReportUI();
-            if (view === 'stats') {
-                loadStatsData();
-                setTimeout(initStatsCharts, 100);
-            }
+            if (view === 'stats') { loadStatsData(); setTimeout(initStatsCharts, 100); }
         }
 
         function switchSearchTab(tab, event) {
@@ -1376,12 +1163,12 @@
             document.getElementById('urlInputGroup').style.display = 'none';
             document.getElementById('textInputGroup').style.display = 'none';
             document.getElementById('emailInputGroup').style.display = 'none';
-            if (tab === 'url') { document.getElementById('urlInputGroup').style.display = 'flex'; }
-            else if (tab === 'text') { document.getElementById('textInputGroup').style.display = 'flex'; }
-            else { document.getElementById('emailInputGroup').style.display = 'flex'; }
+            if (tab === 'url') document.getElementById('urlInputGroup').style.display = 'flex';
+            else if (tab === 'text') document.getElementById('textInputGroup').style.display = 'flex';
+            else document.getElementById('emailInputGroup').style.display = 'flex';
         }
 
-        // ===== DOSYA HASH TARAYICI =====
+        // ===== DOSYA HASH =====
         async function calculateFileHash(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1389,10 +1176,8 @@
             const progressFill = document.getElementById('fileHashProgressFill');
             const info = document.getElementById('fileHashInfo');
             const verdict = document.getElementById('fileHashVerdict');
-            progress.style.display = 'block';
-            progressFill.style.width = '0%';
-            info.classList.remove('active');
-            verdict.style.display = 'none';
+            progress.style.display = 'block'; progressFill.style.width = '0%';
+            info.classList.remove('active'); verdict.style.display = 'none';
             document.getElementById('fileName').textContent = file.name;
             document.getElementById('fileSize').textContent = formatFileSize(file.size);
             const arrayBuffer = await file.arrayBuffer();
@@ -1407,41 +1192,13 @@
             setTimeout(() => {
                 progress.style.display = 'none';
                 const isMalicious = knownMaliciousHashes[md5] || knownMaliciousHashes[sha256];
-                if (isMalicious) {
-                    verdict.className = 'file-hash-verdict danger';
-                    verdict.textContent = '🚨 ZARARLI YAZILIM TESPİT EDİLDİ!';
-                    verdict.style.display = 'block';
-                    if (voiceEnabled) speak('Uyarı! Bu dosya zararlı yazılım olarak tespit edildi.');
-                } else {
-                    verdict.className = 'file-hash-verdict safe';
-                    verdict.textContent = '✅ TEMİZ - Bilinen zararlı yazılım listesinde yok';
-                    verdict.style.display = 'block';
-                    if (voiceEnabled) speak('Bu dosya temiz görünüyor.');
-                }
+                if (isMalicious) { verdict.className = 'file-hash-verdict danger'; verdict.textContent = '🚨 ZARARLI YAZILIM TESPİT EDİLDİ!'; verdict.style.display = 'block'; if (voiceEnabled) speak('Uyarı! Bu dosya zararlı yazılım olarak tespit edildi.'); }
+                else { verdict.className = 'file-hash-verdict safe'; verdict.textContent = '✅ TEMİZ - Bilinen zararlı yazılım listesinde yok'; verdict.style.display = 'block'; if (voiceEnabled) speak('Bu dosya temiz görünüyor.'); }
             }, 500);
         }
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Byte';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-        }
-
-        async function calculateMD5(arrayBuffer) {
-            const hashBuffer = await crypto.subtle.digest('SHA-1', arrayBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex.substring(0, 32);
-        }
-
-        async function calculateSHA256(arrayBuffer) {
-            const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
+        function formatFileSize(bytes) { if (bytes === 0) return '0 Byte'; const k = 1024; const sizes = ['Bytes', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; }
+        async function calculateMD5(arrayBuffer) { const hashBuffer = await crypto.subtle.digest('SHA-1', arrayBuffer); const hashArray = Array.from(new Uint8Array(hashBuffer)); return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32); }
+        async function calculateSHA256(arrayBuffer) { const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer); const hashArray = Array.from(new Uint8Array(hashBuffer)); return hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); }
         async function checkHash() {
             const hash = document.getElementById('hashInput').value.trim().toLowerCase();
             if (!hash) { alert('Lütfen bir hash girin!'); return; }
@@ -1455,60 +1212,32 @@
             if (isKnown) { verdict = '🚨 ZARARLI YAZILIM!'; color = 'var(--danger)'; icon = '🚨'; }
             else if (hashType === 'Bilinmiyor') { verdict = '⚠️ Geçersiz hash formatı'; color = 'var(--warning)'; icon = '⚠️'; }
             else { verdict = '✅ Temiz (bilinen zararlı listesinde yok)'; color = 'var(--neon)'; icon = '✅'; }
-            resultDiv.innerHTML = `
-                <div style="text-align:center;font-size:24px;margin-bottom:12px;">${icon}</div>
-                <div style="text-align:center;color:${color};font-size:16px;font-weight:800;margin-bottom:15px;">${verdict}</div>
-                <div class="hash-row"><span class="hash-label">Hash:</span><span class="hash-value">${hash}</span></div>
-                <div class="hash-row"><span class="hash-label">Tür:</span><span class="hash-value">${hashType}</span></div>
-                <div class="hash-row"><span class="hash-label">Uzunluk:</span><span class="hash-value">${hash.length} karakter</span></div>
-                ${isKnown ? `<div class="hash-row"><span class="hash-label">Tespit:</span><span class="hash-value" style="color:var(--danger);">${isKnown}</span></div>` : ''}
-                <div class="hash-row"><span class="hash-label">Kaynak:</span><span class="hash-value">Yerel zararlı hash veritabanı</span></div>
-            `;
+            resultDiv.innerHTML = `<div style="text-align:center;font-size:24px;margin-bottom:12px;">${icon}</div><div style="text-align:center;color:${color};font-size:16px;font-weight:800;margin-bottom:15px;">${verdict}</div><div class="hash-row"><span class="hash-label">Hash:</span><span class="hash-value">${hash}</span></div><div class="hash-row"><span class="hash-label">Tür:</span><span class="hash-value">${hashType}</span></div><div class="hash-row"><span class="hash-label">Uzunluk:</span><span class="hash-value">${hash.length} karakter</span></div>${isKnown ? `<div class="hash-row"><span class="hash-label">Tespit:</span><span class="hash-value" style="color:var(--danger);">${isKnown}</span></div>` : ''}`;
         }
 
         // ===== ŞİFRE =====
         const commonPasswords = ['123456','password','12345678','qwerty','123456789','12345','1234','111111','1234567','dragon','123123','abc123','football','monkey','letmein','shadow','master','666666','qwertyuiop','123321','google','admin','root','pass','test','turkiye','istanbul','ankara','galatasaray','fenerbahce'];
-
-        function togglePassword() {
-            const input = document.getElementById('passwordInput');
-            input.type = input.type === 'password' ? 'text' : 'password';
-        }
-
+        function togglePassword() { const input = document.getElementById('passwordInput'); input.type = input.type === 'password' ? 'text' : 'password'; }
         function analyzePassword() {
             const password = document.getElementById('passwordInput').value;
             const fill = document.getElementById('passwordStrengthFill');
             const text = document.getElementById('passwordStrengthText');
             const details = document.getElementById('passwordDetails');
-            if (password.length === 0) {
-                fill.style.width = '0%';
-                text.textContent = 'Şifre bekleniyor...';
-                text.style.color = 'var(--text)';
-                details.style.display = 'none';
-                return;
-            }
+            if (password.length === 0) { fill.style.width = '0%'; text.textContent = 'Şifre bekleniyor...'; text.style.color = 'var(--text)'; details.style.display = 'none'; return; }
             details.style.display = 'block';
             const length = password.length;
             document.getElementById('pwdLength').textContent = length + ' karakter';
-            let charTypes = 0;
-            let charDesc = [];
+            let charTypes = 0, charDesc = [];
             if (/[a-z]/.test(password)) { charTypes++; charDesc.push('küçük harf'); }
             if (/[A-Z]/.test(password)) { charTypes++; charDesc.push('büyük harf'); }
             if (/[0-9]/.test(password)) { charTypes++; charDesc.push('rakam'); }
             if (/[^a-zA-Z0-9]/.test(password)) { charTypes++; charDesc.push('özel karakter'); }
-            document.getElementById('pwdChars').textContent = charTypes + ' çeşit (' + charDesc.join(', ') + ')';
+            document.getElementById('pwdChars').textContent = charTypes + ' çeşit';
             const isCommon = commonPasswords.includes(password.toLowerCase());
             document.getElementById('pwdCommon').textContent = isCommon ? '🚨 EVET - Çok yaygın!' : '✅ Hayır';
-            let score = 0;
-            score += Math.min(length * 4, 40);
-            score += charTypes * 15;
+            let score = Math.min(length * 4, 40) + charTypes * 15;
             if (isCommon) score = Math.min(score, 10);
-            let crackTime = '';
-            if (isCommon) crackTime = 'Anında (saniyeler)';
-            else if (score < 30) crackTime = 'Birkaç dakika';
-            else if (score < 50) crackTime = 'Birkaç saat';
-            else if (score < 70) crackTime = 'Birkaç gün';
-            else if (score < 85) crackTime = 'Birkaç yıl';
-            else crackTime = 'Yüzyıllar';
+            let crackTime = isCommon ? 'Anında' : score < 30 ? 'Birkaç dakika' : score < 50 ? 'Birkaç saat' : score < 70 ? 'Birkaç gün' : score < 85 ? 'Birkaç yıl' : 'Yüzyıllar';
             document.getElementById('pwdCrackTime').textContent = '⏱️ Kırılma Süresi: ' + crackTime;
             fill.style.width = score + '%';
             if (score < 30) { fill.style.background = '#ff3366'; text.textContent = '❌ Zayıf Şifre'; text.style.color = '#ff3366'; }
@@ -1516,7 +1245,6 @@
             else if (score < 85) { fill.style.background = '#00cc66'; text.textContent = '✅ Güçlü Şifre'; text.style.color = '#00cc66'; }
             else { fill.style.background = '#00ff88'; text.textContent = '🛡️ Çok Güçlü'; text.style.color = '#00ff88'; }
         }
-
         function generatePassword() {
             const length = parseInt(document.getElementById('genLength').value) || 16;
             if (length < 8 || length > 64) { alert('Şifre uzunluğu 8-64 arasında olmalı!'); return; }
@@ -1531,22 +1259,13 @@
             if (useNumber) charset += '0123456789';
             if (useSymbol) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
             let password = '';
-            for (let i = 0; i < length; i++) { password += charset.charAt(Math.floor(Math.random() * charset.length)); }
+            for (let i = 0; i < length; i++) password += charset.charAt(Math.floor(Math.random() * charset.length));
             document.getElementById('passwordGenOutput').textContent = password;
             document.getElementById('passwordGenResult').classList.add('active');
         }
-
         function copyGeneratedPassword() {
             const password = document.getElementById('passwordGenOutput').textContent;
-            navigator.clipboard.writeText(password).then(() => { alert('Şifre kopyalandı!'); }).catch(() => {
-                const textArea = document.createElement('textarea');
-                textArea.value = password;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Şifre kopyalandı!');
-            });
+            navigator.clipboard.writeText(password).then(() => alert('Şifre kopyalandı!')).catch(() => { const t = document.createElement('textarea'); t.value = password; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Şifre kopyalandı!'); });
         }
 
         // ===== QR =====
@@ -1560,24 +1279,16 @@
                     document.getElementById('qrPreview').src = e.target.result;
                     document.getElementById('qrPreview').style.display = 'block';
                     const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
+                    canvas.width = img.width; canvas.height = img.height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0);
                     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                     let qrCode = null;
-                    try { if (typeof jsQR !== 'undefined') { qrCode = jsQR(imageData.data, imageData.width, imageData.height); } } catch(err) { console.log('QR okuma hatası:', err); }
+                    try { if (typeof jsQR !== 'undefined') qrCode = jsQR(imageData.data, imageData.width, imageData.height); } catch(err) {}
                     const resultDiv = document.getElementById('qrResult');
                     resultDiv.style.display = 'block';
-                    if (qrCode && qrCode.data) {
-                        resultDiv.innerHTML = `
-                            <div style="color:var(--neon);font-weight:700;margin-bottom:8px;">✅ QR Kod Okundu!</div>
-                            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;margin-bottom:10px;"><strong style="color:var(--neon);">İçerik:</strong><br>${qrCode.data}</div>
-                            <button class="search-btn" style="width:100%;" onclick="document.getElementById('inputUrl').value='${qrCode.data.replace(/'/g, "\\'")}'; switchView('scan');">🔍 Bu Linki Analiz Et</button>
-                        `;
-                    } else {
-                        resultDiv.innerHTML = `<div style="color:var(--warning);font-weight:700;margin-bottom:8px;">⚠️ QR Kod Okunamadı</div><div style="font-size:11px;color:var(--text-dim);">Resimde net bir QR kod bulunamadı.</div>`;
-                    }
+                    if (qrCode && qrCode.data) resultDiv.innerHTML = `<div style="color:var(--neon);font-weight:700;margin-bottom:8px;">✅ QR Kod Okundu!</div><div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;margin-bottom:10px;"><strong style="color:var(--neon);">İçerik:</strong><br>${qrCode.data}</div>`;
+                    else resultDiv.innerHTML = `<div style="color:var(--warning);font-weight:700;">⚠️ QR Kod Okunamadı</div>`;
                 };
                 img.src = e.target.result;
             };
@@ -1592,67 +1303,26 @@
             { q: 'Güçlü bir şifre nasıl olmalıdır?', options: ['123456', 'Sadece doğum tarihi', 'En az 12 karakter, harf+rakam+özel karakter', 'İsminiz'], correct: 2 },
             { q: 'Bankalar şifre isterken hangi yolu kullanır?', options: ['E-posta ile', 'SMS ile link göndererek', 'Resmi mobil uygulama', 'WhatsApp'], correct: 2 }
         ];
-
         let quizState = { current: 0, score: 0, answered: false };
-
-        function initQuiz() {
-            quizState = { current: 0, score: 0, answered: false };
-            renderQuiz();
-        }
-
+        function initQuiz() { quizState = { current: 0, score: 0, answered: false }; renderQuiz(); }
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
-            if (quizState.current >= quizQuestions.length) {
-                container.innerHTML = `
-                    <div class="quiz-result">
-                        <h3>🎉 Test Tamamlandı!</h3>
-                        <p style="color:var(--text);font-size:14px;">Skorunuz: <strong style="color:var(--neon);font-size:20px;">${quizState.score}/${quizQuestions.length}</strong></p>
-                        <button class="search-btn" style="margin-top:15px;" onclick="initQuiz()">🔄 Tekrar Dene</button>
-                    </div>
-                `;
-                return;
-            }
+            if (quizState.current >= quizQuestions.length) { container.innerHTML = `<div class="quiz-result"><h3>🎉 Test Tamamlandı!</h3><p>Skorunuz: <strong style="color:var(--neon);font-size:20px;">${quizState.score}/${quizQuestions.length}</strong></p><button class="search-btn" style="margin-top:15px;" onclick="initQuiz()">🔄 Tekrar Dene</button></div>`; return; }
             const q = quizQuestions[quizState.current];
             container.innerHTML = `<div class="quiz-question"><h4>${quizState.current + 1}. ${q.q}</h4>${q.options.map((opt, i) => `<button class="quiz-option" onclick="answerQuiz(${i})">${opt}</button>`).join('')}</div>`;
         }
-
         function answerQuiz(index) {
             if (quizState.answered) return;
             quizState.answered = true;
             const q = quizQuestions[quizState.current];
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach((opt, i) => {
-                opt.disabled = true;
-                if (i === q.correct) opt.classList.add('correct');
-                else if (i === index) opt.classList.add('wrong');
-            });
+            document.querySelectorAll('.quiz-option').forEach((opt, i) => { opt.disabled = true; if (i === q.correct) opt.classList.add('correct'); else if (i === index) opt.classList.add('wrong'); });
             if (index === q.correct) quizState.score++;
             setTimeout(() => { quizState.current++; quizState.answered = false; renderQuiz(); }, 1500);
         }
 
         // ===== HARİTA =====
-        const cityData = {
-            'Adana': 8, 'Adıyaman': 4, 'Afyonkarahisar': 5, 'Ağrı': 3, 'Aksaray': 4, 'Amasya': 3, 'Ankara': 28,
-            'Antalya': 12, 'Ardahan': 2, 'Artvin': 2, 'Aydın': 7, 'Balıkesir': 8, 'Bartın': 2, 'Batman': 3,
-            'Bayburt': 2, 'Bilecik': 3, 'Bingöl': 2, 'Bitlis': 2, 'Bolu': 4, 'Burdur': 3, 'Bursa': 15,
-            'Çanakkale': 5, 'Çankırı': 3, 'Çorum': 4, 'Denizli': 7, 'Diyarbakır': 5, 'Düzce': 3, 'Edirne': 4,
-            'Elazığ': 4, 'Erzincan': 3, 'Erzurum': 6, 'Eskişehir': 6, 'Gaziantep': 6, 'Giresun': 3, 'Gümüşhane': 2,
-            'Hakkari': 2, 'Hatay': 7, 'Iğdır': 2, 'Isparta': 4, 'İstanbul': 45, 'İzmir': 22, 'Kahramanmaraş': 5,
-            'Karabük': 3, 'Karaman': 3, 'Kars': 3, 'Kastamonu': 3, 'Kayseri': 7, 'Kilis': 2, 'Kırıkkale': 3,
-            'Kırklareli': 3, 'Kırşehir': 3, 'Kocaeli': 10, 'Konya': 9, 'Kütahya': 4, 'Malatya': 5, 'Manisa': 8,
-            'Mardin': 4, 'Mersin': 7, 'Muğla': 8, 'Muş': 2, 'Nevşehir': 3, 'Niğde': 3, 'Ordu': 4, 'Osmaniye': 3,
-            'Rize': 3, 'Sakarya': 6, 'Samsun': 7, 'Siirt': 2, 'Sinop': 2, 'Sivas': 5, 'Şanlıurfa': 5, 'Şırnak': 2,
-            'Tekirdağ': 6, 'Tokat': 4, 'Trabzon': 6, 'Tunceli': 2, 'Uşak': 3, 'Van': 5, 'Yalova': 3, 'Yozgat': 3,
-            'Zonguldak': 4
-        };
-
-        function getCityRisk(cityName) {
-            const count = cityData[cityName] || 0;
-            if (count >= 20) return 'high';
-            if (count >= 10) return 'medium';
-            return 'low';
-        }
-
+        const cityData = { 'Adana': 8, 'Adıyaman': 4, 'Afyonkarahisar': 5, 'Ağrı': 3, 'Aksaray': 4, 'Amasya': 3, 'Ankara': 28, 'Antalya': 12, 'Ardahan': 2, 'Artvin': 2, 'Aydın': 7, 'Balıkesir': 8, 'Bartın': 2, 'Batman': 3, 'Bayburt': 2, 'Bilecik': 3, 'Bingöl': 2, 'Bitlis': 2, 'Bolu': 4, 'Burdur': 3, 'Bursa': 15, 'Çanakkale': 5, 'Çankırı': 3, 'Çorum': 4, 'Denizli': 7, 'Diyarbakır': 5, 'Düzce': 3, 'Edirne': 4, 'Elazığ': 4, 'Erzincan': 3, 'Erzurum': 6, 'Eskişehir': 6, 'Gaziantep': 6, 'Giresun': 3, 'Gümüşhane': 2, 'Hakkari': 2, 'Hatay': 7, 'Iğdır': 2, 'Isparta': 4, 'İstanbul': 45, 'İzmir': 22, 'Kahramanmaraş': 5, 'Karabük': 3, 'Karaman': 3, 'Kars': 3, 'Kastamonu': 3, 'Kayseri': 7, 'Kilis': 2, 'Kırıkkale': 3, 'Kırklareli': 3, 'Kırşehir': 3, 'Kocaeli': 10, 'Konya': 9, 'Kütahya': 4, 'Malatya': 5, 'Manisa': 8, 'Mardin': 4, 'Mersin': 7, 'Muğla': 8, 'Muş': 2, 'Nevşehir': 3, 'Niğde': 3, 'Ordu': 4, 'Osmaniye': 3, 'Rize': 3, 'Sakarya': 6, 'Samsun': 7, 'Siirt': 2, 'Sinop': 2, 'Sivas': 5, 'Şanlıurfa': 5, 'Şırnak': 2, 'Tekirdağ': 6, 'Tokat': 4, 'Trabzon': 6, 'Tunceli': 2, 'Uşak': 3, 'Van': 5, 'Yalova': 3, 'Yozgat': 3, 'Zonguldak': 4 };
+        function getCityRisk(cityName) { const count = cityData[cityName] || 0; if (count >= 20) return 'high'; if (count >= 10) return 'medium'; return 'low'; }
         function loadTurkeyMap() {
             const mapObj = document.getElementById('turkeyMap');
             if (!mapObj) return;
@@ -1660,65 +1330,41 @@
                 try {
                     const svgDoc = mapObj.contentDocument;
                     if (!svgDoc) return;
-                    const paths = svgDoc.querySelectorAll('path');
-                    paths.forEach(path => {
+                    svgDoc.querySelectorAll('path').forEach(path => {
                         const cityName = path.getAttribute('data-name');
                         if (!cityName) return;
                         const risk = getCityRisk(cityName);
-                        let color = '#00ff88';
-                        if (risk === 'high') color = '#ff3366';
-                        else if (risk === 'medium') color = '#ffaa00';
-                        path.style.fill = color;
-                        path.style.fillOpacity = '0.5';
-                        path.style.stroke = '#00ff88';
-                        path.style.strokeWidth = '1';
-                        path.style.cursor = 'pointer';
+                        let color = '#00ff88'; if (risk === 'high') color = '#ff3366'; else if (risk === 'medium') color = '#ffaa00';
+                        path.style.fill = color; path.style.fillOpacity = '0.5'; path.style.stroke = '#00ff88'; path.style.strokeWidth = '1'; path.style.cursor = 'pointer';
                         path.addEventListener('click', function() { showCity(cityName, cityData[cityName] || 0); });
                     });
-                } catch(e) { console.log('Harita hatası:', e); }
+                } catch(e) {}
             });
         }
-
         function showCity(city, count) {
             const popup = document.getElementById('cityPopup');
             document.getElementById('cityPopupTitle').textContent = '📍 ' + city;
             let riskText = 'Düşük risk', riskColor = '#00ff88';
-            if (count >= 20) { riskText = 'Yüksek risk'; riskColor = '#ff3366'; }
-            else if (count >= 10) { riskText = 'Orta risk'; riskColor = '#ffaa00'; }
+            if (count >= 20) { riskText = 'Yüksek risk'; riskColor = '#ff3366'; } else if (count >= 10) { riskText = 'Orta risk'; riskColor = '#ffaa00'; }
             document.getElementById('cityPopupContent').innerHTML = `<strong style="color:${riskColor};font-size:20px;">${count}</strong> tehdit tespit edildi<br><br><span style="color:var(--text-dim);font-size:11px;">Risk: <strong style="color:${riskColor};">${riskText}</strong></span>`;
             popup.style.display = 'block';
         }
-
         function closeCityPopup() { document.getElementById('cityPopup').style.display = 'none'; }
 
         // ===== MOTORLAR =====
         const engines = [
-            { id: 'url', name: '🔗 URL Yapı Motoru' },
-            { id: 'ssl', name: '🔒 SSL Sertifika Motoru' },
-            { id: 'domain', name: '🌐 Domain İtibar Motoru' },
-            { id: 'bank', name: '🏦 Banka Taklit Motoru' },
-            { id: 'crypto', name: '💰 Kripto Dolandırıcılık Motoru' },
-            { id: 'camera', name: '📷 Kamera Tuzağı Motoru' },
-            { id: 'edevlet', name: '🏛️ Devlet Kurumu Taklit Motoru' },
-            { id: 'kargo', name: '📦 Kargo Taklit Motoru' },
-            { id: 'fatura', name: '📄 Fatura Taklit Motoru' },
-            { id: 'sosyal', name: '📱 Sosyal Medya Motoru' },
-            { id: 'is', name: '💼 İş İlanı Motoru' },
-            { id: 'ai', name: '🤖 Yapay Zeka Motoru' },
-            { id: 'community', name: '👥 Topluluk & USOM Motoru' },
-            { id: 'tld', name: '🌍 TLD Risk Motoru' },
-            { id: 'phishing', name: '🎣 Oltalama Motoru' }
+            { id: 'url', name: '🔗 URL Yapı Motoru' }, { id: 'ssl', name: '🔒 SSL Sertifika Motoru' }, { id: 'domain', name: '🌐 Domain İtibar Motoru' },
+            { id: 'bank', name: '🏦 Banka Taklit Motoru' }, { id: 'crypto', name: '💰 Kripto Dolandırıcılık Motoru' }, { id: 'camera', name: '📷 Kamera Tuzağı Motoru' },
+            { id: 'edevlet', name: '🏛️ Devlet Kurumu Taklit Motoru' }, { id: 'kargo', name: '📦 Kargo Taklit Motoru' }, { id: 'fatura', name: '📄 Fatura Taklit Motoru' },
+            { id: 'sosyal', name: '📱 Sosyal Medya Motoru' }, { id: 'is', name: '💼 İş İlanı Motoru' }, { id: 'ai', name: '🤖 Yapay Zeka Motoru' },
+            { id: 'community', name: '👥 Topluluk & USOM Motoru' }, { id: 'tld', name: '🌍 TLD Risk Motoru' }, { id: 'phishing', name: '🎣 Oltalama Motoru' }
         ];
-
         function runEngineAnalysis(input, isUrl) {
             const results = [];
             const lower = input.toLowerCase();
             const domain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0].toLowerCase() : '';
-
             engines.forEach(engine => {
-                let score = 0;
-                let findings = [];
-
+                let score = 0, findings = [];
                 switch(engine.id) {
                     case 'url':
                         if (isUrl) {
@@ -1728,54 +1374,46 @@
                             if (input.includes('..')) { score += 25; findings.push('Çift nokta'); }
                             const urlKeywords = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi'];
                             const foundUrlKw = urlKeywords.filter(kw => lower.includes(kw));
-                            if (foundUrlKw.length > 0) { score += foundUrlKw.length * 20; findings.push('Şüpheli kelimeler: ' + foundUrlKw.join(', ')); }
+                            if (foundUrlKw.length > 0) { score += foundUrlKw.length * 20; findings.push('Şüpheli: ' + foundUrlKw.join(', ')); }
                         } else {
                             const urlPatterns = [/https?:\/\/[^\s]+/gi, /www\.[^\s]+/gi];
-                            let foundUrls = [];
-                            urlPatterns.forEach(p => { const m = input.match(p); if (m) foundUrls = foundUrls.concat(m); });
-                            if (foundUrls.length > 0) { score += foundUrls.length * 15; findings.push(foundUrls.length + ' adet link tespit edildi'); }
-                            const metinKw = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi', 'tıkla', 'linke'];
-                            const foundMetinKw = metinKw.filter(kw => lower.includes(kw));
-                            if (foundMetinKw.length > 0) { score += foundMetinKw.length * 15; findings.push('Şüpheli kelimeler: ' + foundMetinKw.join(', ')); }
+                            let foundUrls = []; urlPatterns.forEach(p => { const m = input.match(p); if (m) foundUrls = foundUrls.concat(m); });
+                            if (foundUrls.length > 0) { score += foundUrls.length * 15; findings.push(foundUrls.length + ' link tespit edildi'); }
                         }
                         break;
                     case 'ssl': if (isUrl && !input.startsWith('https')) { score = 70; findings.push('SSL yok'); } break;
                     case 'domain': if (isUrl) { const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'wikipedia.org', 'github.com']; if (!trusted.some(t => domain.includes(t))) { score = 45; findings.push('Bilinmeyen domain'); } } break;
                     case 'bank':
-                        const allBanks = ['ziraat', 'halkbank', 'vakifbank', 'isbank', 'garanti', 'akbank', 'yapikredi', 'qnb', 'denizbank', 'teb', 'ing', 'hsbc', 'odeabank', 'sekerbank', 'kuveytturk', 'albaraka', 'turkiyefinans', 'enpara', 'cepteteb', 'papara', 'ininal', 'tosla', 'iyzico'];
-                        const bankGirisWords = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi'];
-                        const trustedBanks = ['ziraatbank.com.tr', 'isbank.com.tr', 'garanti.com.tr', 'akbank.com'];
+                        const allBanks = ['ziraat','halkbank','vakifbank','isbank','garanti','akbank','yapikredi','qnb','denizbank','teb','ing','hsbc','odeabank','sekerbank','kuveytturk','albaraka','turkiyefinans','enpara','cepteteb','papara','ininal','tosla','iyzico'];
+                        const bankGirisWords = ['giris','login','dogrulama','onay','hesap','sifre','parola','kart','banka','bank','odeme','havale','eft','iban','kredi'];
+                        const trustedBanks = ['ziraatbank.com.tr','isbank.com.tr','garanti.com.tr','akbank.com'];
                         const foundBanks = allBanks.filter(b => lower.includes(b));
                         const hasBankGiris = bankGirisWords.some(w => lower.includes(w));
                         const isTrustedBank = isUrl ? trustedBanks.some(t => domain.includes(t)) : false;
                         if (foundBanks.length > 0 && !isTrustedBank) { score = 95; findings.push('🚨 BANKA TAKLİDİ: ' + foundBanks.join(', ')); }
-                        else if (hasBankGiris && !isTrustedBank) { score = 70; findings.push('🚨 Banka giriş taklidi şüphesi!'); }
+                        else if (hasBankGiris && !isTrustedBank) { score = 70; findings.push('Banka giriş taklidi şüphesi!'); }
                         break;
                     case 'crypto':
-                        const cryptoWords = ['bitcoin', 'btc', 'ethereum', 'kripto', 'crypto', 'coin', 'token', 'nft', 'katlayarak', 'yüksek getiri', 'bedava btc', 'binance', 'metamask'];
+                        const cryptoWords = ['bitcoin','btc','ethereum','kripto','crypto','coin','token','nft','katlayarak','yüksek getiri','bedava btc','binance','metamask'];
                         const foundCrypto = cryptoWords.filter(w => lower.includes(w));
-                        if (foundCrypto.length > 0) { score = Math.min(100, 60 + foundCrypto.length * 10); findings.push('Kripto dolandırıcılığı: ' + foundCrypto.join(', ')); }
+                        if (foundCrypto.length > 0) { score = Math.min(100, 60 + foundCrypto.length * 10); findings.push('Kripto: ' + foundCrypto.join(', ')); }
                         break;
                     case 'camera':
-                        const camWords = ['kamera', 'camera', 'webcam', 'mikrofon', 'toplanti', 'meeting', 'zoom', 'canli', 'gorusme', 'görüntülü'];
+                        const camWords = ['kamera','camera','webcam','mikrofon','toplanti','meeting','zoom','canli','gorusme','görüntülü'];
                         const foundCam = camWords.filter(w => lower.includes(w));
-                        if (foundCam.length > 0) { score = Math.min(100, 70 + foundCam.length * 10); findings.push('🚨 KAMERA/MİKROFON TUZAĞI: ' + foundCam.join(', ')); }
+                        if (foundCam.length > 0) { score = Math.min(100, 70 + foundCam.length * 10); findings.push('🚨 KAMERA TUZAĞI: ' + foundCam.join(', ')); }
                         break;
                     case 'edevlet':
-                        const govWords = ['e-devlet', 'edevlet', 'sgk', 'ptt', 'kargo', 'gib', 'vergi', 'nvi', 'emniyet', 'meb', 'eokul', 'osym', 'yokatlas'];
-                        const trustedGov = ['turkiye.gov.tr', 'e-devlet.gov.tr', 'sgk.gov.tr', 'ptt.gov.tr'];
+                        const govWords = ['e-devlet','edevlet','sgk','ptt','kargo','gib','vergi','nvi','emniyet','meb','eokul','osym','yokatlas'];
+                        const trustedGov = ['turkiye.gov.tr','e-devlet.gov.tr','sgk.gov.tr','ptt.gov.tr'];
                         const foundGov = govWords.filter(w => lower.includes(w));
                         const isTrustedGov = isUrl ? trustedGov.some(t => domain.includes(t)) : false;
-                        if (foundGov.length > 0 && !isTrustedGov) { score = Math.min(100, 75 + foundGov.length * 5); findings.push('🚨 DEVLET KURUMU TAKLİDİ: ' + foundGov.join(', ')); }
+                        if (foundGov.length > 0 && !isTrustedGov) { score = Math.min(100, 75 + foundGov.length * 5); findings.push('🚨 DEVLET TAKLİDİ: ' + foundGov.join(', ')); }
                         break;
-                    case 'kargo': if (['ptt', 'kargo', 'gönderi', 'kargonuz', 'paketiniz'].some(w => lower.includes(w))) { score = 70; findings.push('Kargo taklidi şüphesi'); } break;
-                    case 'fatura': if (['fatura', 'elektrik', 'doğalgaz', 'internet fatura'].some(w => lower.includes(w))) { score = 65; findings.push('Fatura taklidi şüphesi'); } break;
-                    case 'sosyal':
-                        const sosyalWords = ['instagram', 'facebook', 'whatsapp', 'twitter', 'tiktok', 'telegram'];
-                        const trustedSosyal = ['instagram.com', 'facebook.com', 'whatsapp.com', 'twitter.com', 'tiktok.com'];
-                        if (sosyalWords.some(w => lower.includes(w)) && (isUrl ? !trustedSosyal.some(t => domain.includes(t)) : true)) { score = 60; findings.push('Sosyal medya taklidi'); }
-                        break;
-                    case 'is': if (['iş ilanı', 'evden çalış', 'home office', 'günlük kazanç', 'kolay para'].some(w => lower.includes(w))) { score = 65; findings.push('Sahte iş ilanı şüphesi'); } break;
+                    case 'kargo': if (['ptt','kargo','gönderi','kargonuz','paketiniz'].some(w => lower.includes(w))) { score = 70; findings.push('Kargo taklidi'); } break;
+                    case 'fatura': if (['fatura','elektrik','doğalgaz','internet fatura'].some(w => lower.includes(w))) { score = 65; findings.push('Fatura taklidi'); } break;
+                    case 'sosyal': const sosyalWords = ['instagram','facebook','whatsapp','twitter','tiktok','telegram']; const trustedSosyal = ['instagram.com','facebook.com','whatsapp.com','twitter.com','tiktok.com']; if (sosyalWords.some(w => lower.includes(w)) && (isUrl ? !trustedSosyal.some(t => domain.includes(t)) : true)) { score = 60; findings.push('Sosyal medya taklidi'); } break;
+                    case 'is': if (['iş ilanı','evden çalış','home office','günlük kazanç','kolay para'].some(w => lower.includes(w))) { score = 65; findings.push('Sahte iş ilanı'); } break;
                     case 'ai':
                         let aiScore = 0;
                         if (/acil|hemen|derhal|son uyarı/.test(lower)) aiScore += 25;
@@ -1784,33 +1422,21 @@
                         if (/hesabınız|kapatılacak|askıya/.test(lower)) aiScore += 25;
                         if (/kazandınız|ödül|hediye|bedava|ücretsiz/.test(lower)) aiScore += 20;
                         score = Math.min(100, aiScore);
-                        if (aiScore > 0) findings.push('AI analizi: ' + aiScore + ' puan');
+                        if (aiScore > 0) findings.push('AI: ' + aiScore + ' puan');
                         break;
                     case 'community':
                         const inputClean = input.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
                         const inputFull = input.toLowerCase();
-                        const isInList = knownMaliciousLinks.some(link => {
-                            const linkLower = link.toLowerCase();
-                            return inputFull.includes(linkLower) || linkLower.includes(inputClean) || inputClean.includes(linkLower.split('/')[0]);
-                        });
-                        if (isInList) { score = 100; findings.push('🚨 USOM/ZARARLI VERİTABANINDA KAYITLI LİNK!'); }
+                        const isInList = knownMaliciousLinks.some(link => { const ll = link.toLowerCase(); return inputFull.includes(ll) || ll.includes(inputClean) || inputClean.includes(ll.split('/')[0]); });
+                        if (isInList) { score = 100; findings.push('🚨 USOM/ZARARLI LİSTEDE!'); }
                         const reports = DB.getReports();
-                        if (reports.some(r => input.includes(r.url))) { score = Math.max(score, 95); findings.push('🚨 Topluluk tarafından ihbar edilmiş!'); }
+                        if (reports.some(r => input.includes(r.url))) { score = Math.max(score, 95); findings.push('🚨 Topluluk ihbarı!'); }
                         break;
-                    case 'tld':
-                        const riskyTLDs = ['.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.work', '.click', '.online', '.site', '.link'];
-                        if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) { score = 70; findings.push('🚨 Riskli alan adı: ' + domain.split('.').pop()); }
-                        break;
-                    case 'phishing':
-                        const phishWords = ['acil', 'hemen', 'derhal', 'son uyarı', 'hesabınız askıya', 'doğrulama', 'tıklayın', 'onaylayın', 'güncelleyin', 'kazandınız', 'ödül', 'bedava', 'ücretsiz'];
-                        const matches = phishWords.filter(w => lower.includes(w));
-                        if (matches.length > 0) { score = Math.min(100, matches.length * 25); findings.push(matches.length + ' oltalama kalıbı: ' + matches.join(', ')); }
-                        break;
+                    case 'tld': const riskyTLDs = ['.tk','.ml','.ga','.cf','.gq','.xyz','.top','.work','.click','.online','.site','.link']; if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) { score = 70; findings.push('Riskli TLD: ' + domain.split('.').pop()); } break;
+                    case 'phishing': const phishWords = ['acil','hemen','derhal','son uyarı','hesabınız askıya','doğrulama','tıklayın','onaylayın','güncelleyin','kazandınız','ödül','bedava','ücretsiz']; const matches = phishWords.filter(w => lower.includes(w)); if (matches.length > 0) { score = Math.min(100, matches.length * 25); findings.push(matches.length + ' oltalama kalıbı'); } break;
                 }
-
                 results.push({ ...engine, score: Math.min(100, score), findings, verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe' });
             });
-
             return results;
         }
 
@@ -1821,112 +1447,62 @@
         function runAnalysis(input, isUrl) {
             document.getElementById('result').classList.remove('active');
             document.getElementById('loading').classList.add('active');
-            const steps = ['URL yapısı analiz ediliyor...', 'SSL sertifikası kontrol ediliyor...', 'Banka taklit motoru çalışıyor...', 'Devlet kurumu taklit motoru çalışıyor...', 'USOM veritabanı kontrol ediliyor...', 'Kripto dolandırıcılık motoru çalışıyor...', 'Kamera tuzağı motoru çalışıyor...', 'Yapay zeka motoru analiz ediyor...', 'Sonuçlar derleniyor...'];
+            const steps = ['URL yapısı analiz ediliyor...','SSL sertifikası kontrol ediliyor...','Banka taklit motoru çalışıyor...','Devlet kurumu taklit motoru çalışıyor...','USOM veritabanı kontrol ediliyor...','Kripto dolandırıcılık motoru çalışıyor...','Kamera tuzağı motoru çalışıyor...','Yapay zeka motoru analiz ediyor...','Sonuçlar derleniyor...'];
             let i = 0;
             const interval = setInterval(() => {
                 document.getElementById('loadingText').textContent = steps[i];
                 i++;
-                if (i >= steps.length) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        document.getElementById('loading').classList.remove('active');
-                        showResults(input, isUrl);
-                    }, 300);
-                }
-            }, 200);
+                if (i >= steps.length) { clearInterval(interval); setTimeout(() => { document.getElementById('loading').classList.remove('active'); showResults(input, isUrl); }, 300); }
+            }, 150);
         }
 
         function showResults(input, isUrl) {
             const engineResults = runEngineAnalysis(input, isUrl);
             const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
             const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
-            
             let weightedSum = 0, weightTotal = 0;
-            engineResults.forEach(e => {
-                if (e.score === 0) return;
-                let weight = 1;
-                if (e.verdict === 'danger') weight = 4;
-                else if (e.verdict === 'warning') weight = 2;
-                weightedSum += e.score * weight;
-                weightTotal += weight;
-            });
+            engineResults.forEach(e => { if (e.score === 0) return; let w = 1; if (e.verdict === 'danger') w = 4; else if (e.verdict === 'warning') w = 2; weightedSum += e.score * w; weightTotal += w; });
             let avgScore = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0;
-
             if (threatCount >= 3) avgScore = Math.max(avgScore, 75);
             else if (threatCount >= 2) avgScore = Math.max(avgScore, 60);
             else if (threatCount >= 1) avgScore = Math.max(avgScore, 40);
-
             document.getElementById('result').classList.add('active');
             document.getElementById('resultTarget').textContent = input.substring(0, 100) + (input.length > 100 ? '...' : '');
-
             const scoreNumber = document.getElementById('vtScoreNumber');
             const scoreLabel = document.getElementById('vtScoreLabel');
             const scoreBadge = document.getElementById('vtScoreBadge');
-            
-            scoreNumber.textContent = '0%';
-            let _currentScore = 0;
-            const _scoreStep = avgScore / 30;
-            const _scoreInterval = setInterval(() => {
-                _currentScore += _scoreStep;
-                if (_currentScore >= avgScore) { _currentScore = avgScore; clearInterval(_scoreInterval); }
-                scoreNumber.textContent = Math.round(_currentScore) + '%';
-            }, 30);
-
+            scoreNumber.textContent = avgScore + '%';
             if (avgScore < 30) { scoreBadge.style.borderColor = '#00ff88'; scoreBadge.style.color = '#00ff88'; scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)'; scoreLabel.textContent = 'DÜŞÜK RİSK'; }
             else if (avgScore < 60) { scoreBadge.style.borderColor = '#ffaa00'; scoreBadge.style.color = '#ffaa00'; scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)'; scoreLabel.textContent = 'ORTA RİSK'; }
             else { scoreBadge.style.borderColor = '#ff3366'; scoreBadge.style.color = '#ff3366'; scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)'; scoreLabel.textContent = 'YÜKSEK RİSK'; }
-
-            if (voiceEnabled && avgScore >= 60) speak('Dikkat! Yüksek risk tespit edildi. Bu bir oltalama saldırısı olabilir.');
-            else if (voiceEnabled && avgScore >= 30) speak('Orta risk tespit edildi. Dikkatli olun.');
-            else if (voiceEnabled && avgScore < 30) speak('Düşük risk. İçerik güvenli görünüyor.');
-
+            if (voiceEnabled && avgScore >= 60) speak('Dikkat! Yüksek risk tespit edildi.');
             const grid = document.getElementById('enginesGrid');
             grid.innerHTML = '';
             document.getElementById('engineCount').textContent = threatCount;
-
             engineResults.forEach((e, idx) => {
                 const card = document.createElement('div');
                 card.className = 'engine-card ' + e.verdict;
-                card.style.animationDelay = (idx * 0.04) + 's';
                 const verdictText = e.verdict === 'danger' ? '🚨 TEHDİT' : e.verdict === 'warning' ? '⚠️ ŞÜPHELİ' : '✅ TEMİZ';
                 const barColor = e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00ff88';
                 card.innerHTML = `<div class="engine-header"><div class="engine-name">${e.name}</div><div class="engine-score">${e.score}%</div></div><div class="engine-verdict ${e.verdict}">${verdictText}</div><div class="engine-bar"><div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div></div>`;
                 grid.appendChild(card);
             });
-
             const alertBox = document.getElementById('alertBox');
             const alertIcon = document.getElementById('alertIcon');
             const alertTitle = document.getElementById('alertTitle');
             const alertText = document.getElementById('alertText');
-
-            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/15 motor bu içeriği tehdit olarak işaretledi. Linke TIKLAMAYIN!`; }
-            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/15 motor şüpheli buldu. Dikkatli olun.`; }
+            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/15 motor tehdit olarak işaretledi.`; }
+            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/15 motor şüpheli buldu.`; }
             else { alertBox.className = 'alert-box safe'; alertBox.style.display = 'flex'; alertIcon.textContent = '✅'; alertTitle.textContent = 'DÜŞÜK RİSK'; alertText.textContent = 'Bu içerik güvenli görünüyor.'; }
-
-            document.getElementById('detailsContent').innerHTML = `
-                <div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div>
-                <div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div>
-                ${isUrl ? `<div class="detail-row"><span class="detail-label">Protokol</span><span class="detail-value ${input.startsWith('https') ? 'safe' : 'danger'}">${input.startsWith('https') ? 'HTTPS' : 'HTTP'}</span></div>` : ''}
-                <div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">15</span></div>
-                <div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div>
-                <div class="detail-row"><span class="detail-label">Şüpheli Bulan</span><span class="detail-value warning">${warningCount}</span></div>
-                <div class="detail-row"><span class="detail-label">Ağırlıklı Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>
-            `;
-
+            document.getElementById('detailsContent').innerHTML = `<div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div><div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div><div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">15</span></div><div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div><div class="detail-row"><span class="detail-label">Şüpheli Bulan</span><span class="detail-value warning">${warningCount}</span></div><div class="detail-row"><span class="detail-label">Ağırlıklı Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>`;
             const allFindings = [];
             engineResults.forEach(e => { if (e.findings.length > 0) { e.findings.forEach(f => allFindings.push(`${e.name}: ${f}`)); } });
-
-            document.getElementById('findingsContent').innerHTML = allFindings.length > 0
-                ? allFindings.map(f => `<div class="detail-row"><span class="detail-label">▸</span><span class="detail-value">${f}</span></div>`).join('')
-                : '<div class="detail-row"><span class="detail-label">Şüpheli unsur tespit edilmedi.</span></div>';
-
-            let recommendations = [];
-            if (avgScore >= 60) { recommendations = ['🚫 Bu linke TIKLAMAYIN', '🔐 Şifrelerinizi ASLA girmeyin', '💳 Kart bilgilerinizi paylaşmayın', '📞 Bankanızı resmi numaradan arayın', '📢 USOM\'a bildirin: usom.gov.tr']; }
-            else if (avgScore >= 30) { recommendations = ['⚠️ Dikkatli olun', '🔍 Domain adresini kontrol edin', '❓ Emin değilseniz tıklamayın']; }
-            else { recommendations = ['✅ İçerik güvenli görünüyor', '🛡️ Yine de dikkatli olun', '🔒 HTTPS kullanın']; }
-
-            document.getElementById('recommendationsContent').innerHTML = recommendations.map(r => `<div class="detail-row"><span class="detail-label">${r}</span></div>`).join('');
-
+            document.getElementById('findingsContent').innerHTML = allFindings.length > 0 ? allFindings.map(f => `<div class="detail-row"><span class="detail-label">▸</span><span class="detail-value">${f}</span></div>`).join('') : '<div class="detail-row"><span class="detail-label">Şüpheli unsur tespit edilmedi.</span></div>';
+            let recs = [];
+            if (avgScore >= 60) recs = ['🚫 Bu linke TIKLAMAYIN', '🔐 Şifrelerinizi ASLA girmeyin', '💳 Kart bilgilerinizi paylaşmayın'];
+            else if (avgScore >= 30) recs = ['⚠️ Dikkatli olun', '🔍 Domain adresini kontrol edin'];
+            else recs = ['✅ İçerik güvenli görünüyor', '🛡️ Yine de dikkatli olun'];
+            document.getElementById('recommendationsContent').innerHTML = recs.map(r => `<div class="detail-row"><span class="detail-label">${r}</span></div>`).join('');
             const user = DB.getCurrentUser();
             if (user && user.role !== 'guest') {
                 const s = DB.getUserStats(user.email);
@@ -1939,10 +1515,8 @@
                 document.getElementById('quickThreats').textContent = s.threats;
                 document.getElementById('quickCamera').textContent = s.camera;
             }
-
             const feedDomain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0] : input.substring(0, 30) + '...';
             addFeedItem(feedDomain, avgScore);
-
             window.currentAnalysis = { input, isUrl, engineResults, avgScore, threatCount, warningCount };
         }
 
@@ -1957,8 +1531,7 @@
             if (!window.currentAnalysis) return;
             const { input, isUrl, engineResults, avgScore, threatCount, warningCount } = window.currentAnalysis;
             const user = DB.getCurrentUser();
-            const now = new Date().toLocaleString('tr-TR');
-            let report = `========================================\nPHISHGUARD-TR ANALİZ RAPORU v18\n========================================\nTarih: ${now}\nKullanıcı: ${user?.name || 'Misafir'}\nAnaliz Türü: ${isUrl ? 'Link' : 'Metin'}\nRisk Puanı: ${avgScore}%\nDurum: ${avgScore >= 60 ? 'YÜKSEK RİSK' : avgScore >= 30 ? 'ORTA RİSK' : 'DÜŞÜK RİSK'}\nTehdit Motoru: ${threatCount}/15\nŞüpheli Motor: ${warningCount}/15\n\nMOTOR SONUÇLARI:\n${engineResults.map(e => `${e.name}: ${e.score}% ${e.verdict === 'danger' ? '🚨' : e.verdict === 'warning' ? '⚠️' : '✅'}`).join('\n')}\n\nBULGULAR:\n${engineResults.flatMap(e => e.findings.map(f => '• ' + e.name + ': ' + f)).join('\n') || '• Şüpheli unsur yok'}\n========================================`;
+            const report = `PHISHGUARD-TR RAPORU\nTarih: ${new Date().toLocaleString('tr-TR')}\nKullanıcı: ${user?.name || 'Misafir'}\nRisk: ${avgScore}%\n\n${engineResults.map(e => `${e.name}: ${e.score}%`).join('\n')}`;
             const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -1966,14 +1539,9 @@
             link.click();
         }
 
-        // ===== CANLI TEHDİT AKIŞI =====
+        // ===== CANLI AKIŞ =====
         const feedItems = [];
-        const sampleThreats = [
-            { domain: 'garantibbva-onay.xyz', score: 95 }, { domain: 'ziraatbank-giris.tk', score: 92 },
-            { domain: 'edevlet-onay.tk', score: 88 }, { domain: 'bedava-bitcoin.xyz', score: 85 },
-            { domain: 'zoom-toplanti.tk', score: 90 }, { domain: 'papara-giris.tk', score: 87 }
-        ];
-
+        const sampleThreats = [{ domain: 'garantibbva-onay.xyz', score: 95 }, { domain: 'ziraatbank-giris.tk', score: 92 }, { domain: 'edevlet-onay.tk', score: 88 }, { domain: 'bedava-bitcoin.xyz', score: 85 }, { domain: 'zoom-toplanti.tk', score: 90 }, { domain: 'papara-giris.tk', score: 87 }];
         function addFeedItem(domain, score) {
             const feedList = document.getElementById('feedList');
             if (!feedList) return;
@@ -1981,60 +1549,51 @@
             const item = document.createElement('div');
             item.className = 'feed-item' + (isSafe ? ' safe' : '');
             item.innerHTML = `<span class="feed-domain">${domain}</span><span class="feed-score">${score}%</span>`;
-            if (feedItems.length === 0) { feedList.innerHTML = ''; }
+            if (feedItems.length === 0) feedList.innerHTML = '';
             feedList.insertBefore(item, feedList.firstChild);
             feedItems.unshift({ domain, score });
             if (feedItems.length > 10) { feedList.removeChild(feedList.lastChild); feedItems.pop(); }
         }
+        function startLiveFeed() { setInterval(() => { const threat = sampleThreats[Math.floor(Math.random() * sampleThreats.length)]; addFeedItem(threat.domain, threat.score); }, 10000); }
 
-        function startLiveFeed() {
-            setInterval(() => {
-                const threat = sampleThreats[Math.floor(Math.random() * sampleThreats.length)];
-                addFeedItem(threat.domain, threat.score);
-            }, 8000);
-        }
-
-        // ===== GRAFİKLER =====
+        // ===== GRAFİKLER (Optimize - animationsız) =====
         let weeklyChart, threatTypeChart, statsWeeklyChart, statsThreatChart;
-
         function initCharts() {
             const weeklyCtx = document.getElementById('weeklyChart');
             if (weeklyCtx && !weeklyChart) {
                 weeklyChart = new Chart(weeklyCtx, {
                     type: 'line',
-                    data: { labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'], datasets: [{ label: 'Tespit Edilen Tehdit', data: [12, 19, 15, 25, 22, 18, 30], borderColor: '#ff3366', backgroundColor: 'rgba(255, 51, 102, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#ff3366', pointBorderColor: '#fff', pointRadius: 5 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 11 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
+                    data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Tehdit', data: [12,19,15,25,22,18,30], borderColor: '#ff3366', backgroundColor: 'rgba(255, 51, 102, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#ff3366', pointBorderColor: '#fff', pointRadius: 5 }] },
+                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 11 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
                 });
             }
             const typeCtx = document.getElementById('threatTypeChart');
             if (typeCtx && !threatTypeChart) {
                 threatTypeChart = new Chart(typeCtx, {
                     type: 'doughnut',
-                    data: { labels: ['Banka', 'Devlet', 'Kripto', 'Kamera', 'Diğer'], datasets: [{ data: [40, 25, 15, 12, 8], backgroundColor: ['#ff3366', '#ffaa00', '#00ccff', '#00ff88', '#888'], borderColor: '#050510', borderWidth: 2 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } } }
+                    data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [40,25,15,12,8], backgroundColor: ['#ff3366','#ffaa00','#00ccff','#00ff88','#888'], borderColor: '#050510', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } } }
                 });
             }
         }
-
         function initStatsCharts() {
             const weeklyCtx = document.getElementById('statsWeeklyChart');
             if (weeklyCtx && !statsWeeklyChart) {
                 statsWeeklyChart = new Chart(weeklyCtx, {
                     type: 'bar',
-                    data: { labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'], datasets: [{ label: 'Analiz Sayısı', data: [45, 62, 58, 78, 85, 92, 110], backgroundColor: 'rgba(0, 255, 136, 0.6)', borderColor: '#00ff88', borderWidth: 2, borderRadius: 8 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 12 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
+                    data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Analiz', data: [45,62,58,78,85,92,110], backgroundColor: 'rgba(0, 255, 136, 0.6)', borderColor: '#00ff88', borderWidth: 2, borderRadius: 8 }] },
+                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#e0e0e0', font: { size: 12 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
                 });
             }
             const threatCtx = document.getElementById('statsThreatChart');
             if (threatCtx && !statsThreatChart) {
                 statsThreatChart = new Chart(threatCtx, {
                     type: 'polarArea',
-                    data: { labels: ['Banka Taklidi', 'Devlet Kurumu', 'Kripto', 'Kamera', 'Diğer'], datasets: [{ data: [45, 30, 15, 8, 2], backgroundColor: ['rgba(255, 51, 102, 0.7)', 'rgba(255, 170, 0, 0.7)', 'rgba(0, 204, 255, 0.7)', 'rgba(0, 255, 136, 0.7)', 'rgba(136, 136, 136, 0.7)'], borderColor: '#050510', borderWidth: 2 }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } }, scales: { r: { ticks: { color: '#888', backdropColor: 'transparent' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
+                    data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [45,30,15,8,2], backgroundColor: ['rgba(255, 51, 102, 0.7)','rgba(255, 170, 0, 0.7)','rgba(0, 204, 255, 0.7)','rgba(0, 255, 136, 0.7)','rgba(136, 136, 136, 0.7)'], borderColor: '#050510', borderWidth: 2 }] },
+                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#e0e0e0', font: { size: 11 }, padding: 10 } } }, scales: { r: { ticks: { color: '#888', backdropColor: 'transparent' }, grid: { color: 'rgba(0, 255, 136, 0.1)' } } } }
                 });
             }
         }
-
         function loadStatsData() {
             const users = DB.getUsers();
             const reports = DB.getReports();
@@ -2053,14 +1612,13 @@
             if (!url) { alert('Lütfen bir link girin!'); return; }
             const user = DB.getCurrentUser();
             const reports = DB.getReports();
-            reports.push({ url: url, note: note, date: new Date().toISOString(), user: user?.name || 'Misafir' });
+            reports.push({ url, note, date: new Date().toISOString(), user: user?.name || 'Misafir' });
             DB.setReports(reports);
             document.getElementById('reportUrlInput').value = '';
             document.getElementById('reportNoteInput').value = '';
             updateReportUI();
             alert('İhbarınız alındı! Teşekkürler.');
         }
-
         function updateReportUI() {
             const reports = DB.getReports();
             const list = document.getElementById('reportList');
@@ -2075,19 +1633,7 @@
         }
 
         // ===== SOHBET =====
-        const chatResponses = {
-            'oltalama': 'Oltalama, saldırganların kendilerini güvenilir bir kurum gibi göstererek bilgilerinizi çalmaya çalıştığı saldırıdır.',
-            'kamera': 'Kamera izni verdiğinizde site görüntünüzü kaydedebilir.',
-            'şifre': 'Güçlü şifre en az 12 karakter, harf+rakam+özel karakter içermelidir.',
-            'banka': 'Bankalar asla e-posta ile şifre istemez.',
-            'link': 'Şüpheli linkleri "Tarama" bölümünde analiz edin.',
-            'hash': 'Hash, bir dosyanın parmak izidir.',
-            'qr': 'QR kodları okutmadan önce URL\'yi kontrol edin.',
-            'usom': 'USOM, Ulusal Siber Olaylara Müdahale Merkezi\'dir.',
-            'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?',
-            'teşekkür': 'Rica ederim!'
-        };
-
+        const chatResponses = { 'oltalama': 'Oltalama, saldırganların kendilerini güvenilir bir kurum gibi göstererek bilgilerinizi çalmaya çalıştığı saldırıdır.', 'kamera': 'Kamera izni verdiğinizde site görüntünüzü kaydedebilir.', 'şifre': 'Güçlü şifre en az 12 karakter içermelidir.', 'banka': 'Bankalar asla e-posta ile şifre istemez.', 'link': 'Şüpheli linkleri "Tarama" bölümünde analiz edin.', 'usom': 'USOM, Ulusal Siber Olaylara Müdahale Merkezi\'dir.', 'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?', 'teşekkür': 'Rica ederim!' };
         function sendChat() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
@@ -2102,9 +1648,7 @@
             setTimeout(() => {
                 const lower = message.toLowerCase();
                 let response = 'Bu konuda bilgim yok.';
-                for (const [key, value] of Object.entries(chatResponses)) {
-                    if (lower.includes(key)) { response = value; break; }
-                }
+                for (const [key, value] of Object.entries(chatResponses)) { if (lower.includes(key)) { response = value; break; } }
                 const botMsg = document.createElement('div');
                 botMsg.className = 'chat-message bot';
                 botMsg.textContent = response;
@@ -2129,7 +1673,6 @@
                 table.appendChild(tr);
             });
         }
-
         function deleteUser(email) {
             if (!confirm('Kullanıcıyı silmek istediğinize emin misiniz?')) return;
             let users = DB.getUsers();
@@ -2139,51 +1682,17 @@
         }
 
         // ===== TEMA & SES =====
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙';
-        }
-
+        function toggleTheme() { document.body.classList.toggle('light-mode'); document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙'; }
         let voiceEnabled = false;
-        function toggleVoice() {
-            voiceEnabled = !voiceEnabled;
-            document.getElementById('voiceBtn').textContent = voiceEnabled ? '🔊' : '🔇';
-            if (voiceEnabled) { speak('Sesli uyarı sistemi açıldı'); }
-        }
+        function toggleVoice() { voiceEnabled = !voiceEnabled; document.getElementById('voiceBtn').textContent = voiceEnabled ? '🔊' : '🔇'; if (voiceEnabled) speak('Sesli uyarı sistemi açıldı'); }
+        function speak(text) { if (!voiceEnabled) return; if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'tr-TR'; u.rate = 1; window.speechSynthesis.speak(u); } }
 
-        function speak(text) {
-            if (!voiceEnabled) return;
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-                const u = new SpeechSynthesisUtterance(text);
-                u.lang = 'tr-TR';
-                u.rate = 1;
-                window.speechSynthesis.speak(u);
-            }
-        }
+        setInterval(() => { const clock = document.getElementById('clock'); if (clock) clock.textContent = new Date().toLocaleTimeString('tr-TR'); }, 1000);
 
-        setInterval(() => {
-            const clock = document.getElementById('clock');
-            if (clock) clock.textContent = new Date().toLocaleTimeString('tr-TR');
-        }, 1000);
-
-        // ===== PWA SERVICE WORKER =====
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then((registration) => { console.log('🛡️ Service Worker kaydedildi:', registration.scope); })
-                    .catch((error) => { console.log('❌ Service Worker kayıt hatası:', error); });
-            });
-        }
-
-        // ===== PWA YÜKLEME BUTONU =====
+        // ===== PWA =====
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').catch(() => {}); }); }
         let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallButton();
-        });
-
+        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; showInstallButton(); });
         function showInstallButton() {
             const topButtons = document.querySelector('.top-buttons');
             if (topButtons && !document.getElementById('installBtn')) {
@@ -2198,36 +1707,15 @@
                 topButtons.insertBefore(btn, topButtons.firstChild);
             }
         }
+        function installPWA() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; }); } }
+        window.addEventListener('appinstalled', () => { const btn = document.getElementById('installBtn'); if (btn) btn.remove(); });
 
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('✅ Kullanıcı uygulamayı yükledi');
-                        const btn = document.getElementById('installBtn');
-                        if (btn) btn.remove();
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        }
-
-        window.addEventListener('appinstalled', () => {
-            console.log('✅ PhishGuard-TR yüklendi');
-            const btn = document.getElementById('installBtn');
-            if (btn) btn.remove();
-        });
-
-        // ===== SAYFA YÜKLENDİĞİNDE =====
+        // ===== BAŞLANGIÇ =====
         window.addEventListener('load', () => {
             const user = DB.getCurrentUser();
             if (user) openApp();
             updateGateStats();
-            setTimeout(() => {
-                startLiveFeed();
-                initCharts();
-            }, 1000);
+            setTimeout(() => { startLiveFeed(); initCharts(); }, 1500);
         });    </script>
 </body>
 </html>
