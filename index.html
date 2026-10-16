@@ -76,7 +76,7 @@
         .loading-text { color: #00ff88; font-family: 'JetBrains Mono', monospace; font-size: 11px; min-height: 16px; letter-spacing: 1px; }
         .loading-percent { color: #888; font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-top: 8px; font-weight: 700; }
 
-        /* GİRİŞ EKRANI - NEON YEŞİL */
+        /* GİRİŞ EKRANI */
         .gate {
             position: fixed;
             top: 0; left: 0;
@@ -174,8 +174,6 @@
             color: #6b7280;
         }
         .gate-bottom span { color: #00ff88; font-weight: 700; }
-
-        /* Canlı sayaçlar (sağ alt) */
         .gate-stats {
             position: absolute;
             bottom: 70px; right: 25px;
@@ -195,8 +193,6 @@
         }
         .gate-stat-value { font-size: 16px; font-weight: 900; color: #00ff88; font-family: 'JetBrains Mono', monospace; }
         .gate-stat-label { font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; }
-
-        /* Saat (sol alt) */
         .gate-clock {
             position: absolute;
             bottom: 70px; left: 25px;
@@ -210,7 +206,6 @@
         }
         .gate-clock-time { font-size: 18px; font-weight: 900; color: #00ff88; }
         .gate-clock-date { font-size: 10px; color: #888; margin-top: 3px; letter-spacing: 0.5px; }
-
         .gate-card {
             position: relative;
             z-index: 1;
@@ -250,7 +245,6 @@
         .gate-title span { color: #00ff88; }
         .gate-subtitle { color: #888; font-size: 11px; margin-bottom: 8px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
         .gate-slogan { color: #00ff88; font-size: 12px; margin-bottom: 25px; font-weight: 600; letter-spacing: 0.5px; opacity: 0.9; }
-
         .gate-tabs {
             display: flex;
             gap: 4px;
@@ -297,8 +291,6 @@
             box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
         }
         .gate-form input::placeholder { color: #4a5a6a; }
-
-        /* Beni hatırla + Şifremi unuttum */
         .gate-row {
             display: flex;
             justify-content: space-between;
@@ -321,7 +313,6 @@
             font-weight: 600;
         }
         .gate-forgot:hover { text-decoration: underline; }
-
         .gate-btn {
             width: 100%;
             padding: 14px;
@@ -344,7 +335,6 @@
         }
         .gate-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); }
         .gate-btn:active { transform: translateY(0); }
-
         .guest-btn {
             width: 100%;
             padding: 14px;
@@ -362,22 +352,6 @@
             margin-top: 10px;
         }
         .guest-btn:hover { background: rgba(0, 255, 136, 0.08); border-color: #00ff88; }
-
-        /* Demo hesap bilgisi */
-        .gate-demo {
-            margin-top: 14px;
-            padding: 10px 14px;
-            background: rgba(0, 255, 136, 0.05);
-            border: 1px dashed rgba(0, 255, 136, 0.3);
-            border-radius: 10px;
-            font-size: 11px;
-            color: #888;
-            font-family: 'JetBrains Mono', monospace;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-        .gate-demo strong { color: #00ff88; }
-
         .gate-badges {
             display: flex;
             justify-content: center;
@@ -819,11 +793,6 @@
 
             <button class="guest-btn" onclick="continueAsGuest()">Misafir Olarak Devam Et</button>
 
-            <!-- Demo Hesap Bilgisi -->
-            <div class="gate-demo">
-                🔑 Demo Hesap: <strong>demo@phishguard.tr</strong> / <strong>demo123</strong>
-            </div>
-
             <div class="gate-badges">
                 <div class="gate-badge"><span>●</span> %100 Yerli</div>
                 <div class="gate-badge"><span>●</span> Ücretsiz</div>
@@ -1000,8 +969,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ARAÇLAR GÖRÜNÜMÜ -->
+                        <!-- ARAÇLAR GÖRÜNÜMÜ -->
             <div id="toolsView" style="display:none;">
                 <div class="card">
                     <div class="side-title"><span>📁</span> Dosya Hash Tarayıcısı</div>
@@ -1334,9 +1302,8 @@
             </div>
         </div>
     </div>
-
-    <script>
-                // ===== MATRIX =====
+        <script>
+        // ===== MATRIX =====
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1448,15 +1415,12 @@
             setUserStats: (email, s) => localStorage.setItem('pg_stats_' + email, JSON.stringify(s))
         };
 
-        // ===== ADMIN + DEMO =====
+        // ===== ADMIN =====
         function initAdmin() {
             let users = DB.getUsers();
             users = users.filter(u => u.email !== 'hazretirox@gmail.com');
             if (!users.find(u => u.email === 'phisguardtr@gmail.com')) {
                 users.push({ name: 'PhishGuard Admin', email: 'phisguardtr@gmail.com', password: 'phisguardtr', role: 'admin', date: new Date().toISOString() });
-            }
-            if (!users.find(u => u.email === 'demo@phishguard.tr')) {
-                users.push({ name: 'Demo Kullanıcı', email: 'demo@phishguard.tr', password: 'demo123', role: 'user', date: new Date().toISOString() });
             }
             DB.setUsers(users);
         }
@@ -1501,7 +1465,7 @@
         }
 
         function forgotPassword() {
-            alert("Şifre sıfırlama için Telegram'dan iletişime geçin:\n\n@Hzrox\n\nveya admin: hazretirox@gmail.com");
+            alert("Şifrenizi sıfırlamak için lütfen admin ile iletişime geçin:\n\n📧 phisguardtr@gmail.com");
         }
 
         function continueAsGuest() {
@@ -2244,6 +2208,7 @@
                 loadRemembered();
                 setTimeout(() => { startLiveFeed(); initCharts(); }, 500);
             });
-        });    </script>
+        });
+    </script>
 </body>
 </html>
