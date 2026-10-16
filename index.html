@@ -754,7 +754,7 @@
                 <div class="gate-stat-label">Zararlı Link</div>
             </div>
             <div class="gate-stat-box">
-                <div class="gate-stat-value">15</div>
+                <div class="gate-stat-value">16</div>
                 <div class="gate-stat-label">Motor</div>
             </div>
         </div>
@@ -803,7 +803,7 @@
         <!-- Alt Bilgi Şeridi -->
         <div class="gate-bottom">
             <div>🔒 <span>Güvenli Bağlantı</span></div>
-            <div>⚡ <span>15</span> Analiz Motoru</div>
+            <div>⚡ <span>16</span> Analiz Motoru</div>
             <div>📁 <span>105+</span> Zararlı Link</div>
             <div>🛡️ <span>USOM</span> Entegrasyonu</div>
         </div>
@@ -852,7 +852,7 @@
             <div id="scanView">
                 <div class="search-hero">
                     <h2>🔍 Şüpheli İçeriği Analiz Et</h2>
-                    <p>Link, e-posta metni veya mesaj yapıştırın — 15 farklı analiz motoru saniyeler içinde tarasın</p>
+                    <p>Link, e-posta metni veya mesaj yapıştırın — 16 farklı analiz motoru saniyeler içinde tarasın</p>
 
                     <div class="search-tabs">
                         <button class="search-tab active" onclick="switchSearchTab('url', event)">🔗 Link</button>
@@ -952,7 +952,7 @@
                             </div>
                         </div>
 
-                        <div class="side-title" style="margin-bottom:15px;"><span>🔬</span> Analiz Motorları (<span id="engineCount">0</span>/15 tehdit tespit etti)</div>
+                        <div class="side-title" style="margin-bottom:15px;"><span>🔬</span> Analiz Motorları (<span id="engineCount">0</span>/16 tehdit tespit etti)</div>
                         <div class="engines-grid" id="enginesGrid"></div>
 
                         <div class="vt-tabs">
@@ -1123,7 +1123,7 @@
                 <div class="about-hero">
                     <div class="about-hero-icon">🛡️</div>
                     <h1>PhishGuard<span>-TR</span></h1>
-                    <p>Türkiye'nin ilk kapsamlı oltalama ve siber tehdit analiz platformu. 15 farklı motor ile linkleri, metinleri ve dosyaları analiz eder.</p>
+                    <p>Türkiye'nin ilk kapsamlı oltalama ve siber tehdit analiz platformu. 16 farklı motor ile linkleri, metinleri ve dosyaları analiz eder.</p>
                 </div>
                 <div class="about-grid">
                     <div class="about-card">
@@ -1133,12 +1133,13 @@
                     <div class="about-card">
                         <h3>⚙️ Nasıl Çalışır?</h3>
                         <ul>
-                            <li>15 farklı analiz motoru</li>
+                            <li>16 farklı analiz motoru</li>
                             <li>105+ zararlı link veritabanı</li>
                             <li>USOM entegrasyonu</li>
                             <li>Banka/devlet kurumu taklit tespiti</li>
                             <li>Kamera/mikrofon tuzağı tespiti</li>
                             <li>Kripto dolandırıcılığı tespiti</li>
+                            <li>Türkiye odaklı homoglyph tespiti</li>
                         </ul>
                     </div>
                     <div class="about-card">
@@ -1155,7 +1156,7 @@
                     <div class="about-card">
                         <h3>📊 Rakamlarla Proje</h3>
                         <ul>
-                            <li>15 farklı analiz motoru</li>
+                            <li>16 farklı analiz motoru</li>
                             <li>105+ zararlı link veritabanı</li>
                             <li>5+ zararlı hash veritabanı</li>
                             <li>30+ yaygın şifre veritabanı</li>
@@ -1167,6 +1168,7 @@
                         <h3>🛡️ Neden PhishGuard-TR?</h3>
                         <ul>
                             <li><strong>Tamamen Yerli:</strong> Türkiye'ye özel tehditleri (banka/devlet/kargo taklidi) tespit eder.</li>
+                            <li><strong>Türkiye Odaklı:</strong> Homoglyph ve Türkçe karakter manipülasyonlarını tespit eder.</li>
                             <li><strong>Ücretsiz:</strong> Tüm kullanıcılara açık, herhangi bir ücret talep etmez.</li>
                             <li><strong>Türkçe:</strong> Tamamen Türkçe arayüz ve içerik.</li>
                             <li><strong>Mobil Uyumlu:</strong> PWA ile telefona yüklenebilir, çevrimdışı çalışır.</li>
@@ -1182,7 +1184,7 @@
                     <div class="guide-step-number">1</div>
                     <div class="guide-step-content">
                         <h3>🔗 Link Analizi</h3>
-                        <p>"Tarama" sekmesine gidin, "Link" sekmesini seçin. Şüpheli linki yapıştırın ve "Tara" butonuna basın. Sistem 15 farklı motorla linki analiz eder.</p>
+                        <p>"Tarama" sekmesine gidin, "Link" sekmesini seçin. Şüpheli linki yapıştırın ve "Tara" butonuna basın. Sistem 16 farklı motorla linki analiz eder.</p>
                         <div class="tip">💡 İpucu: Şüpheli linke tıklamadan önce mutlaka analiz edin!</div>
                     </div>
                 </div>
@@ -1402,6 +1404,68 @@
             'aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d': 'Test (SHA1)'
         };
 
+        // ===== TÜRKİYE ODAKLI TESPİT =====
+        const homoglyphMap = {
+            '0': 'o', '1': 'l', '3': 'e', '4': 'a', '5': 's', '7': 't',
+            'ı': 'i', 'İ': 'I', 'ş': 's', 'Ş': 'S', 'ğ': 'g', 'Ğ': 'G',
+            'ü': 'u', 'Ü': 'U', 'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C'
+        };
+
+        function normalizeHomoglyph(text) {
+            let normalized = text.toLowerCase();
+            for (const [fake, real] of Object.entries(homoglyphMap)) {
+                normalized = normalized.split(fake).join(real);
+            }
+            return normalized;
+        }
+
+        function detectHomoglyph(input) {
+            const lower = input.toLowerCase();
+            const suspicious = [];
+            
+            const criticalBrands = ['garanti', 'ziraat', 'isbank', 'akbank', 'yapikredi', 'halkbank', 'vakifbank', 'qnb', 'denizbank', 'teb', 'enpara', 'papara', 'ininal', 'tosla', 'edevlet', 'sgk', 'ptt', 'gib', 'nvi', 'meb'];
+            const normalizedInput = normalizeHomoglyph(input);
+            
+            criticalBrands.forEach(brand => {
+                if (lower.includes(brand)) return;
+                if (normalizedInput.includes(brand)) {
+                    suspicious.push(`"${brand}" taklidi tespit edildi (homoglyph)`);
+                }
+            });
+            
+            const turkishSpecific = ['vergi iadesi', 'sgk ödemesi', 'e-devlet şifre', 'kredi kartı iade', 'fatura iade', 'hgs iade', 'ptt kargo iade'];
+            turkishSpecific.forEach(phrase => {
+                if (lower.includes(phrase) || normalizedInput.includes(phrase)) {
+                    suspicious.push(`Türkiye kampanya taklidi: "${phrase}"`);
+                }
+            });
+            
+            return suspicious;
+        }
+
+        function detectTurkishManipulation(input) {
+            const suspicious = [];
+            const lower = input.toLowerCase();
+            
+            const mixedCases = [
+                { pattern: /garant[ıi1l]/i, brand: 'garanti' },
+                { pattern: /ziraa[t1]/i, brand: 'ziraat' },
+                { pattern: /[ıi]sb[a4]nk/i, brand: 'isbank' },
+                { pattern: /[a4]kb[a4]nk/i, brand: 'akbank' },
+                { pattern: /yap[ıi]kred[ıi]/i, brand: 'yapikredi' },
+                { pattern: /h[a4]lkb[a4]nk/i, brand: 'halkbank' },
+                { pattern: /v[a4]k[ıi]fb[a4]nk/i, brand: 'vakifbank' }
+            ];
+            
+            mixedCases.forEach(item => {
+                if (item.pattern.test(lower)) {
+                    suspicious.push(`Karakter manipülasyonu: "${item.brand}" markası taklit ediliyor`);
+                }
+            });
+            
+            return suspicious;
+        }
+
         // ===== VERİTABANI =====
         const DB = {
             getUsers: () => JSON.parse(localStorage.getItem('pg_users') || '[]'),
@@ -1419,6 +1483,7 @@
         function initAdmin() {
             let users = DB.getUsers();
             users = users.filter(u => u.email !== 'hazretirox@gmail.com');
+            users = users.filter(u => u.email !== 'demo@phishguard.tr');
             if (!users.find(u => u.email === 'phisguardtr@gmail.com')) {
                 users.push({ name: 'PhishGuard Admin', email: 'phisguardtr@gmail.com', password: 'phisguardtr', role: 'admin', date: new Date().toISOString() });
             }
@@ -1800,7 +1865,8 @@
             { id: 'bank', name: '🏦 Banka Taklit Motoru' }, { id: 'crypto', name: '💰 Kripto Dolandırıcılık Motoru' }, { id: 'camera', name: '📷 Kamera Tuzağı Motoru' },
             { id: 'edevlet', name: '🏛️ Devlet Kurumu Taklit Motoru' }, { id: 'kargo', name: '📦 Kargo Taklit Motoru' }, { id: 'fatura', name: '📄 Fatura Taklit Motoru' },
             { id: 'sosyal', name: '📱 Sosyal Medya Motoru' }, { id: 'is', name: '💼 İş İlanı Motoru' }, { id: 'ai', name: '🤖 Yapay Zeka Motoru' },
-            { id: 'community', name: '👥 Topluluk & USOM Motoru' }, { id: 'tld', name: '🌍 TLD Risk Motoru' }, { id: 'phishing', name: '🎣 Oltalama Motoru' }
+            { id: 'community', name: '👥 Topluluk & USOM Motoru' }, { id: 'tld', name: '🌍 TLD Risk Motoru' }, { id: 'phishing', name: '🎣 Oltalama Motoru' },
+            { id: 'turkiye', name: '🇹🇷 Türkiye Odaklı Tespit Motoru' }
         ];
         function runEngineAnalysis(input, isUrl) {
             const results = [];
@@ -1873,6 +1939,15 @@
                         break;
                     case 'tld': const riskyTLDs = ['.tk','.ml','.ga','.cf','.gq','.xyz','.top','.work','.click','.online','.site','.link']; if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) { score = 70; findings.push('Riskli TLD: ' + domain.split('.').pop()); } break;
                     case 'phishing': const phishWords = ['acil','hemen','derhal','son uyarı','hesabınız askıya','doğrulama','tıklayın','onaylayın','güncelleyin','kazandınız','ödül','bedava','ücretsiz']; const matches = phishWords.filter(w => lower.includes(w)); if (matches.length > 0) { score = Math.min(100, matches.length * 25); findings.push(matches.length + ' oltalama kalıbı'); } break;
+                    case 'turkiye':
+                        const homoglyphFindings = detectHomoglyph(input);
+                        const turkishFindings = detectTurkishManipulation(input);
+                        const allTurkishFindings = [...homoglyphFindings, ...turkishFindings];
+                        if (allTurkishFindings.length > 0) {
+                            score = Math.min(100, 50 + allTurkishFindings.length * 15);
+                            allTurkishFindings.forEach(f => findings.push(f));
+                        }
+                        break;
                 }
                 results.push({ ...engine, score: Math.min(100, score), findings, verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe' });
             });
@@ -1886,7 +1961,7 @@
         function runAnalysis(input, isUrl) {
             document.getElementById('result').classList.remove('active');
             document.getElementById('loading').classList.add('active');
-            const steps = ['URL yapısı analiz ediliyor...','SSL sertifikası kontrol ediliyor...','Banka taklit motoru çalışıyor...','Devlet kurumu taklit motoru çalışıyor...','USOM veritabanı kontrol ediliyor...','Kripto dolandırıcılık motoru çalışıyor...','Kamera tuzağı motoru çalışıyor...','Yapay zeka motoru analiz ediyor...','Sonuçlar derleniyor...'];
+            const steps = ['URL yapısı analiz ediliyor...','SSL sertifikası kontrol ediliyor...','Banka taklit motoru çalışıyor...','Devlet kurumu taklit motoru çalışıyor...','USOM veritabanı kontrol ediliyor...','Kripto dolandırıcılık motoru çalışıyor...','Kamera tuzağı motoru çalışıyor...','Yapay zeka motoru analiz ediyor...','Türkiye odaklı motor çalışıyor...','Sonuçlar derleniyor...'];
             let i = 0;
             const interval = setInterval(() => {
                 document.getElementById('loadingTextInner').textContent = steps[i];
@@ -1930,10 +2005,10 @@
             const alertIcon = document.getElementById('alertIcon');
             const alertTitle = document.getElementById('alertTitle');
             const alertText = document.getElementById('alertText');
-            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/15 motor tehdit olarak işaretledi.`; }
-            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/15 motor şüpheli buldu.`; }
+            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/16 motor tehdit olarak işaretledi.`; }
+            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/16 motor şüpheli buldu.`; }
             else { alertBox.className = 'alert-box safe'; alertBox.style.display = 'flex'; alertIcon.textContent = '✅'; alertTitle.textContent = 'DÜŞÜK RİSK'; alertText.textContent = 'Bu içerik güvenli görünüyor.'; }
-            document.getElementById('detailsContent').innerHTML = `<div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div><div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div><div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">15</span></div><div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div><div class="detail-row"><span class="detail-label">Şüpheli Bulan</span><span class="detail-value warning">${warningCount}</span></div><div class="detail-row"><span class="detail-label">Ağırlıklı Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>`;
+            document.getElementById('detailsContent').innerHTML = `<div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div><div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div><div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">16</span></div><div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div><div class="detail-row"><span class="detail-label">Şüpheli Bulan</span><span class="detail-value warning">${warningCount}</span></div><div class="detail-row"><span class="detail-label">Ağırlıklı Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>`;
             const allFindings = [];
             engineResults.forEach(e => { if (e.findings.length > 0) { e.findings.forEach(f => allFindings.push(`${e.name}: ${f}`)); } });
             document.getElementById('findingsContent').innerHTML = allFindings.length > 0 ? allFindings.map(f => `<div class="detail-row"><span class="detail-label">▸</span><span class="detail-value">${f}</span></div>`).join('') : '<div class="detail-row"><span class="detail-label">Şüpheli unsur tespit edilmedi.</span></div>';
@@ -2155,7 +2230,7 @@
             const text = document.getElementById('loadingText');
             const percent = document.getElementById('loadingPercent');
             if (!screen) { callback(); return; }
-            const steps = ['Sistem başlatılıyor...', 'Analiz motorları yükleniyor...', 'Zararlı link veritabanı hazırlanıyor...', 'USOM verileri kontrol ediliyor...', 'Yapay zeka motoru başlatılıyor...', 'Arayüz hazırlanıyor...', 'Hoş geldiniz!'];
+            const steps = ['Sistem başlatılıyor...', 'Analiz motorları yükleniyor...', 'Zararlı link veritabanı hazırlanıyor...', 'USOM verileri kontrol ediliyor...', 'Türkiye odaklı motor başlatılıyor...', 'Yapay zeka motoru başlatılıyor...', 'Arayüz hazırlanıyor...', 'Hoş geldiniz!'];
             let i = 0, p = 0;
             const interval = setInterval(() => {
                 p += 2;
@@ -2167,8 +2242,14 @@
             }, 25);
         }
 
-        // ===== PWA =====
-        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/service-worker.js').catch(() => {}); }); }
+        // ===== PWA - Service Worker Devre Dışı =====
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for (let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; showInstallButton(); });
         function showInstallButton() {
@@ -2202,6 +2283,20 @@
 
         // ===== BAŞLANGIÇ =====
         window.addEventListener('load', () => {
+            // Eski demo hesabı localStorage'dan temizle
+            try {
+                let users = DB.getUsers();
+                const beforeCount = users.length;
+                users = users.filter(u => u.email !== 'demo@phishguard.tr');
+                if (users.length !== beforeCount) {
+                    DB.setUsers(users);
+                }
+                const current = DB.getCurrentUser();
+                if (current && current.email === 'demo@phishguard.tr') {
+                    DB.clearCurrentUser();
+                }
+            } catch(e) {}
+            
             runLoadingScreen(() => {
                 const user = DB.getCurrentUser();
                 if (user) openApp();
