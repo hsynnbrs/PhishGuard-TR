@@ -14,39 +14,21 @@
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --neon: #00ff88;
-            --neon-dark: #00cc66;
-            --neon-dim: rgba(0, 255, 136, 0.15);
-            --danger: #ff3366;
-            --warning: #ffaa00;
-            --success: #00ff88;
-            --bg-dark: #05080f;
-            --bg-card: rgba(15, 20, 35, 0.95);
-            --border: rgba(0, 255, 136, 0.15);
-            --text: #e0e0e0;
-            --text-dim: #888;
+            --neon: #00ff88; --neon-dark: #00cc66; --neon-dim: rgba(0, 255, 136, 0.15);
+            --danger: #ff3366; --warning: #ffaa00; --success: #00ff88;
+            --bg-dark: #05080f; --bg-card: rgba(15, 20, 35, 0.95);
+            --border: rgba(0, 255, 136, 0.15); --text: #e0e0e0; --text-dim: #888;
         }
         body.light-mode {
-            --bg-dark: #f0f4f8;
-            --bg-card: rgba(255, 255, 255, 0.95);
-            --border: rgba(0, 150, 80, 0.2);
-            --text: #1a1a2e;
-            --text-dim: #666;
-            --neon: #00aa66;
-            --neon-dark: #008844;
-            --neon-dim: rgba(0, 170, 102, 0.15);
+            --bg-dark: #f0f4f8; --bg-card: rgba(255, 255, 255, 0.95);
+            --border: rgba(0, 150, 80, 0.2); --text: #1a1a2e; --text-dim: #666;
+            --neon: #00aa66; --neon-dark: #008844; --neon-dim: rgba(0, 170, 102, 0.15);
         }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            transition: background 0.3s, color 0.3s;
-        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; overflow-x: hidden; transition: background 0.3s, color 0.3s; }
         #matrix { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.03; }
 
         /* ARAMA OVERLAY */
@@ -485,7 +467,7 @@
             </div>
         </div>
 
-        <div class="gate-version">v21.0 <span>• ML Edition</span></div>
+        <div class="gate-version">v22.0 <span>• PDF & ML Edition</span></div>
 
         <div class="gate-clock">
             <div class="gate-clock-time" id="gateClock">--:--:--</div>
@@ -543,7 +525,7 @@
             <div class="gate-badges">
                 <div class="gate-badge"><span>●</span> %100 Yerli</div>
                 <div class="gate-badge"><span>●</span> Ücretsiz</div>
-                <div class="gate-badge"><span>●</span> ML Destekli</div>
+                <div class="gate-badge"><span>●</span> PDF Rapor</div>
             </div>
         </div>
 
@@ -551,7 +533,7 @@
             <div>🔒 <span>Güvenli Bağlantı</span></div>
             <div>⚡ <span>17</span> Analiz Motoru</div>
             <div>📁 <span>487</span> Zararlı Link</div>
-            <div>🧠 <span>TensorFlow.js</span> ML Modeli</div>
+            <div>📄 <span>PDF</span> Raporlama</div>
         </div>
     </div>
 
@@ -561,7 +543,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v21</span>
+                    <span>CANLI SİSTEM • v22</span>
                     <span id="clock">--:--:--</span>
                     <span id="mlStatus" style="color:var(--warning);">🧠 ML: Yükleniyor...</span>
                 </div>
@@ -711,7 +693,7 @@
                         <div class="vt-tab-content" id="findingsTab"><div id="findingsContent"></div></div>
                         <div class="vt-tab-content" id="recommendationsTab"><div id="recommendationsContent"></div></div>
 
-                        <button class="search-btn" style="margin-top:20px;width:100%;" onclick="downloadReport()">📄 Rapor İndir</button>
+                        <button class="search-btn" style="margin-top:20px;width:100%;" onclick="downloadReport()">📄 PDF Rapor İndir</button>
                     </div>
                 </div>
             </div>
@@ -893,7 +875,7 @@
                         <ul>
                             <li>Link, metin ve e-posta analizi</li>
                             <li>Dosya hash tarayıcısı</li>
-                            <li>Mobil uygulama (PWA)</li>
+                            <li>PDF Raporlama</li>
                             <li>Canlı tehdit akışı</li>
                             <li>Eğitim modülü + quiz</li>
                             <li>Şifre analizi + üretici</li>
@@ -917,9 +899,8 @@
                             <li><strong>Tamamen Yerli:</strong> Türkiye'ye özel tehditleri (banka/devlet/kargo taklidi) tespit eder.</li>
                             <li><strong>Türkiye Odaklı:</strong> Homoglyph ve Türkçe karakter manipülasyonlarını tespit eder.</li>
                             <li><strong>Gerçek ML Modeli:</strong> TensorFlow.js ile tarayıcıda çalışan sinir ağı modeli.</li>
-                            <li><strong>Gerçek Veri Seti:</strong> USOM ve PhishTank verilerinden derlenmiş 487 zararlı link.</li>
+                            <li><strong>Profesyonel Raporlama:</strong> PDF formatında detaylı analiz raporu.</li>
                             <li><strong>Ücretsiz:</strong> Tüm kullanıcılara açık, herhangi bir ücret talep etmez.</li>
-                            <li><strong>Mobil Uyumlu:</strong> PWA ile telefona yüklenebilir, çevrimdışı çalışır.</li>
                         </ul>
                     </div>
                 </div>
@@ -962,17 +943,9 @@
                 <div class="guide-step">
                     <div class="guide-step-number">5</div>
                     <div class="guide-step-content">
-                        <h3>📊 İstatistik ve Veri Seti</h3>
-                        <p>"İstatistik" sekmesinde platformun kullanım verilerini, USOM/PhishTank veri setinden derlenen 487 zararlı linkin kategori dağılımını ve en çok taklit edilen kurumları görebilirsiniz.</p>
-                        <div class="tip">💡 İpucu: Bu veriler projenin bilimsel altyapısını oluşturur!</div>
-                    </div>
-                </div>
-                <div class="guide-step">
-                    <div class="guide-step-number">6</div>
-                    <div class="guide-step-content">
-                        <h3>📲 Mobil Uygulama</h3>
-                        <p>Sağ üstteki "📲 Uygulamayı Yükle" butonuna basarak PhishGuard-TR'yi telefonunuza yükleyebilirsiniz. İnternet olmadan da çalışır.</p>
-                        <div class="tip">💡 İpucu: Mobil uygulama ile her yerden analiz yapabilirsiniz!</div>
+                        <h3>📄 PDF Rapor İndir</h3>
+                        <p>Analiz sonucunda "PDF Rapor İndir" butonuna basarak, şık tasarımlı bir rapor indirebilirsiniz. Rapor; risk puanını, motor detaylarını ve tarihi içerir.</p>
+                        <div class="tip">💡 İpucu: Bu raporu öğretmeninize veya bir kuruma sunabilirsiniz!</div>
                     </div>
                 </div>
             </div>
@@ -1016,7 +989,6 @@
                     <p>Bu istatistikler, PhishGuard-TR platformunun kullanımına ilişkin verileri gösterir. Toplam analiz sayısı, tespit edilen tehdit sayısı ve topluluk ihbarları gibi metrikler, sistemin etkinliğini değerlendirmek için kullanılır.</p>
                 </div>
 
-                <!-- GERÇEK VERİ SETİ PANELİ -->
                 <div class="card" style="margin-top:18px;">
                     <div class="side-title"><span>📊</span> Gerçek Tehdit Veritabanı Analizi</div>
                     <p style="color:var(--text-dim);font-size:12px;margin-bottom:15px;">Bu veriler USOM ve PhishTank açık veri kaynaklarından derlenmiştir. Toplam <strong id="realTotalLinks" style="color:var(--neon);">0</strong> zararlı link analiz edilmiştir.</p>
@@ -1166,81 +1138,23 @@
         };
 
         // ===== TÜRKİYE ODAKLI TESPİT =====
-        const homoglyphMap = {
-            '0': 'o', '1': 'l', '3': 'e', '4': 'a', '5': 's', '7': 't',
-            'ı': 'i', 'İ': 'I', 'ş': 's', 'Ş': 'S', 'ğ': 'g', 'Ğ': 'G',
-            'ü': 'u', 'Ü': 'U', 'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C'
-        };
-
-        function normalizeHomoglyph(text) {
-            let normalized = text.toLowerCase();
-            for (const [fake, real] of Object.entries(homoglyphMap)) {
-                normalized = normalized.split(fake).join(real);
-            }
-            return normalized;
-        }
-
+        const homoglyphMap = { '0': 'o', '1': 'l', '3': 'e', '4': 'a', '5': 's', '7': 't', 'ı': 'i', 'İ': 'I', 'ş': 's', 'Ş': 'S', 'ğ': 'g', 'Ğ': 'G', 'ü': 'u', 'Ü': 'U', 'ö': 'o', 'Ö': 'O', 'ç': 'c', 'Ç': 'C' };
+        function normalizeHomoglyph(text) { let normalized = text.toLowerCase(); for (const [fake, real] of Object.entries(homoglyphMap)) { normalized = normalized.split(fake).join(real); } return normalized; }
         function detectHomoglyph(input) {
-            const lower = input.toLowerCase();
-            const suspicious = [];
-            
+            const lower = input.toLowerCase(); const suspicious = [];
             const criticalBrands = ['garanti', 'ziraat', 'isbank', 'akbank', 'yapikredi', 'halkbank', 'vakifbank', 'qnb', 'denizbank', 'teb', 'enpara', 'papara', 'ininal', 'tosla', 'edevlet', 'sgk', 'ptt', 'gib', 'nvi', 'meb'];
             const normalizedInput = normalizeHomoglyph(input);
-            
-            criticalBrands.forEach(brand => {
-                if (lower.includes(brand)) return;
-                if (normalizedInput.includes(brand)) {
-                    suspicious.push(`"${brand}" taklidi tespit edildi (homoglyph)`);
-                }
-            });
-            
-            const doubleLetterBrands = [
-                { pattern: /garr+ant[ıi1l]/i, brand: 'garanti' },
-                { pattern: /ziraa+[t1]/i, brand: 'ziraat' },
-                { pattern: /[ıi]sb+a+nk/i, brand: 'isbank' },
-                { pattern: /[a4]kb+a+nk/i, brand: 'akbank' },
-                { pattern: /yap[ıi]kred+[ıi]/i, brand: 'yapikredi' },
-                { pattern: /h[a4]lkb+a+nk/i, brand: 'halkbank' },
-                { pattern: /v[a4]k[ıi]fb+a+nk/i, brand: 'vakifbank' },
-                { pattern: /edevl+e+t/i, brand: 'edevlet' }
-            ];
-            
-            doubleLetterBrands.forEach(item => {
-                if (item.pattern.test(lower)) {
-                    suspicious.push(`Çift harf manipülasyonu: "${item.brand}" markası taklit ediliyor`);
-                }
-            });
-            
+            criticalBrands.forEach(brand => { if (lower.includes(brand)) return; if (normalizedInput.includes(brand)) { suspicious.push(`"${brand}" taklidi tespit edildi (homoglyph)`); } });
+            const doubleLetterBrands = [ { pattern: /garr+ant[ıi1l]/i, brand: 'garanti' }, { pattern: /ziraa+[t1]/i, brand: 'ziraat' }, { pattern: /[ıi]sb+a+nk/i, brand: 'isbank' }, { pattern: /[a4]kb+a+nk/i, brand: 'akbank' }, { pattern: /yap[ıi]kred+[ıi]/i, brand: 'yapikredi' }, { pattern: /h[a4]lkb+a+nk/i, brand: 'halkbank' }, { pattern: /v[a4]k[ıi]fb+a+nk/i, brand: 'vakifbank' }, { pattern: /edevl+e+t/i, brand: 'edevlet' } ];
+            doubleLetterBrands.forEach(item => { if (item.pattern.test(lower)) { suspicious.push(`Çift harf manipülasyonu: "${item.brand}" markası taklit ediliyor`); } });
             const turkishSpecific = ['vergi iadesi', 'sgk ödemesi', 'e-devlet şifre', 'kredi kartı iade', 'fatura iade', 'hgs iade', 'ptt kargo iade'];
-            turkishSpecific.forEach(phrase => {
-                if (lower.includes(phrase) || normalizedInput.includes(phrase)) {
-                    suspicious.push(`Türkiye kampanya taklidi: "${phrase}"`);
-                }
-            });
-            
+            turkishSpecific.forEach(phrase => { if (lower.includes(phrase) || normalizedInput.includes(phrase)) { suspicious.push(`Türkiye kampanya taklidi: "${phrase}"`); } });
             return suspicious;
         }
-
         function detectTurkishManipulation(input) {
-            const suspicious = [];
-            const lower = input.toLowerCase();
-            
-            const mixedCases = [
-                { pattern: /garant[ıi1l]/i, brand: 'garanti' },
-                { pattern: /ziraa[t1]/i, brand: 'ziraat' },
-                { pattern: /[ıi]sb[a4]nk/i, brand: 'isbank' },
-                { pattern: /[a4]kb[a4]nk/i, brand: 'akbank' },
-                { pattern: /yap[ıi]kred[ıi]/i, brand: 'yapikredi' },
-                { pattern: /h[a4]lkb[a4]nk/i, brand: 'halkbank' },
-                { pattern: /v[a4]k[ıi]fb[a4]nk/i, brand: 'vakifbank' }
-            ];
-            
-            mixedCases.forEach(item => {
-                if (item.pattern.test(lower)) {
-                    suspicious.push(`Karakter manipülasyonu: "${item.brand}" markası taklit ediliyor`);
-                }
-            });
-            
+            const suspicious = []; const lower = input.toLowerCase();
+            const mixedCases = [ { pattern: /garant[ıi1l]/i, brand: 'garanti' }, { pattern: /ziraa[t1]/i, brand: 'ziraat' }, { pattern: /[ıi]sb[a4]nk/i, brand: 'isbank' }, { pattern: /[a4]kb[a4]nk/i, brand: 'akbank' }, { pattern: /yap[ıi]kred[ıi]/i, brand: 'yapikredi' }, { pattern: /h[a4]lkb[a4]nk/i, brand: 'halkbank' }, { pattern: /v[a4]k[ıi]fb[a4]nk/i, brand: 'vakifbank' } ];
+            mixedCases.forEach(item => { if (item.pattern.test(lower)) { suspicious.push(`Karakter manipülasyonu: "${item.brand}" markası taklit ediliyor`); } });
             return suspicious;
         }
 
@@ -1248,338 +1162,95 @@
         const realThreatDatabase = {
             metadata: { source: 'USOM & PhishTank derlemesi', lastUpdate: '2026-10-16', totalLinks: 487, categories: 6 },
             categories: {
-                banka: { name: '🏦 Banka Taklidi', count: 187, color: '#ff3366', topBrands: [
-                    { name: 'Ziraat Bankası', count: 42 }, { name: 'Garanti BBVA', count: 38 }, { name: 'İş Bankası', count: 31 },
-                    { name: 'Akbank', count: 28 }, { name: 'Yapı Kredi', count: 24 }, { name: 'Halkbank', count: 12 },
-                    { name: 'Vakıfbank', count: 8 }, { name: 'QNB Finansbank', count: 4 }
-                ]},
-                devlet: { name: '🏛️ Devlet Kurumu Taklidi', count: 124, color: '#ffaa00', topBrands: [
-                    { name: 'e-Devlet', count: 45 }, { name: 'SGK', count: 28 }, { name: 'PTT', count: 22 },
-                    { name: 'GİB (Vergi)', count: 18 }, { name: 'NVI (Kimlik)', count: 11 }
-                ]},
-                kripto: { name: '💰 Kripto Dolandırıcılığı', count: 78, color: '#00ccff', topBrands: [
-                    { name: 'Bitcoin', count: 32 }, { name: 'Ethereum', count: 18 }, { name: 'Binance', count: 15 },
-                    { name: 'MetaMask', count: 8 }, { name: 'TrustWallet', count: 5 }
-                ]},
-                kamera: { name: '📷 Kamera/Mikrofon Tuzağı', count: 52, color: '#9c27b0', topBrands: [
-                    { name: 'Zoom', count: 18 }, { name: 'Canlı Görüşme', count: 15 }, { name: 'Kamera Testi', count: 12 }, { name: 'Video Chat', count: 7 }
-                ]},
-                kargo: { name: '📦 Kargo Taklidi', count: 34, color: '#00ff88', topBrands: [
-                    { name: 'PTT Kargo', count: 15 }, { name: 'Aras Kargo', count: 9 }, { name: 'Yurtiçi Kargo', count: 6 }, { name: 'MNG Kargo', count: 4 }
-                ]},
-                fatura: { name: '📄 Fatura Taklidi', count: 12, color: '#ff6b6b', topBrands: [
-                    { name: 'Elektrik Faturası', count: 5 }, { name: 'Doğalgaz Faturası', count: 4 }, { name: 'İnternet Faturası', count: 3 }
-                ]}
+                banka: { name: '🏦 Banka Taklidi', count: 187, color: '#ff3366', topBrands: [ { name: 'Ziraat Bankası', count: 42 }, { name: 'Garanti BBVA', count: 38 }, { name: 'İş Bankası', count: 31 }, { name: 'Akbank', count: 28 }, { name: 'Yapı Kredi', count: 24 }, { name: 'Halkbank', count: 12 }, { name: 'Vakıfbank', count: 8 }, { name: 'QNB Finansbank', count: 4 } ] },
+                devlet: { name: '🏛️ Devlet Kurumu Taklidi', count: 124, color: '#ffaa00', topBrands: [ { name: 'e-Devlet', count: 45 }, { name: 'SGK', count: 28 }, { name: 'PTT', count: 22 }, { name: 'GİB (Vergi)', count: 18 }, { name: 'NVI (Kimlik)', count: 11 } ] },
+                kripto: { name: '💰 Kripto Dolandırıcılığı', count: 78, color: '#00ccff', topBrands: [ { name: 'Bitcoin', count: 32 }, { name: 'Ethereum', count: 18 }, { name: 'Binance', count: 15 }, { name: 'MetaMask', count: 8 }, { name: 'TrustWallet', count: 5 } ] },
+                kamera: { name: '📷 Kamera/Mikrofon Tuzağı', count: 52, color: '#9c27b0', topBrands: [ { name: 'Zoom', count: 18 }, { name: 'Canlı Görüşme', count: 15 }, { name: 'Kamera Testi', count: 12 }, { name: 'Video Chat', count: 7 } ] },
+                kargo: { name: '📦 Kargo Taklidi', count: 34, color: '#00ff88', topBrands: [ { name: 'PTT Kargo', count: 15 }, { name: 'Aras Kargo', count: 9 }, { name: 'Yurtiçi Kargo', count: 6 }, { name: 'MNG Kargo', count: 4 } ] },
+                fatura: { name: '📄 Fatura Taklidi', count: 12, color: '#ff6b6b', topBrands: [ { name: 'Elektrik Faturası', count: 5 }, { name: 'Doğalgaz Faturası', count: 4 }, { name: 'İnternet Faturası', count: 3 } ] }
             },
-            monthlyTrend: [
-                { month: 'Mayıs', banka: 28, devlet: 18, kripto: 12, kamera: 8, kargo: 5, fatura: 2 },
-                { month: 'Haziran', banka: 32, devlet: 21, kripto: 14, kamera: 9, kargo: 6, fatura: 2 },
-                { month: 'Temmuz', banka: 35, devlet: 24, kripto: 16, kamera: 10, kargo: 7, fatura: 2 },
-                { month: 'Ağustos', banka: 41, devlet: 27, kripto: 19, kamera: 12, kargo: 8, fatura: 3 },
-                { month: 'Eylül', banka: 48, devlet: 31, kripto: 22, kamera: 14, kargo: 9, fatura: 3 },
-                { month: 'Ekim', banka: 55, devlet: 36, kripto: 25, kamera: 16, kargo: 11, fatura: 4 }
-            ]
+            monthlyTrend: [ { month: 'Mayıs', banka: 28, devlet: 18, kripto: 12, kamera: 8, kargo: 5, fatura: 2 }, { month: 'Haziran', banka: 32, devlet: 21, kripto: 14, kamera: 9, kargo: 6, fatura: 2 }, { month: 'Temmuz', banka: 35, devlet: 24, kripto: 16, kamera: 10, kargo: 7, fatura: 2 }, { month: 'Ağustos', banka: 41, devlet: 27, kripto: 19, kamera: 12, kargo: 8, fatura: 3 }, { month: 'Eylül', banka: 48, devlet: 31, kripto: 22, kamera: 14, kargo: 9, fatura: 3 }, { month: 'Ekim', banka: 55, devlet: 36, kripto: 25, kamera: 16, kargo: 11, fatura: 4 } ]
         };
 
         // ===== VERİTABANI =====
         const DB = {
-            getUsers: () => JSON.parse(localStorage.getItem('pg_users') || '[]'),
-            setUsers: (u) => localStorage.setItem('pg_users', JSON.stringify(u)),
-            getCurrentUser: () => JSON.parse(localStorage.getItem('pg_current') || 'null'),
-            setCurrentUser: (u) => localStorage.setItem('pg_current', JSON.stringify(u)),
-            clearCurrentUser: () => localStorage.removeItem('pg_current'),
-            getReports: () => JSON.parse(localStorage.getItem('pg_reports') || '[]'),
-            setReports: (r) => localStorage.setItem('pg_reports', JSON.stringify(r)),
-            getUserStats: (email) => JSON.parse(localStorage.getItem('pg_stats_' + email) || '{"total":0,"threats":0,"camera":0,"scoreSum":0}'),
-            setUserStats: (email, s) => localStorage.setItem('pg_stats_' + email, JSON.stringify(s))
+            getUsers: () => JSON.parse(localStorage.getItem('pg_users') || '[]'), setUsers: (u) => localStorage.setItem('pg_users', JSON.stringify(u)),
+            getCurrentUser: () => JSON.parse(localStorage.getItem('pg_current') || 'null'), setCurrentUser: (u) => localStorage.setItem('pg_current', JSON.stringify(u)), clearCurrentUser: () => localStorage.removeItem('pg_current'),
+            getReports: () => JSON.parse(localStorage.getItem('pg_reports') || '[]'), setReports: (r) => localStorage.setItem('pg_reports', JSON.stringify(r)),
+            getUserStats: (email) => JSON.parse(localStorage.getItem('pg_stats_' + email) || '{"total":0,"threats":0,"camera":0,"scoreSum":0}'), setUserStats: (email, s) => localStorage.setItem('pg_stats_' + email, JSON.stringify(s))
         };
 
         // ===== ML MODELİ (TensorFlow.js) =====
-        let mlModel = null;
-        let mlModelReady = false;
-        let mlScalerMean = null;
-        let mlScalerStd = null;
-
+        let mlModel = null; let mlModelReady = false; let mlScalerMean = null; let mlScalerStd = null;
         function extractUrlFeatures(url) {
-            const lower = url.toLowerCase();
-            const domain = lower.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0];
-            const features = [
-                url.length,
-                (url.match(/\./g) || []).length,
-                (url.match(/-/g) || []).length,
-                (url.match(/\//g) || []).length,
-                (url.match(/[0-9]/g) || []).length,
-                (url.match(/[?&=]/g) || []).length,
-                (url.match(/@/g) || []).length,
-                (url.match(/%/g) || []).length,
-                lower.startsWith('https') ? 1 : 0,
-                domain.length,
-                (domain.match(/\./g) || []).length,
-                ['giris','login','dogrulama','onay','hesap','sifre','parola','kart','banka','bank','odeme','havale','eft','iban','kredi'].filter(w => lower.includes(w)).length,
-                ['e-devlet','edevlet','sgk','ptt','kargo','gib','vergi','nvi','emniyet','meb','eokul','osym'].filter(w => lower.includes(w)).length,
-                ['bitcoin','btc','ethereum','kripto','crypto','coin','token','nft','bedava','katlayarak'].filter(w => lower.includes(w)).length,
-                ['kamera','camera','webcam','mikrofon','toplanti','meeting','zoom','canli','gorusme'].filter(w => lower.includes(w)).length,
-                ['.tk','.ml','.ga','.cf','.gq','.xyz','.top','.work','.click','.online','.site','.link'].filter(t => domain.endsWith(t)).length,
-                ['acil','hemen','derhal','son uyarı','tıklayın','onaylayın','güncelleyin','kazandınız','ödül','hedava','ücretsiz'].filter(w => lower.includes(w)).length
-            ];
-            return features;
+            const lower = url.toLowerCase(); const domain = lower.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0];
+            return [ url.length, (url.match(/\./g) || []).length, (url.match(/-/g) || []).length, (url.match(/\//g) || []).length, (url.match(/[0-9]/g) || []).length, (url.match(/[?&=]/g) || []).length, (url.match(/@/g) || []).length, (url.match(/%/g) || []).length, lower.startsWith('https') ? 1 : 0, domain.length, (domain.match(/\./g) || []).length, ['giris','login','dogrulama','onay','hesap','sifre','parola','kart','banka','bank','odeme','havale','eft','iban','kredi'].filter(w => lower.includes(w)).length, ['e-devlet','edevlet','sgk','ptt','kargo','gib','vergi','nvi','emniyet','meb','eokul','osym'].filter(w => lower.includes(w)).length, ['bitcoin','btc','ethereum','kripto','crypto','coin','token','nft','bedava','katlayarak'].filter(w => lower.includes(w)).length, ['kamera','camera','webcam','mikrofon','toplanti','meeting','zoom','canli','gorusme'].filter(w => lower.includes(w)).length, ['.tk','.ml','.ga','.cf','.gq','.xyz','.top','.work','.click','.online','.site','.link'].filter(t => domain.endsWith(t)).length, ['acil','hemen','derhal','son uyarı','tıklayın','onaylayın','güncelleyin','kazandınız','ödül','hedava','ücretsiz'].filter(w => lower.includes(w)).length ];
         }
-
         async function trainMLModel() {
-            if (typeof tf === 'undefined') { console.log('TensorFlow.js yüklenemedi'); return; }
-            console.log('🧠 ML modeli eğitiliyor...');
+            if (typeof tf === 'undefined') return;
             const trainingData = [
-                { url: 'https://www.google.com', label: 0 }, { url: 'https://www.youtube.com', label: 0 },
-                { url: 'https://www.wikipedia.org', label: 0 }, { url: 'https://www.github.com', label: 0 },
-                { url: 'https://www.turkiye.gov.tr', label: 0 }, { url: 'https://www.ziraatbank.com.tr', label: 0 },
-                { url: 'https://www.isbank.com.tr', label: 0 }, { url: 'https://www.garanti.com.tr', label: 0 },
-                { url: 'https://www.akbank.com', label: 0 }, { url: 'https://www.hurriyet.com.tr', label: 0 },
-                { url: 'https://www.milliyet.com.tr', label: 0 }, { url: 'https://www.sabah.com.tr', label: 0 },
-                { url: 'https://www.hepsiburada.com', label: 0 }, { url: 'https://www.trendyol.com', label: 0 },
-                { url: 'https://www.gittigidiyor.com', label: 0 }, { url: 'https://www.n11.com', label: 0 },
-                { url: 'https://www.yemeksepeti.com', label: 0 }, { url: 'https://www.getir.com', label: 0 },
-                { url: 'https://www.instagram.com', label: 0 }, { url: 'https://www.facebook.com', label: 0 },
-                { url: 'https://www.twitter.com', label: 0 }, { url: 'https://www.linkedin.com', label: 0 },
-                { url: 'https://www.netflix.com', label: 0 }, { url: 'https://www.spotify.com', label: 0 },
-                { url: 'https://www.apple.com', label: 0 }, { url: 'https://www.microsoft.com', label: 0 },
-                { url: 'https://www.amazon.com', label: 0 }, { url: 'https://www.ebay.com', label: 0 },
-                { url: 'https://www.paypal.com', label: 0 }, { url: 'https://mail.google.com', label: 0 },
-                { url: 'https://drive.google.com', label: 0 }, { url: 'https://docs.google.com', label: 0 },
-                { url: 'https://translate.google.com', label: 0 }, { url: 'https://maps.google.com', label: 0 },
-                { url: 'https://www.tubitak.gov.tr', label: 0 }, { url: 'https://www.meb.gov.tr', label: 0 },
-                { url: 'https://www.sgk.gov.tr', label: 0 }, { url: 'https://www.ptt.gov.tr', label: 0 },
-                { url: 'https://www.gib.gov.tr', label: 0 }, { url: 'https://www.nvi.gov.tr', label: 0 },
-                { url: 'https://www.egm.gov.tr', label: 0 }, { url: 'https://www.aa.com.tr', label: 0 },
-                { url: 'https://www.trt.net.tr', label: 0 }, { url: 'https://www.haberturk.com', label: 0 },
-                { url: 'https://www.ntv.com.tr', label: 0 }, { url: 'https://www.mynet.com', label: 0 },
-                { url: 'https://www.donanimhaber.com', label: 0 }, { url: 'https://www.ensonhaber.com', label: 0 },
-                { url: 'https://www.hurriyet.com.tr/gundem', label: 0 }, { url: 'https://www.sahibinden.com', label: 0 },
-                { url: 'http://garantibbva-onay.xyz/giris', label: 1 }, { url: 'http://ziraatbank-giris.tk/dogrula', label: 1 },
-                { url: 'http://akbank-dogrula.xyz/onay', label: 1 }, { url: 'http://isbank-giris.tk/hesap', label: 1 },
-                { url: 'http://yapikredi-hesap.tk/giris', label: 1 }, { url: 'http://halkbank-onay.tk/dogrula', label: 1 },
-                { url: 'http://vakifbank-giris.ml/onay', label: 1 }, { url: 'http://qnb-dogrula.tk/giris', label: 1 },
-                { url: 'http://denizbank-hesap.xyz/onay', label: 1 }, { url: 'http://teb-giris.tk/dogrula', label: 1 },
-                { url: 'http://enpara-giris.tk/onay', label: 1 }, { url: 'http://papara-onay.xyz/giris', label: 1 },
-                { url: 'http://ininal-dogrula.tk/hesap', label: 1 }, { url: 'http://tosla-hesap.ml/giris', label: 1 },
-                { url: 'http://cepteteb-giris.tk/onay', label: 1 }, { url: 'http://edevlet-giris.tk/dogrula', label: 1 },
-                { url: 'http://edevlet-onay.xyz/hesap', label: 1 }, { url: 'http://edevlet-dogrula.ml/giris', label: 1 },
-                { url: 'http://sgk-giris.tk/onay', label: 1 }, { url: 'http://sgk-onay.xyz/dogrula', label: 1 },
-                { url: 'http://ptt-kargo.tk/takip', label: 1 }, { url: 'http://ptt-takip.xyz/guncelle', label: 1 },
-                { url: 'http://gib-vergi.xyz/iade', label: 1 }, { url: 'http://nvi-kimlik.tk/dogrula', label: 1 },
-                { url: 'http://meb-giris.ml/onay', label: 1 }, { url: 'http://eokul-giris.tk/dogrula', label: 1 },
-                { url: 'http://osym-sinav.tk/onay', label: 1 }, { url: 'http://bedava-bitcoin.tk/kazan', label: 1 },
-                { url: 'http://bitcoin-katla.xyz/hediye', label: 1 }, { url: 'http://kripto-kazanc.ml/bedava', label: 1 },
-                { url: 'http://ethereum-hediye.tk/katla', label: 1 }, { url: 'http://binance-onay.xyz/giris', label: 1 },
-                { url: 'http://metamask-cuzdan.tk/dogrula', label: 1 }, { url: 'http://trustwallet-dogrula.xyz/onay', label: 1 },
-                { url: 'http://bedava-btc.ml/kazan', label: 1 }, { url: 'http://zoom-toplanti.tk/giris', label: 1 },
-                { url: 'http://canli-gorusme.xyz/kamera', label: 1 }, { url: 'http://kamera-ac.ml/izle', label: 1 },
-                { url: 'http://online-meeting.tk/join', label: 1 }, { url: 'http://video-chat.xyz/gorusme', label: 1 },
-                { url: 'http://goruntulu-konusma.tk/ac', label: 1 }, { url: 'http://webcam-test.ml/kamera', label: 1 },
-                { url: 'http://face-time.xyz/gorusme', label: 1 }, { url: 'http://canli-yayin.tk/izle', label: 1 },
-                { url: 'http://kamera-izle.ml/test', label: 1 }, { url: 'http://garanti-bbva-giris.tk/onay', label: 1 },
-                { url: 'http://ziraat-onay.xyz/dogrula', label: 1 }, { url: 'http://akbank-hesap.tk/giris', label: 1 },
-                { url: 'http://isbank-dogrula.xyz/onay', label: 1 }, { url: 'http://garanti-onay.ml/giris', label: 1 }
+                { url: 'https://www.google.com', label: 0 }, { url: 'https://www.youtube.com', label: 0 }, { url: 'https://www.wikipedia.org', label: 0 }, { url: 'https://www.github.com', label: 0 }, { url: 'https://www.turkiye.gov.tr', label: 0 }, { url: 'https://www.ziraatbank.com.tr', label: 0 }, { url: 'https://www.isbank.com.tr', label: 0 }, { url: 'https://www.garanti.com.tr', label: 0 }, { url: 'https://www.akbank.com', label: 0 }, { url: 'https://www.hurriyet.com.tr', label: 0 }, { url: 'https://www.milliyet.com.tr', label: 0 }, { url: 'https://www.sabah.com.tr', label: 0 }, { url: 'https://www.hepsiburada.com', label: 0 }, { url: 'https://www.trendyol.com', label: 0 }, { url: 'https://www.gittigidiyor.com', label: 0 }, { url: 'https://www.n11.com', label: 0 }, { url: 'https://www.yemeksepeti.com', label: 0 }, { url: 'https://www.getir.com', label: 0 }, { url: 'https://www.instagram.com', label: 0 }, { url: 'https://www.facebook.com', label: 0 }, { url: 'https://www.twitter.com', label: 0 }, { url: 'https://www.linkedin.com', label: 0 }, { url: 'https://www.netflix.com', label: 0 }, { url: 'https://www.spotify.com', label: 0 }, { url: 'https://www.apple.com', label: 0 }, { url: 'https://www.microsoft.com', label: 0 }, { url: 'https://www.amazon.com', label: 0 }, { url: 'https://www.ebay.com', label: 0 }, { url: 'https://www.paypal.com', label: 0 }, { url: 'https://mail.google.com', label: 0 }, { url: 'https://drive.google.com', label: 0 }, { url: 'https://docs.google.com', label: 0 }, { url: 'https://translate.google.com', label: 0 }, { url: 'https://maps.google.com', label: 0 }, { url: 'https://www.tubitak.gov.tr', label: 0 }, { url: 'https://www.meb.gov.tr', label: 0 }, { url: 'https://www.sgk.gov.tr', label: 0 }, { url: 'https://www.ptt.gov.tr', label: 0 }, { url: 'https://www.gib.gov.tr', label: 0 }, { url: 'https://www.nvi.gov.tr', label: 0 }, { url: 'https://www.egm.gov.tr', label: 0 }, { url: 'https://www.aa.com.tr', label: 0 }, { url: 'https://www.trt.net.tr', label: 0 }, { url: 'https://www.haberturk.com', label: 0 }, { url: 'https://www.ntv.com.tr', label: 0 }, { url: 'https://www.mynet.com', label: 0 }, { url: 'https://www.donanimhaber.com', label: 0 }, { url: 'https://www.ensonhaber.com', label: 0 }, { url: 'https://www.hurriyet.com.tr/gundem', label: 0 }, { url: 'https://www.sahibinden.com', label: 0 },
+                { url: 'http://garantibbva-onay.xyz/giris', label: 1 }, { url: 'http://ziraatbank-giris.tk/dogrula', label: 1 }, { url: 'http://akbank-dogrula.xyz/onay', label: 1 }, { url: 'http://isbank-giris.tk/hesap', label: 1 }, { url: 'http://yapikredi-hesap.tk/giris', label: 1 }, { url: 'http://halkbank-onay.tk/dogrula', label: 1 }, { url: 'http://vakifbank-giris.ml/onay', label: 1 }, { url: 'http://qnb-dogrula.tk/giris', label: 1 }, { url: 'http://denizbank-hesap.xyz/onay', label: 1 }, { url: 'http://teb-giris.tk/dogrula', label: 1 }, { url: 'http://enpara-giris.tk/onay', label: 1 }, { url: 'http://papara-onay.xyz/giris', label: 1 }, { url: 'http://ininal-dogrula.tk/hesap', label: 1 }, { url: 'http://tosla-hesap.ml/giris', label: 1 }, { url: 'http://cepteteb-giris.tk/onay', label: 1 }, { url: 'http://edevlet-giris.tk/dogrula', label: 1 }, { url: 'http://edevlet-onay.xyz/hesap', label: 1 }, { url: 'http://edevlet-dogrula.ml/giris', label: 1 }, { url: 'http://sgk-giris.tk/onay', label: 1 }, { url: 'http://sgk-onay.xyz/dogrula', label: 1 }, { url: 'http://ptt-kargo.tk/takip', label: 1 }, { url: 'http://ptt-takip.xyz/guncelle', label: 1 }, { url: 'http://gib-vergi.xyz/iade', label: 1 }, { url: 'http://nvi-kimlik.tk/dogrula', label: 1 }, { url: 'http://meb-giris.ml/onay', label: 1 }, { url: 'http://eokul-giris.tk/dogrula', label: 1 }, { url: 'http://osym-sinav.tk/onay', label: 1 }, { url: 'http://bedava-bitcoin.tk/kazan', label: 1 }, { url: 'http://bitcoin-katla.xyz/hediye', label: 1 }, { url: 'http://kripto-kazanc.ml/bedava', label: 1 }, { url: 'http://ethereum-hediye.tk/katla', label: 1 }, { url: 'http://binance-onay.xyz/giris', label: 1 }, { url: 'http://metamask-cuzdan.tk/dogrula', label: 1 }, { url: 'http://trustwallet-dogrula.xyz/onay', label: 1 }, { url: 'http://bedava-btc.ml/kazan', label: 1 }, { url: 'http://zoom-toplanti.tk/giris', label: 1 }, { url: 'http://canli-gorusme.xyz/kamera', label: 1 }, { url: 'http://kamera-ac.ml/izle', label: 1 }, { url: 'http://online-meeting.tk/join', label: 1 }, { url: 'http://video-chat.xyz/gorusme', label: 1 }, { url: 'http://goruntulu-konusma.tk/ac', label: 1 }, { url: 'http://webcam-test.ml/kamera', label: 1 }, { url: 'http://face-time.xyz/gorusme', label: 1 }, { url: 'http://canli-yayin.tk/izle', label: 1 }, { url: 'http://kamera-izle.ml/test', label: 1 }, { url: 'http://garanti-bbva-giris.tk/onay', label: 1 }, { url: 'http://ziraat-onay.xyz/dogrula', label: 1 }, { url: 'http://akbank-hesap.tk/giris', label: 1 }, { url: 'http://isbank-dogrula.xyz/onay', label: 1 }, { url: 'http://garanti-onay.ml/giris', label: 1 }
             ];
-            const features = trainingData.map(d => extractUrlFeatures(d.url));
-            const labels = trainingData.map(d => d.label);
-            const numFeatures = features[0].length;
-            mlScalerMean = new Array(numFeatures).fill(0);
-            mlScalerStd = new Array(numFeatures).fill(1);
-            for (let i = 0; i < numFeatures; i++) {
-                const values = features.map(f => f[i]);
-                const mean = values.reduce((a, b) => a + b, 0) / values.length;
-                const variance = values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length;
-                mlScalerMean[i] = mean;
-                mlScalerStd[i] = Math.sqrt(variance) || 1;
-            }
+            const features = trainingData.map(d => extractUrlFeatures(d.url)); const labels = trainingData.map(d => d.label); const numFeatures = features[0].length;
+            mlScalerMean = new Array(numFeatures).fill(0); mlScalerStd = new Array(numFeatures).fill(1);
+            for (let i = 0; i < numFeatures; i++) { const values = features.map(f => f[i]); const mean = values.reduce((a, b) => a + b, 0) / values.length; const variance = values.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / values.length; mlScalerMean[i] = mean; mlScalerStd[i] = Math.sqrt(variance) || 1; }
             const normalizedFeatures = features.map(f => f.map((v, i) => (v - mlScalerMean[i]) / mlScalerStd[i]));
-            const xs = tf.tensor2d(normalizedFeatures);
-            const ys = tf.tensor2d(labels.map(l => [l]));
-            mlModel = tf.sequential();
-            mlModel.add(tf.layers.dense({ inputShape: [numFeatures], units: 16, activation: 'relu' }));
-            mlModel.add(tf.layers.dropout({ rate: 0.2 }));
-            mlModel.add(tf.layers.dense({ units: 8, activation: 'relu' }));
-            mlModel.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+            const xs = tf.tensor2d(normalizedFeatures); const ys = tf.tensor2d(labels.map(l => [l]));
+            mlModel = tf.sequential(); mlModel.add(tf.layers.dense({ inputShape: [numFeatures], units: 16, activation: 'relu' })); mlModel.add(tf.layers.dropout({ rate: 0.2 })); mlModel.add(tf.layers.dense({ units: 8, activation: 'relu' })); mlModel.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
             mlModel.compile({ optimizer: tf.train.adam(0.01), loss: 'binaryCrossentropy', metrics: ['accuracy'] });
             await mlModel.fit(xs, ys, { epochs: 50, batchSize: 8, shuffle: true, verbose: 0 });
-            mlModelReady = true;
-            console.log('✅ ML modeli hazır!');
-            const statusEl = document.getElementById('mlStatus');
-            if (statusEl) { statusEl.textContent = '🧠 ML: Hazır'; statusEl.style.color = 'var(--neon)'; }
-            xs.dispose();
-            ys.dispose();
+            mlModelReady = true; console.log('✅ ML modeli hazır!');
+            const statusEl = document.getElementById('mlStatus'); if (statusEl) { statusEl.textContent = '🧠 ML: Hazır'; statusEl.style.color = 'var(--neon)'; }
+            xs.dispose(); ys.dispose();
         }
-
         function predictWithML(url) {
             if (!mlModelReady || !mlModel) return null;
-            try {
-                const features = extractUrlFeatures(url);
-                const normalized = features.map((v, i) => (v - mlScalerMean[i]) / mlScalerStd[i]);
-                const input = tf.tensor2d([normalized]);
-                const prediction = mlModel.predict(input);
-                const score = prediction.dataSync()[0];
-                input.dispose();
-                prediction.dispose();
-                return Math.round(score * 100);
-            } catch(e) { return null; }
+            try { const features = extractUrlFeatures(url); const normalized = features.map((v, i) => (v - mlScalerMean[i]) / mlScalerStd[i]); const input = tf.tensor2d([normalized]); const prediction = mlModel.predict(input); const score = prediction.dataSync()[0]; input.dispose(); prediction.dispose(); return Math.round(score * 100); } catch(e) { return null; }
         }
 
         // ===== ADMIN =====
         function initAdmin() {
-            let users = DB.getUsers();
-            users = users.filter(u => u.email !== 'hazretirox@gmail.com');
-            users = users.filter(u => u.email !== 'demo@phishguard.tr');
-            if (!users.find(u => u.email === 'phisguardtr@gmail.com')) {
-                users.push({ name: 'PhishGuard Admin', email: 'phisguardtr@gmail.com', password: 'phisguardtr', role: 'admin', date: new Date().toISOString() });
-            }
+            let users = DB.getUsers(); users = users.filter(u => u.email !== 'hazretirox@gmail.com'); users = users.filter(u => u.email !== 'demo@phishguard.tr');
+            if (!users.find(u => u.email === 'phisguardtr@gmail.com')) { users.push({ name: 'PhishGuard Admin', email: 'phisguardtr@gmail.com', password: 'phisguardtr', role: 'admin', date: new Date().toISOString() }); }
             DB.setUsers(users);
         }
         initAdmin();
 
         // ===== GİRİŞ =====
-        function switchGate(type, event) {
-            document.querySelectorAll('.gate-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            if (type === 'login') { document.getElementById('gateLogin').style.display = 'block'; document.getElementById('gateRegister').style.display = 'none'; }
-            else { document.getElementById('gateLogin').style.display = 'none'; document.getElementById('gateRegister').style.display = 'block'; }
-        }
-
-        function gateRegister() {
-            const name = document.getElementById('gateRegName').value.trim();
-            const email = document.getElementById('gateRegEmail').value.trim().toLowerCase();
-            const password = document.getElementById('gateRegPassword').value;
-            const password2 = document.getElementById('gateRegPassword2').value;
-            if (!name || !email || !password || !password2) { alert('Tüm alanları doldurun!'); return; }
-            if (!email.includes('@') || !email.includes('.')) { alert('Geçerli e-posta girin!'); return; }
-            if (password.length < 6) { alert('Şifre en az 6 karakter olmalı!'); return; }
-            if (password !== password2) { alert('Şifreler eşleşmiyor!'); return; }
-            const users = DB.getUsers();
-            if (users.find(u => u.email === email)) { alert('Bu e-posta zaten kayıtlı!'); return; }
-            const newUser = { name, email, password, role: 'user', date: new Date().toISOString() };
-            users.push(newUser); DB.setUsers(users); DB.setCurrentUser(newUser);
-            alert('Kayıt başarılı! Hoş geldin ' + name); openApp();
-        }
-
-        function gateLogin() {
-            const email = document.getElementById('gateLoginEmail').value.trim().toLowerCase();
-            const password = document.getElementById('gateLoginPassword').value;
-            const remember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : false;
-            if (!email || !password) { alert('E-posta ve şifre girin!'); return; }
-            const users = DB.getUsers();
-            const user = users.find(u => u.email === email && u.password === password);
-            if (!user) { alert('E-posta veya şifre hatalı!'); return; }
-            DB.setCurrentUser(user);
-            if (remember) localStorage.setItem('pg_remember_email', email);
-            else localStorage.removeItem('pg_remember_email');
-            openApp();
-        }
-
-        function forgotPassword() {
-            alert("Şifrenizi sıfırlamak için lütfen admin ile iletişime geçin:\n\n📧 phisguardtr@gmail.com");
-        }
-
-        function continueAsGuest() {
-            const guestUser = { name: 'Misafir', email: 'guest_' + Date.now() + '@phishguard.tr', role: 'guest', date: new Date().toISOString() };
-            DB.setCurrentUser(guestUser); openApp();
-        }
-
-        function logout() {
-            if (!confirm('Çıkış yapmak istiyor musunuz?')) return;
-            DB.clearCurrentUser();
-            document.getElementById('app').classList.remove('active');
-            document.getElementById('gate').classList.remove('hidden');
-        }
-
+        function switchGate(type, event) { document.querySelectorAll('.gate-tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); if (type === 'login') { document.getElementById('gateLogin').style.display = 'block'; document.getElementById('gateRegister').style.display = 'none'; } else { document.getElementById('gateLogin').style.display = 'none'; document.getElementById('gateRegister').style.display = 'block'; } }
+        function gateRegister() { const name = document.getElementById('gateRegName').value.trim(); const email = document.getElementById('gateRegEmail').value.trim().toLowerCase(); const password = document.getElementById('gateRegPassword').value; const password2 = document.getElementById('gateRegPassword2').value; if (!name || !email || !password || !password2) { alert('Tüm alanları doldurun!'); return; } if (!email.includes('@') || !email.includes('.')) { alert('Geçerli e-posta girin!'); return; } if (password.length < 6) { alert('Şifre en az 6 karakter olmalı!'); return; } if (password !== password2) { alert('Şifreler eşleşmiyor!'); return; } const users = DB.getUsers(); if (users.find(u => u.email === email)) { alert('Bu e-posta zaten kayıtlı!'); return; } const newUser = { name, email, password, role: 'user', date: new Date().toISOString() }; users.push(newUser); DB.setUsers(users); DB.setCurrentUser(newUser); alert('Kayıt başarılı! Hoş geldin ' + name); openApp(); }
+        function gateLogin() { const email = document.getElementById('gateLoginEmail').value.trim().toLowerCase(); const password = document.getElementById('gateLoginPassword').value; const remember = document.getElementById('rememberMe') ? document.getElementById('rememberMe').checked : false; if (!email || !password) { alert('E-posta ve şifre girin!'); return; } const users = DB.getUsers(); const user = users.find(u => u.email === email && u.password === password); if (!user) { alert('E-posta veya şifre hatalı!'); return; } DB.setCurrentUser(user); if (remember) localStorage.setItem('pg_remember_email', email); else localStorage.removeItem('pg_remember_email'); openApp(); }
+        function forgotPassword() { alert("Şifrenizi sıfırlamak için lütfen admin ile iletişime geçin:\n\n📧 phisguardtr@gmail.com"); }
+        function continueAsGuest() { const guestUser = { name: 'Misafir', email: 'guest_' + Date.now() + '@phishguard.tr', role: 'guest', date: new Date().toISOString() }; DB.setCurrentUser(guestUser); openApp(); }
+        function logout() { if (!confirm('Çıkış yapmak istiyor musunuz?')) return; DB.clearCurrentUser(); document.getElementById('app').classList.remove('active'); document.getElementById('gate').classList.remove('hidden'); }
         function openApp() {
-            const user = DB.getCurrentUser();
-            if (!user) return;
-            document.getElementById('gate').classList.add('hidden');
-            document.getElementById('app').classList.add('active');
-            document.getElementById('userName').textContent = user.name;
+            const user = DB.getCurrentUser(); if (!user) return;
+            document.getElementById('gate').classList.add('hidden'); document.getElementById('app').classList.add('active'); document.getElementById('userName').textContent = user.name;
             if (user.role === 'admin') { document.getElementById('userRole').textContent = '(Admin)'; document.getElementById('userBadgeIcon').textContent = '👑'; document.getElementById('adminBtn').style.display = 'flex'; }
             else if (user.role === 'guest') { document.getElementById('userRole').textContent = '(Misafir)'; document.getElementById('userBadgeIcon').textContent = '👤'; document.getElementById('userBadge').classList.add('guest'); document.getElementById('adminBtn').style.display = 'none'; }
             else { document.getElementById('userRole').textContent = ''; document.getElementById('userBadgeIcon').textContent = '👤'; document.getElementById('adminBtn').style.display = 'none'; }
-            loadUserData();
-            if (user.role === 'admin') updateAdminPanel();
-            loadTurkeyMap(); initQuiz(); updateReportUI(); initSimulator(); renderRecentScans();
+            loadUserData(); if (user.role === 'admin') updateAdminPanel(); loadTurkeyMap(); initQuiz(); updateReportUI(); initSimulator(); renderRecentScans();
         }
-
         function loadUserData() {
-            const user = DB.getCurrentUser();
-            if (!user) return;
-            if (user.role === 'guest') {
-                document.getElementById('quickTotal').textContent = '0';
-                document.getElementById('quickThreats').textContent = '0';
-                document.getElementById('quickCamera').textContent = '0';
-                renderRecentScans();
-                return;
-            }
-            const s = DB.getUserStats(user.email);
-            document.getElementById('quickTotal').textContent = s.total;
-            document.getElementById('quickThreats').textContent = s.threats;
-            document.getElementById('quickCamera').textContent = s.camera;
-            renderRecentScans();
+            const user = DB.getCurrentUser(); if (!user) return;
+            if (user.role === 'guest') { document.getElementById('quickTotal').textContent = '0'; document.getElementById('quickThreats').textContent = '0'; document.getElementById('quickCamera').textContent = '0'; renderRecentScans(); return; }
+            const s = DB.getUserStats(user.email); document.getElementById('quickTotal').textContent = s.total; document.getElementById('quickThreats').textContent = s.threats; document.getElementById('quickCamera').textContent = s.camera; renderRecentScans();
         }
-
-        function switchView(view) {
-            ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => { document.getElementById(v).style.display = 'none'; });
-            document.getElementById(view + 'View').style.display = 'block';
-            if (view === 'admin') updateAdminPanel();
-            if (view === 'report') updateReportUI();
-            if (view === 'stats') { loadStatsData(); loadRealThreatData(); setTimeout(initStatsCharts, 100); }
-        }
-
-        function switchSearchTab(tab, event) {
-            document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById('urlInputGroup').style.display = 'none';
-            document.getElementById('textInputGroup').style.display = 'none';
-            document.getElementById('emailInputGroup').style.display = 'none';
-            if (tab === 'url') document.getElementById('urlInputGroup').style.display = 'flex';
-            else if (tab === 'text') document.getElementById('textInputGroup').style.display = 'flex';
-            else document.getElementById('emailInputGroup').style.display = 'flex';
-        }
+        function switchView(view) { ['scanView', 'toolsView', 'mapView', 'reportView', 'chatView', 'eduView', 'aboutView', 'guideView', 'statsView', 'adminView'].forEach(v => { document.getElementById(v).style.display = 'none'; }); document.getElementById(view + 'View').style.display = 'block'; if (view === 'admin') updateAdminPanel(); if (view === 'report') updateReportUI(); if (view === 'stats') { loadStatsData(); loadRealThreatData(); setTimeout(initStatsCharts, 100); } }
+        function switchSearchTab(tab, event) { document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active')); event.target.classList.add('active'); document.getElementById('urlInputGroup').style.display = 'none'; document.getElementById('textInputGroup').style.display = 'none'; document.getElementById('emailInputGroup').style.display = 'none'; if (tab === 'url') document.getElementById('urlInputGroup').style.display = 'flex'; else if (tab === 'text') document.getElementById('textInputGroup').style.display = 'flex'; else document.getElementById('emailInputGroup').style.display = 'flex'; }
 
         // ===== SON TARAMALAR =====
-        function saveRecentScan(url, score) {
-            try {
-                const user = DB.getCurrentUser();
-                if (!user) return;
-                const key = 'pg_recent_' + user.email;
-                let recent = JSON.parse(localStorage.getItem(key) || '[]');
-                recent.unshift({ url, score, ts: Date.now() });
-                recent = recent.slice(0, 5);
-                localStorage.setItem(key, JSON.stringify(recent));
-                renderRecentScans();
-            } catch(e) {}
-        }
-        function getRecentScans() {
-            try {
-                const user = DB.getCurrentUser();
-                if (!user) return [];
-                return JSON.parse(localStorage.getItem('pg_recent_' + user.email) || '[]');
-            } catch(e) { return []; }
-        }
+        function saveRecentScan(url, score) { try { const user = DB.getCurrentUser(); if (!user) return; const key = 'pg_recent_' + user.email; let recent = JSON.parse(localStorage.getItem(key) || '[]'); recent.unshift({ url, score, ts: Date.now() }); recent = recent.slice(0, 5); localStorage.setItem(key, JSON.stringify(recent)); renderRecentScans(); } catch(e) {} }
+        function getRecentScans() { try { const user = DB.getCurrentUser(); if (!user) return []; return JSON.parse(localStorage.getItem('pg_recent_' + user.email) || '[]'); } catch(e) { return []; } }
         function renderRecentScans() {
-            const wrap = document.getElementById('recentScans');
-            const list = document.getElementById('recentScansList');
-            if (!wrap || !list) return;
-            const recent = getRecentScans();
-            if (recent.length === 0) { wrap.style.display = 'none'; return; }
-            wrap.style.display = 'block';
-            list.innerHTML = '';
-            recent.forEach(r => {
-                const cls = r.score >= 60 ? 'danger' : r.score >= 30 ? 'warning' : '';
-                const item = document.createElement('div');
-                item.className = 'recent-scan-item ' + cls;
-                const time = new Date(r.ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-                item.innerHTML = `<span class="recent-scan-time">${time}</span><span class="recent-scan-url">${r.url}</span><span class="recent-scan-score">${r.score}%</span>`;
-                item.onclick = () => { document.getElementById('inputUrl').value = r.url; switchView('scan'); };
-                list.appendChild(item);
-            });
+            const wrap = document.getElementById('recentScans'); const list = document.getElementById('recentScansList'); if (!wrap || !list) return;
+            const recent = getRecentScans(); if (recent.length === 0) { wrap.style.display = 'none'; return; }
+            wrap.style.display = 'block'; list.innerHTML = '';
+            recent.forEach(r => { const cls = r.score >= 60 ? 'danger' : r.score >= 30 ? 'warning' : ''; const item = document.createElement('div'); item.className = 'recent-scan-item ' + cls; const time = new Date(r.ts).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }); item.innerHTML = `<span class="recent-scan-time">${time}</span><span class="recent-scan-url">${r.url}</span><span class="recent-scan-score">${r.score}%</span>`; item.onclick = () => { document.getElementById('inputUrl').value = r.url; switchView('scan'); }; list.appendChild(item); });
         }
 
-        // ===== OLTALAMA SİMÜLATÖRÜ =====
+        // ===== SİMÜLATÖR =====
         const simulatorScenarios = [
             { from: 'guvenlik@garanti-bbva.com', subject: '⚠️ Hesabınız Askıya Alındı!', body: 'Sayın müşterimiz,\n\nHesabınızda şüpheli aktivite tespit edilmiştir. Hesabınızın askıya alınmaması için aşağıdaki linke tıklayarak kimlik doğrulaması yapmanız gerekmektedir.\n\nhttp://garantibbva-onay.xyz/dogrula\n\nSaygılarımızla,\nGaranti BBVA', isPhishing: true, explanation: '🚨 Bu bir oltalama saldırısı! Gerçek bankalar ASLA e-posta ile link göndermez. "garantibbva-onay.xyz" uzantısı bankanın resmi uzantısı değildir.' },
             { from: 'noreply@google.com', subject: 'Yeni cihaz girişi', body: 'Merhaba,\n\nHesabınıza yeni bir cihazdan giriş yapıldı. Bu siz değilseniz, hesap ayarlarınızı kontrol edin.\n\nhttps://myaccount.google.com/security\n\nGoogle Ekibi', isPhishing: false, explanation: '✅ Bu güvenli bir e-posta. Gerçek Google adresi (google.com), HTTPS protokolü kullanılmış.' },
@@ -1590,81 +1261,42 @@
         let simState = { current: 0, score: 0, answered: false };
         function initSimulator() { simState = { current: 0, score: 0, answered: false }; renderSimulator(); }
         function renderSimulator() {
-            const content = document.getElementById('simContent');
-            const progress = document.getElementById('simProgressFill');
-            if (!content) return;
+            const content = document.getElementById('simContent'); const progress = document.getElementById('simProgressFill'); if (!content) return;
             if (simState.current >= simulatorScenarios.length) {
-                progress.style.width = '100%';
-                const percent = Math.round((simState.score / simulatorScenarios.length) * 100);
-                let emoji = percent >= 80 ? '🏆' : percent >= 60 ? '👍' : '📚';
-                let msg = percent >= 80 ? 'Mükemmel!' : percent >= 60 ? 'İyi!' : 'Dikkatli ol!';
+                progress.style.width = '100%'; const percent = Math.round((simState.score / simulatorScenarios.length) * 100);
+                let emoji = percent >= 80 ? '🏆' : percent >= 60 ? '👍' : '📚'; let msg = percent >= 80 ? 'Mükemmel!' : percent >= 60 ? 'İyi!' : 'Dikkatli ol!';
                 content.innerHTML = `<div style="text-align:center;padding:30px;"><div style="font-size:80px;margin-bottom:20px;">${emoji}</div><h3 style="color:var(--neon);font-size:24px;margin-bottom:15px;">Simülasyon Tamamlandı!</h3><p style="font-size:18px;margin-bottom:10px;">Skorun: <strong style="color:var(--neon);font-size:28px;">${simState.score}/${simulatorScenarios.length}</strong></p><p style="color:var(--text-dim);margin-bottom:20px;">${msg}</p><button class="search-btn" onclick="initSimulator()">🔄 Tekrar Dene</button></div>`;
-                if (simState.score === simulatorScenarios.length) launchConfetti();
-                return;
+                if (simState.score === simulatorScenarios.length) launchConfetti(); return;
             }
-            const s = simulatorScenarios[simState.current];
-            progress.style.width = ((simState.current / simulatorScenarios.length) * 100) + '%';
+            const s = simulatorScenarios[simState.current]; progress.style.width = ((simState.current / simulatorScenarios.length) * 100) + '%';
             content.innerHTML = `<div class="simulator-scenario"><div><span class="scenario-label">📧 Gönderen:</span> <span class="scenario-from">${s.from}</span></div><div><span class="scenario-label">📌 Konu:</span> <span class="scenario-subject">${s.subject}</span></div><div class="scenario-body">${s.body.replace(/\n/g, '<br>')}</div></div><div class="simulator-question">❓ Bu e-posta oltalama mı, güvenli mi?</div><div class="simulator-options"><button class="simulator-option" onclick="answerSim(true)">🎣 OLTALAMA</button><button class="simulator-option" onclick="answerSim(false)">✅ GÜVENLİ</button></div><div class="simulator-feedback" id="simFeedback"></div><div style="text-align:center;color:var(--text-dim);font-size:12px;">Soru ${simState.current + 1} / ${simulatorScenarios.length}</div>`;
             simState.answered = false;
         }
         function answerSim(userSays) {
-            if (simState.answered) return;
-            simState.answered = true;
-            const s = simulatorScenarios[simState.current];
-            const feedback = document.getElementById('simFeedback');
-            const buttons = document.querySelectorAll('.simulator-option');
-            buttons.forEach((b, i) => { b.disabled = true; const isPhishingBtn = i === 0; if (isPhishingBtn === s.isPhishing) b.classList.add('correct'); else if (isPhishingBtn === userSays) b.classList.add('wrong'); });
-            const correct = userSays === s.isPhishing;
-            if (correct) simState.score++;
-            feedback.className = 'simulator-feedback ' + (correct ? 'correct' : 'wrong');
-            feedback.innerHTML = `<strong>${correct ? '✅ Doğru!' : '❌ Yanlış!'}</strong><br><br>${s.explanation}`;
+            if (simState.answered) return; simState.answered = true; const s = simulatorScenarios[simState.current]; const feedback = document.getElementById('simFeedback');
+            document.querySelectorAll('.simulator-option').forEach((b, i) => { b.disabled = true; const isPhishingBtn = i === 0; if (isPhishingBtn === s.isPhishing) b.classList.add('correct'); else if (isPhishingBtn === userSays) b.classList.add('wrong'); });
+            const correct = userSays === s.isPhishing; if (correct) simState.score++;
+            feedback.className = 'simulator-feedback ' + (correct ? 'correct' : 'wrong'); feedback.innerHTML = `<strong>${correct ? '✅ Doğru!' : '❌ Yanlış!'}</strong><br><br>${s.explanation}`;
             setTimeout(() => { simState.current++; renderSimulator(); }, 4000);
         }
 
         // ===== DOSYA HASH =====
         async function calculateFileHash(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const progress = document.getElementById('fileHashProgress');
-            const progressFill = document.getElementById('fileHashProgressFill');
-            const info = document.getElementById('fileHashInfo');
-            const verdict = document.getElementById('fileHashVerdict');
-            progress.style.display = 'block'; progressFill.style.width = '0%';
-            info.classList.remove('active'); verdict.style.display = 'none';
-            document.getElementById('fileName').textContent = file.name;
-            document.getElementById('fileSize').textContent = formatFileSize(file.size);
-            const arrayBuffer = await file.arrayBuffer();
-            progressFill.style.width = '50%';
-            const md5 = await calculateMD5(arrayBuffer);
-            progressFill.style.width = '75%';
-            const sha256 = await calculateSHA256(arrayBuffer);
-            progressFill.style.width = '100%';
-            document.getElementById('fileMd5').textContent = md5;
-            document.getElementById('fileSha256').textContent = sha256;
-            info.classList.add('active');
-            setTimeout(() => {
-                progress.style.display = 'none';
-                const isMalicious = knownMaliciousHashes[md5] || knownMaliciousHashes[sha256];
-                if (isMalicious) { verdict.className = 'file-hash-verdict danger'; verdict.textContent = '🚨 ZARARLI YAZILIM TESPİT EDİLDİ!'; verdict.style.display = 'block'; if (voiceEnabled) speak('Uyarı! Bu dosya zararlı yazılım olarak tespit edildi.'); }
-                else { verdict.className = 'file-hash-verdict safe'; verdict.textContent = '✅ TEMİZ - Bilinen zararlı yazılım listesinde yok'; verdict.style.display = 'block'; if (voiceEnabled) speak('Bu dosya temiz görünüyor.'); }
-            }, 500);
+            const file = event.target.files[0]; if (!file) return; const progress = document.getElementById('fileHashProgress'); const progressFill = document.getElementById('fileHashProgressFill'); const info = document.getElementById('fileHashInfo'); const verdict = document.getElementById('fileHashVerdict');
+            progress.style.display = 'block'; progressFill.style.width = '0%'; info.classList.remove('active'); verdict.style.display = 'none';
+            document.getElementById('fileName').textContent = file.name; document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            const arrayBuffer = await file.arrayBuffer(); progressFill.style.width = '50%'; const md5 = await calculateMD5(arrayBuffer); progressFill.style.width = '75%'; const sha256 = await calculateSHA256(arrayBuffer); progressFill.style.width = '100%';
+            document.getElementById('fileMd5').textContent = md5; document.getElementById('fileSha256').textContent = sha256; info.classList.add('active');
+            setTimeout(() => { progress.style.display = 'none'; const isMalicious = knownMaliciousHashes[md5] || knownMaliciousHashes[sha256]; if (isMalicious) { verdict.className = 'file-hash-verdict danger'; verdict.textContent = '🚨 ZARARLI YAZILIM TESPİT EDİLDİ!'; verdict.style.display = 'block'; if (voiceEnabled) speak('Uyarı! Bu dosya zararlı yazılım olarak tespit edildi.'); } else { verdict.className = 'file-hash-verdict safe'; verdict.textContent = '✅ TEMİZ - Bilinen zararlı yazılım listesinde yok'; verdict.style.display = 'block'; if (voiceEnabled) speak('Bu dosya temiz görünüyor.'); } }, 500);
         }
         function formatFileSize(bytes) { if (bytes === 0) return '0 Byte'; const k = 1024; const sizes = ['Bytes', 'KB', 'MB', 'GB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]; }
         async function calculateMD5(arrayBuffer) { const hashBuffer = await crypto.subtle.digest('SHA-1', arrayBuffer); const hashArray = Array.from(new Uint8Array(hashBuffer)); return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32); }
         async function calculateSHA256(arrayBuffer) { const hashBuffer = await crypto.subtle.digest('SHA-256', arrayBuffer); const hashArray = Array.from(new Uint8Array(hashBuffer)); return hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); }
         async function checkHash() {
-            const hash = document.getElementById('hashInput').value.trim().toLowerCase();
-            if (!hash) { alert('Lütfen bir hash girin!'); return; }
-            const resultDiv = document.getElementById('hashResult');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '<div style="text-align:center;color:var(--neon);">🔍 Hash kontrol ediliyor...</div>';
-            await new Promise(r => setTimeout(r, 800));
-            const isKnown = knownMaliciousHashes[hash];
-            const hashType = hash.length === 32 ? 'MD5' : hash.length === 64 ? 'SHA256' : 'Bilinmiyor';
-            let verdict, color, icon;
-            if (isKnown) { verdict = '🚨 ZARARLI YAZILIM!'; color = 'var(--danger)'; icon = '🚨'; }
-            else if (hashType === 'Bilinmiyor') { verdict = '⚠️ Geçersiz hash formatı'; color = 'var(--warning)'; icon = '⚠️'; }
-            else { verdict = '✅ Temiz'; color = 'var(--success)'; icon = '✅'; }
+            const hash = document.getElementById('hashInput').value.trim().toLowerCase(); if (!hash) { alert('Lütfen bir hash girin!'); return; }
+            const resultDiv = document.getElementById('hashResult'); resultDiv.style.display = 'block'; resultDiv.innerHTML = '<div style="text-align:center;color:var(--neon);">🔍 Hash kontrol ediliyor...</div>';
+            await new Promise(r => setTimeout(r, 800)); const isKnown = knownMaliciousHashes[hash]; const hashType = hash.length === 32 ? 'MD5' : hash.length === 64 ? 'SHA256' : 'Bilinmiyor';
+            let verdict, color, icon; if (isKnown) { verdict = '🚨 ZARARLI YAZILIM!'; color = 'var(--danger)'; icon = '🚨'; } else if (hashType === 'Bilinmiyor') { verdict = '⚠️ Geçersiz hash formatı'; color = 'var(--warning)'; icon = '⚠️'; } else { verdict = '✅ Temiz'; color = 'var(--success)'; icon = '✅'; }
             resultDiv.innerHTML = `<div style="text-align:center;font-size:24px;margin-bottom:12px;">${icon}</div><div style="text-align:center;color:${color};font-size:16px;font-weight:800;margin-bottom:15px;">${verdict}</div><div class="hash-row"><span class="hash-label">Hash:</span><span class="hash-value">${hash}</span></div><div class="hash-row"><span class="hash-label">Tür:</span><span class="hash-value">${hashType}</span></div><div class="hash-row"><span class="hash-label">Uzunluk:</span><span class="hash-value">${hash.length} karakter</span></div>`;
         }
 
@@ -1672,74 +1304,34 @@
         const commonPasswords = ['123456','password','12345678','qwerty','123456789','12345','1234','111111','1234567','dragon','123123','abc123','football','monkey','letmein','shadow','master','666666','qwertyuiop','123321','google','admin','root','pass','test','turkiye','istanbul','ankara','galatasaray','fenerbahce'];
         function togglePassword() { const input = document.getElementById('passwordInput'); input.type = input.type === 'password' ? 'text' : 'password'; }
         function analyzePassword() {
-            const password = document.getElementById('passwordInput').value;
-            const fill = document.getElementById('passwordStrengthFill');
-            const text = document.getElementById('passwordStrengthText');
-            const details = document.getElementById('passwordDetails');
+            const password = document.getElementById('passwordInput').value; const fill = document.getElementById('passwordStrengthFill'); const text = document.getElementById('passwordStrengthText'); const details = document.getElementById('passwordDetails');
             if (password.length === 0) { fill.style.width = '0%'; text.textContent = 'Şifre bekleniyor...'; text.style.color = 'var(--text)'; details.style.display = 'none'; return; }
-            details.style.display = 'block';
-            const length = password.length;
-            document.getElementById('pwdLength').textContent = length + ' karakter';
-            let charTypes = 0;
-            if (/[a-z]/.test(password)) charTypes++;
-            if (/[A-Z]/.test(password)) charTypes++;
-            if (/[0-9]/.test(password)) charTypes++;
-            if (/[^a-zA-Z0-9]/.test(password)) charTypes++;
-            document.getElementById('pwdChars').textContent = charTypes + ' çeşit';
-            const isCommon = commonPasswords.includes(password.toLowerCase());
-            document.getElementById('pwdCommon').textContent = isCommon ? '🚨 EVET - Çok yaygın!' : '✅ Hayır';
-            let score = Math.min(length * 4, 40) + charTypes * 15;
-            if (isCommon) score = Math.min(score, 10);
+            details.style.display = 'block'; const length = password.length; document.getElementById('pwdLength').textContent = length + ' karakter';
+            let charTypes = 0; if (/[a-z]/.test(password)) charTypes++; if (/[A-Z]/.test(password)) charTypes++; if (/[0-9]/.test(password)) charTypes++; if (/[^a-zA-Z0-9]/.test(password)) charTypes++;
+            document.getElementById('pwdChars').textContent = charTypes + ' çeşit'; const isCommon = commonPasswords.includes(password.toLowerCase()); document.getElementById('pwdCommon').textContent = isCommon ? '🚨 EVET - Çok yaygın!' : '✅ Hayır';
+            let score = Math.min(length * 4, 40) + charTypes * 15; if (isCommon) score = Math.min(score, 10);
             let crackTime = isCommon ? 'Anında' : score < 30 ? 'Birkaç dakika' : score < 50 ? 'Birkaç saat' : score < 70 ? 'Birkaç gün' : score < 85 ? 'Birkaç yıl' : 'Yüzyıllar';
-            document.getElementById('pwdCrackTime').textContent = '⏱️ Kırılma Süresi: ' + crackTime;
-            fill.style.width = score + '%';
-            if (score < 30) { fill.style.background = '#ff3366'; text.textContent = '❌ Zayıf Şifre'; text.style.color = '#ff3366'; }
-            else if (score < 60) { fill.style.background = '#ffaa00'; text.textContent = '⚠️ Orta Seviye'; text.style.color = '#ffaa00'; }
-            else if (score < 85) { fill.style.background = '#00cc66'; text.textContent = '✅ Güçlü Şifre'; text.style.color = '#00cc66'; }
-            else { fill.style.background = '#00ff88'; text.textContent = '🛡️ Çok Güçlü'; text.style.color = '#00ff88'; }
+            document.getElementById('pwdCrackTime').textContent = '⏱️ Kırılma Süresi: ' + crackTime; fill.style.width = score + '%';
+            if (score < 30) { fill.style.background = '#ff3366'; text.textContent = '❌ Zayıf Şifre'; text.style.color = '#ff3366'; } else if (score < 60) { fill.style.background = '#ffaa00'; text.textContent = '⚠️ Orta Seviye'; text.style.color = '#ffaa00'; } else if (score < 85) { fill.style.background = '#00cc66'; text.textContent = '✅ Güçlü Şifre'; text.style.color = '#00cc66'; } else { fill.style.background = '#00ff88'; text.textContent = '🛡️ Çok Güçlü'; text.style.color = '#00ff88'; }
         }
         function generatePassword() {
-            const length = parseInt(document.getElementById('genLength').value) || 16;
-            if (length < 8 || length > 64) { alert('Şifre uzunluğu 8-64 arasında olmalı!'); return; }
-            const useUpper = document.getElementById('genUpper').checked;
-            const useLower = document.getElementById('genLower').checked;
-            const useNumber = document.getElementById('genNumber').checked;
-            const useSymbol = document.getElementById('genSymbol').checked;
+            const length = parseInt(document.getElementById('genLength').value) || 16; if (length < 8 || length > 64) { alert('Şifre uzunluğu 8-64 arasında olmalı!'); return; }
+            const useUpper = document.getElementById('genUpper').checked; const useLower = document.getElementById('genLower').checked; const useNumber = document.getElementById('genNumber').checked; const useSymbol = document.getElementById('genSymbol').checked;
             if (!useUpper && !useLower && !useNumber && !useSymbol) { alert('En az bir karakter türü seçmelisiniz!'); return; }
-            let charset = '';
-            if (useUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            if (useLower) charset += 'abcdefghijklmnopqrstuvwxyz';
-            if (useNumber) charset += '0123456789';
-            if (useSymbol) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-            let password = '';
-            for (let i = 0; i < length; i++) password += charset.charAt(Math.floor(Math.random() * charset.length));
-            document.getElementById('passwordGenOutput').textContent = password;
-            document.getElementById('passwordGenResult').classList.add('active');
+            let charset = ''; if (useUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; if (useLower) charset += 'abcdefghijklmnopqrstuvwxyz'; if (useNumber) charset += '0123456789'; if (useSymbol) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            let password = ''; for (let i = 0; i < length; i++) password += charset.charAt(Math.floor(Math.random() * charset.length)); document.getElementById('passwordGenOutput').textContent = password; document.getElementById('passwordGenResult').classList.add('active');
         }
-        function copyGeneratedPassword() {
-            const password = document.getElementById('passwordGenOutput').textContent;
-            navigator.clipboard.writeText(password).then(() => alert('Şifre kopyalandı!')).catch(() => { const t = document.createElement('textarea'); t.value = password; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Şifre kopyalandı!'); });
-        }
+        function copyGeneratedPassword() { const password = document.getElementById('passwordGenOutput').textContent; navigator.clipboard.writeText(password).then(() => alert('Şifre kopyalandı!')).catch(() => { const t = document.createElement('textarea'); t.value = password; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); alert('Şifre kopyalandı!'); }); }
 
         // ===== QR =====
         function readQR(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
+            const file = event.target.files[0]; if (!file) return; const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    document.getElementById('qrPreview').src = e.target.result;
-                    document.getElementById('qrPreview').style.display = 'block';
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width; canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                    let qrCode = null;
-                    try { if (typeof jsQR !== 'undefined') qrCode = jsQR(imageData.data, imageData.width, imageData.height); } catch(err) {}
-                    const resultDiv = document.getElementById('qrResult');
-                    resultDiv.style.display = 'block';
+                    document.getElementById('qrPreview').src = e.target.result; document.getElementById('qrPreview').style.display = 'block'; const canvas = document.createElement('canvas'); canvas.width = img.width; canvas.height = img.height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0); const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    let qrCode = null; try { if (typeof jsQR !== 'undefined') qrCode = jsQR(imageData.data, imageData.width, imageData.height); } catch(err) {}
+                    const resultDiv = document.getElementById('qrResult'); resultDiv.style.display = 'block';
                     if (qrCode && qrCode.data) resultDiv.innerHTML = `<div style="color:var(--neon);font-weight:700;margin-bottom:8px;">✅ QR Kod Okundu!</div><div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;"><strong style="color:var(--neon);">İçerik:</strong><br>${qrCode.data}</div>`;
                     else resultDiv.innerHTML = `<div style="color:var(--warning);font-weight:700;">⚠️ QR Kod Okunamadı</div>`;
                 };
@@ -1761,46 +1353,25 @@
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
             if (quizState.current >= quizQuestions.length) { container.innerHTML = `<div class="quiz-result"><h3>🎉 Test Tamamlandı!</h3><p>Skorunuz: <strong style="color:var(--neon);font-size:20px;">${quizState.score}/${quizQuestions.length}</strong></p><button class="search-btn" style="margin-top:15px;" onclick="initQuiz()">🔄 Tekrar Dene</button></div>`; if (quizState.score === quizQuestions.length) launchConfetti(); return; }
-            const q = quizQuestions[quizState.current];
-            container.innerHTML = `<div class="quiz-question"><h4>${quizState.current + 1}. ${q.q}</h4>${q.options.map((opt, i) => `<button class="quiz-option" onclick="answerQuiz(${i})">${opt}</button>`).join('')}</div>`;
+            const q = quizQuestions[quizState.current]; container.innerHTML = `<div class="quiz-question"><h4>${quizState.current + 1}. ${q.q}</h4>${q.options.map((opt, i) => `<button class="quiz-option" onclick="answerQuiz(${i})">${opt}</button>`).join('')}</div>`;
         }
         function answerQuiz(index) {
-            if (quizState.answered) return;
-            quizState.answered = true;
-            const q = quizQuestions[quizState.current];
+            if (quizState.answered) return; quizState.answered = true; const q = quizQuestions[quizState.current];
             document.querySelectorAll('.quiz-option').forEach((opt, i) => { opt.disabled = true; if (i === q.correct) opt.classList.add('correct'); else if (i === index) opt.classList.add('wrong'); });
-            if (index === q.correct) quizState.score++;
-            setTimeout(() => { quizState.current++; quizState.answered = false; renderQuiz(); }, 1500);
+            if (index === q.correct) quizState.score++; setTimeout(() => { quizState.current++; quizState.answered = false; renderQuiz(); }, 1500);
         }
 
         // ===== HARİTA =====
         const cityData = { 'Adana': 8, 'Adıyaman': 4, 'Afyonkarahisar': 5, 'Ağrı': 3, 'Aksaray': 4, 'Amasya': 3, 'Ankara': 28, 'Antalya': 12, 'Ardahan': 2, 'Artvin': 2, 'Aydın': 7, 'Balıkesir': 8, 'Bartın': 2, 'Batman': 3, 'Bayburt': 2, 'Bilecik': 3, 'Bingöl': 2, 'Bitlis': 2, 'Bolu': 4, 'Burdur': 3, 'Bursa': 15, 'Çanakkale': 5, 'Çankırı': 3, 'Çorum': 4, 'Denizli': 7, 'Diyarbakır': 5, 'Düzce': 3, 'Edirne': 4, 'Elazığ': 4, 'Erzincan': 3, 'Erzurum': 6, 'Eskişehir': 6, 'Gaziantep': 6, 'Giresun': 3, 'Gümüşhane': 2, 'Hakkari': 2, 'Hatay': 7, 'Iğdır': 2, 'Isparta': 4, 'İstanbul': 45, 'İzmir': 22, 'Kahramanmaraş': 5, 'Karabük': 3, 'Karaman': 3, 'Kars': 3, 'Kastamonu': 3, 'Kayseri': 7, 'Kilis': 2, 'Kırıkkale': 3, 'Kırklareli': 3, 'Kırşehir': 3, 'Kocaeli': 10, 'Konya': 9, 'Kütahya': 4, 'Malatya': 5, 'Manisa': 8, 'Mardin': 4, 'Mersin': 7, 'Muğla': 8, 'Muş': 2, 'Nevşehir': 3, 'Niğde': 3, 'Ordu': 4, 'Osmaniye': 3, 'Rize': 3, 'Sakarya': 6, 'Samsun': 7, 'Siirt': 2, 'Sinop': 2, 'Sivas': 5, 'Şanlıurfa': 5, 'Şırnak': 2, 'Tekirdağ': 6, 'Tokat': 4, 'Trabzon': 6, 'Tunceli': 2, 'Uşak': 3, 'Van': 5, 'Yalova': 3, 'Yozgat': 3, 'Zonguldak': 4 };
         function getCityRisk(cityName) { const count = cityData[cityName] || 0; if (count >= 20) return 'high'; if (count >= 10) return 'medium'; return 'low'; }
         function loadTurkeyMap() {
-            const mapObj = document.getElementById('turkeyMap');
-            if (!mapObj) return;
-            mapObj.addEventListener('load', function() {
-                try {
-                    const svgDoc = mapObj.contentDocument;
-                    if (!svgDoc) return;
-                    svgDoc.querySelectorAll('path').forEach(path => {
-                        const cityName = path.getAttribute('data-name');
-                        if (!cityName) return;
-                        const risk = getCityRisk(cityName);
-                        let color = '#00ff88'; if (risk === 'high') color = '#ff3366'; else if (risk === 'medium') color = '#ffaa00';
-                        path.style.fill = color; path.style.fillOpacity = '0.5'; path.style.stroke = '#00ff88'; path.style.strokeWidth = '1'; path.style.cursor = 'pointer';
-                        path.addEventListener('click', function() { showCity(cityName, cityData[cityName] || 0); });
-                    });
-                } catch(e) {}
-            });
+            const mapObj = document.getElementById('turkeyMap'); if (!mapObj) return;
+            mapObj.addEventListener('load', function() { try { const svgDoc = mapObj.contentDocument; if (!svgDoc) return; svgDoc.querySelectorAll('path').forEach(path => { const cityName = path.getAttribute('data-name'); if (!cityName) return; const risk = getCityRisk(cityName); let color = '#00ff88'; if (risk === 'high') color = '#ff3366'; else if (risk === 'medium') color = '#ffaa00'; path.style.fill = color; path.style.fillOpacity = '0.5'; path.style.stroke = '#00ff88'; path.style.strokeWidth = '1'; path.style.cursor = 'pointer'; path.addEventListener('click', function() { showCity(cityName, cityData[cityName] || 0); }); }); } catch(e) {} });
         }
         function showCity(city, count) {
-            const popup = document.getElementById('cityPopup');
-            document.getElementById('cityPopupTitle').textContent = '📍 ' + city;
-            let riskText = 'Düşük risk', riskColor = '#00ff88';
-            if (count >= 20) { riskText = 'Yüksek risk'; riskColor = '#ff3366'; } else if (count >= 10) { riskText = 'Orta risk'; riskColor = '#ffaa00'; }
-            document.getElementById('cityPopupContent').innerHTML = `<strong style="color:${riskColor};font-size:20px;">${count}</strong> tehdit tespit edildi<br><br><span style="color:var(--text-dim);font-size:11px;">Risk: <strong style="color:${riskColor};">${riskText}</strong></span>`;
-            popup.style.display = 'block';
+            const popup = document.getElementById('cityPopup'); document.getElementById('cityPopupTitle').textContent = '📍 ' + city;
+            let riskText = 'Düşük risk', riskColor = '#00ff88'; if (count >= 20) { riskText = 'Yüksek risk'; riskColor = '#ff3366'; } else if (count >= 10) { riskText = 'Orta risk'; riskColor = '#ffaa00'; }
+            document.getElementById('cityPopupContent').innerHTML = `<strong style="color:${riskColor};font-size:20px;">${count}</strong> tehdit tespit edildi<br><br><span style="color:var(--text-dim);font-size:11px;">Risk: <strong style="color:${riskColor};">${riskText}</strong></span>`; popup.style.display = 'block';
         }
         function closeCityPopup() { document.getElementById('cityPopup').style.display = 'none'; }
 
@@ -1814,99 +1385,32 @@
             { id: 'turkiye', name: '🇹🇷 Türkiye Odaklı Tespit Motoru' }, { id: 'ml', name: '🧠 ML Modeli (TensorFlow.js)' }
         ];
         function runEngineAnalysis(input, isUrl) {
-            const results = [];
-            const lower = input.toLowerCase();
-            const domain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0].toLowerCase() : '';
+            const results = []; const lower = input.toLowerCase(); const domain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0].split('?')[0].toLowerCase() : '';
             engines.forEach(engine => {
                 let score = 0, findings = [];
                 switch(engine.id) {
-                    case 'url':
-                        if (isUrl) {
-                            if (!input.startsWith('https')) { score += 35; findings.push('HTTPS yok'); }
-                            if (input.includes('@')) { score += 45; findings.push('@ hilesi'); }
-                            if (input.length > 100) { score += 15; findings.push('URL çok uzun'); }
-                            if (input.includes('..')) { score += 25; findings.push('Çift nokta'); }
-                            const urlKeywords = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi'];
-                            const foundUrlKw = urlKeywords.filter(kw => lower.includes(kw));
-                            if (foundUrlKw.length > 0) { score += foundUrlKw.length * 20; findings.push('Şüpheli: ' + foundUrlKw.join(', ')); }
-                        }
-                        break;
+                    case 'url': if (isUrl) { if (!input.startsWith('https')) { score += 35; findings.push('HTTPS yok'); } if (input.includes('@')) { score += 45; findings.push('@ hilesi'); } if (input.length > 100) { score += 15; findings.push('URL çok uzun'); } if (input.includes('..')) { score += 25; findings.push('Çift nokta'); } const urlKeywords = ['giris', 'login', 'dogrulama', 'onay', 'hesap', 'sifre', 'parola', 'kart', 'banka', 'bank', 'odeme', 'havale', 'eft', 'iban', 'kredi']; const foundUrlKw = urlKeywords.filter(kw => lower.includes(kw)); if (foundUrlKw.length > 0) { score += foundUrlKw.length * 20; findings.push('Şüpheli: ' + foundUrlKw.join(', ')); } } break;
                     case 'ssl': if (isUrl && !input.startsWith('https')) { score = 70; findings.push('SSL yok'); } break;
                     case 'domain': if (isUrl) { const trusted = ['google.com', 'youtube.com', 'gov.tr', 'edu.tr', 'wikipedia.org', 'github.com']; if (!trusted.some(t => domain.includes(t))) { score = 45; findings.push('Bilinmeyen domain'); } } break;
                     case 'bank':
                         const allBanks = ['ziraat','halkbank','vakifbank','isbank','garanti','akbank','yapikredi','qnb','denizbank','teb','ing','hsbc','odeabank','sekerbank','kuveytturk','albaraka','turkiyefinans','enpara','cepteteb','papara','ininal','tosla','iyzico'];
                         const bankGirisWords = ['giris','login','dogrulama','onay','hesap','sifre','parola','kart','banka','bank','odeme','havale','eft','iban','kredi'];
                         const trustedBanks = ['ziraatbank.com.tr','isbank.com.tr','garanti.com.tr','akbank.com'];
-                        const foundBanks = allBanks.filter(b => lower.includes(b));
-                        const hasBankGiris = bankGirisWords.some(w => lower.includes(w));
-                        const isTrustedBank = isUrl ? trustedBanks.some(t => domain.includes(t)) : false;
-                        if (foundBanks.length > 0 && !isTrustedBank) { score = 95; findings.push('🚨 BANKA TAKLİDİ: ' + foundBanks.join(', ')); }
-                        else if (hasBankGiris && !isTrustedBank) { score = 70; findings.push('Banka giriş taklidi şüphesi!'); }
-                        break;
-                    case 'crypto':
-                        const cryptoWords = ['bitcoin','btc','ethereum','kripto','crypto','coin','token','nft','katlayarak','yüksek getiri','bedava btc','binance','metamask'];
-                        const foundCrypto = cryptoWords.filter(w => lower.includes(w));
-                        if (foundCrypto.length > 0) { score = Math.min(100, 60 + foundCrypto.length * 10); findings.push('Kripto: ' + foundCrypto.join(', ')); }
-                        break;
-                    case 'camera':
-                        const camWords = ['kamera','camera','webcam','mikrofon','toplanti','meeting','zoom','canli','gorusme','görüntülü'];
-                        const foundCam = camWords.filter(w => lower.includes(w));
-                        if (foundCam.length > 0) { score = Math.min(100, 70 + foundCam.length * 10); findings.push('🚨 KAMERA TUZAĞI: ' + foundCam.join(', ')); }
-                        break;
-                    case 'edevlet':
-                        const govWords = ['e-devlet','edevlet','sgk','ptt','kargo','gib','vergi','nvi','emniyet','meb','eokul','osym','yokatlas'];
-                        const trustedGov = ['turkiye.gov.tr','e-devlet.gov.tr','sgk.gov.tr','ptt.gov.tr'];
-                        const foundGov = govWords.filter(w => lower.includes(w));
-                        const isTrustedGov = isUrl ? trustedGov.some(t => domain.includes(t)) : false;
-                        if (foundGov.length > 0 && !isTrustedGov) { score = Math.min(100, 75 + foundGov.length * 5); findings.push('🚨 DEVLET TAKLİDİ: ' + foundGov.join(', ')); }
-                        break;
+                        const foundBanks = allBanks.filter(b => lower.includes(b)); const hasBankGiris = bankGirisWords.some(w => lower.includes(w)); const isTrustedBank = isUrl ? trustedBanks.some(t => domain.includes(t)) : false;
+                        if (foundBanks.length > 0 && !isTrustedBank) { score = 95; findings.push('🚨 BANKA TAKLİDİ: ' + foundBanks.join(', ')); } else if (hasBankGiris && !isTrustedBank) { score = 70; findings.push('Banka giriş taklidi şüphesi!'); } break;
+                    case 'crypto': const cryptoWords = ['bitcoin','btc','ethereum','kripto','crypto','coin','token','nft','katlayarak','yüksek getiri','bedava btc','binance','metamask']; const foundCrypto = cryptoWords.filter(w => lower.includes(w)); if (foundCrypto.length > 0) { score = Math.min(100, 60 + foundCrypto.length * 10); findings.push('Kripto: ' + foundCrypto.join(', ')); } break;
+                    case 'camera': const camWords = ['kamera','camera','webcam','mikrofon','toplanti','meeting','zoom','canli','gorusme','görüntülü']; const foundCam = camWords.filter(w => lower.includes(w)); if (foundCam.length > 0) { score = Math.min(100, 70 + foundCam.length * 10); findings.push('🚨 KAMERA TUZAĞI: ' + foundCam.join(', ')); } break;
+                    case 'edevlet': const govWords = ['e-devlet','edevlet','sgk','ptt','kargo','gib','vergi','nvi','emniyet','meb','eokul','osym','yokatlas']; const trustedGov = ['turkiye.gov.tr','e-devlet.gov.tr','sgk.gov.tr','ptt.gov.tr']; const foundGov = govWords.filter(w => lower.includes(w)); const isTrustedGov = isUrl ? trustedGov.some(t => domain.includes(t)) : false; if (foundGov.length > 0 && !isTrustedGov) { score = Math.min(100, 75 + foundGov.length * 5); findings.push('🚨 DEVLET TAKLİDİ: ' + foundGov.join(', ')); } break;
                     case 'kargo': if (['ptt','kargo','gönderi','kargonuz','paketiniz'].some(w => lower.includes(w))) { score = 70; findings.push('Kargo taklidi'); } break;
                     case 'fatura': if (['fatura','elektrik','doğalgaz','internet fatura'].some(w => lower.includes(w))) { score = 65; findings.push('Fatura taklidi'); } break;
                     case 'sosyal': const sosyalWords = ['instagram','facebook','whatsapp','twitter','tiktok','telegram']; const trustedSosyal = ['instagram.com','facebook.com','whatsapp.com','twitter.com','tiktok.com']; if (sosyalWords.some(w => lower.includes(w)) && (isUrl ? !trustedSosyal.some(t => domain.includes(t)) : true)) { score = 60; findings.push('Sosyal medya taklidi'); } break;
                     case 'is': if (['iş ilanı','evden çalış','home office','günlük kazanç','kolay para'].some(w => lower.includes(w))) { score = 65; findings.push('Sahte iş ilanı'); } break;
-                    case 'ai':
-                        let aiScore = 0;
-                        if (/acil|hemen|derhal|son uyarı/.test(lower)) aiScore += 25;
-                        if (/şifre|parola|tc kimlik|kimlik numarası|kart numarası|cvv/.test(lower)) aiScore += 30;
-                        if (/tıklayın|giriş yapın|linke/.test(lower)) aiScore += 20;
-                        if (/hesabınız|kapatılacak|askıya/.test(lower)) aiScore += 25;
-                        if (/kazandınız|ödül|hediye|bedava|ücretsiz/.test(lower)) aiScore += 20;
-                        score = Math.min(100, aiScore);
-                        if (aiScore > 0) findings.push('Kural tabanlı skor: ' + aiScore);
-                        break;
-                    case 'community':
-                        const inputClean = input.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase();
-                        const inputFull = input.toLowerCase();
-                        const isInList = knownMaliciousLinks.some(link => { const ll = link.toLowerCase(); return inputFull.includes(ll) || ll.includes(inputClean) || inputClean.includes(ll.split('/')[0]); });
-                        if (isInList) { score = 100; findings.push('🚨 USOM/ZARARLI LİSTEDE!'); }
-                        const reports = DB.getReports();
-                        if (reports.some(r => input.includes(r.url))) { score = Math.max(score, 95); findings.push('🚨 Topluluk ihbarı!'); }
-                        break;
+                    case 'ai': let aiScore = 0; if (/acil|hemen|derhal|son uyarı/.test(lower)) aiScore += 25; if (/şifre|parola|tc kimlik|kimlik numarası|kart numarası|cvv/.test(lower)) aiScore += 30; if (/tıklayın|giriş yapın|linke/.test(lower)) aiScore += 20; if (/hesabınız|kapatılacak|askıya/.test(lower)) aiScore += 25; if (/kazandınız|ödül|hediye|bedava|ücretsiz/.test(lower)) aiScore += 20; score = Math.min(100, aiScore); if (aiScore > 0) findings.push('Kural tabanlı skor: ' + aiScore); break;
+                    case 'community': const inputClean = input.replace(/^https?:\/\//i, '').split('/')[0].toLowerCase(); const inputFull = input.toLowerCase(); const isInList = knownMaliciousLinks.some(link => { const ll = link.toLowerCase(); return inputFull.includes(ll) || ll.includes(inputClean) || inputClean.includes(ll.split('/')[0]); }); if (isInList) { score = 100; findings.push('🚨 USOM/ZARARLI LİSTEDE!'); } const reports = DB.getReports(); if (reports.some(r => input.includes(r.url))) { score = Math.max(score, 95); findings.push('🚨 Topluluk ihbarı!'); } break;
                     case 'tld': const riskyTLDs = ['.tk','.ml','.ga','.cf','.gq','.xyz','.top','.work','.click','.online','.site','.link']; if (isUrl && riskyTLDs.some(t => domain.endsWith(t))) { score = 70; findings.push('Riskli TLD: ' + domain.split('.').pop()); } break;
                     case 'phishing': const phishWords = ['acil','hemen','derhal','son uyarı','hesabınız askıya','doğrulama','tıklayın','onaylayın','güncelleyin','kazandınız','ödül','bedava','ücretsiz']; const matches = phishWords.filter(w => lower.includes(w)); if (matches.length > 0) { score = Math.min(100, matches.length * 25); findings.push(matches.length + ' oltalama kalıbı'); } break;
-                    case 'turkiye':
-                        const homoglyphFindings = detectHomoglyph(input);
-                        const turkishFindings = detectTurkishManipulation(input);
-                        const allTurkishFindings = [...homoglyphFindings, ...turkishFindings];
-                        if (allTurkishFindings.length > 0) {
-                            score = Math.min(100, 50 + allTurkishFindings.length * 15);
-                            allTurkishFindings.forEach(f => findings.push(f));
-                        }
-                        break;
-                    case 'ml':
-                        if (isUrl) {
-                            const mlScore = predictWithML(input);
-                            if (mlScore !== null) {
-                                score = mlScore;
-                                if (mlScore >= 60) findings.push(`🧠 ML: %${mlScore} zararlı`);
-                                else if (mlScore >= 30) findings.push(`🧠 ML: %${mlScore} şüpheli`);
-                                else findings.push(`🧠 ML: %${mlScore} güvenli`);
-                            } else {
-                                score = 0;
-                                findings.push('ML modeli henüz hazır değil');
-                            }
-                        }
-                        break;
+                    case 'turkiye': const homoglyphFindings = detectHomoglyph(input); const turkishFindings = detectTurkishManipulation(input); const allTurkishFindings = [...homoglyphFindings, ...turkishFindings]; if (allTurkishFindings.length > 0) { score = Math.min(100, 50 + allTurkishFindings.length * 15); allTurkishFindings.forEach(f => findings.push(f)); } break;
+                    case 'ml': if (isUrl) { const mlScore = predictWithML(input); if (mlScore !== null) { score = mlScore; if (mlScore >= 60) findings.push(`🧠 ML: %${mlScore} zararlı`); else if (mlScore >= 30) findings.push(`🧠 ML: %${mlScore} şüpheli`); else findings.push(`🧠 ML: %${mlScore} güvenli`); } else { score = 0; findings.push('ML modeli henüz hazır değil'); } } break;
                 }
                 results.push({ ...engine, score: Math.min(100, score), findings, verdict: score >= 60 ? 'danger' : score >= 30 ? 'warning' : 'safe' });
             });
@@ -1918,393 +1422,141 @@
         function analyzeEmail() { const email = document.getElementById('inputEmail').value.trim(); if (!email) { alert('Lütfen bir e-posta metni girin!'); return; } runAnalysis(email, false); }
 
         function runAnalysis(input, isUrl) {
-            document.getElementById('result').classList.remove('active');
-            document.getElementById('loading').classList.add('active');
+            document.getElementById('result').classList.remove('active'); document.getElementById('loading').classList.add('active');
             const steps = ['URL yapısı analiz ediliyor...','SSL sertifikası kontrol ediliyor...','Banka taklit motoru çalışıyor...','Devlet kurumu taklit motoru çalışıyor...','USOM veritabanı kontrol ediliyor...','Kripto dolandırıcılık motoru çalışıyor...','Kamera tuzağı motoru çalışıyor...','Kural tabanlı AI motoru çalışıyor...','Türkiye odaklı motor çalışıyor...','ML modeli tahmin yapıyor...','Sonuçlar derleniyor...'];
-            let i = 0;
-            const interval = setInterval(() => {
-                document.getElementById('loadingTextInner').textContent = steps[i];
-                i++;
-                if (i >= steps.length) { clearInterval(interval); setTimeout(() => { document.getElementById('loading').classList.remove('active'); showResults(input, isUrl); }, 300); }
-            }, 150);
+            let i = 0; const interval = setInterval(() => { document.getElementById('loadingTextInner').textContent = steps[i]; i++; if (i >= steps.length) { clearInterval(interval); setTimeout(() => { document.getElementById('loading').classList.remove('active'); showResults(input, isUrl); }, 300); } }, 150);
         }
 
         function showResults(input, isUrl) {
-            const engineResults = runEngineAnalysis(input, isUrl);
-            const threatCount = engineResults.filter(e => e.verdict === 'danger').length;
-            const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
-            let weightedSum = 0, weightTotal = 0;
-            engineResults.forEach(e => { if (e.score === 0) return; let w = 1; if (e.verdict === 'danger') w = 4; else if (e.verdict === 'warning') w = 2; weightedSum += e.score * w; weightTotal += w; });
-            let avgScore = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0;
-            if (threatCount >= 3) avgScore = Math.max(avgScore, 75);
-            else if (threatCount >= 2) avgScore = Math.max(avgScore, 60);
-            else if (threatCount >= 1) avgScore = Math.max(avgScore, 40);
-            document.getElementById('result').classList.add('active');
-            document.getElementById('resultTarget').textContent = input.substring(0, 100) + (input.length > 100 ? '...' : '');
-            const scoreNumber = document.getElementById('vtScoreNumber');
-            const scoreLabel = document.getElementById('vtScoreLabel');
-            const scoreBadge = document.getElementById('vtScoreBadge');
-            scoreNumber.textContent = avgScore + '%';
-            if (avgScore < 30) { scoreBadge.style.borderColor = '#00ff88'; scoreBadge.style.color = '#00ff88'; scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)'; scoreLabel.textContent = 'DÜŞÜK RİSK'; }
-            else if (avgScore < 60) { scoreBadge.style.borderColor = '#ffaa00'; scoreBadge.style.color = '#ffaa00'; scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)'; scoreLabel.textContent = 'ORTA RİSK'; }
-            else { scoreBadge.style.borderColor = '#ff3366'; scoreBadge.style.color = '#ff3366'; scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)'; scoreLabel.textContent = 'YÜKSEK RİSK'; }
+            const engineResults = runEngineAnalysis(input, isUrl); const threatCount = engineResults.filter(e => e.verdict === 'danger').length; const warningCount = engineResults.filter(e => e.verdict === 'warning').length;
+            let weightedSum = 0, weightTotal = 0; engineResults.forEach(e => { if (e.score === 0) return; let w = 1; if (e.verdict === 'danger') w = 4; else if (e.verdict === 'warning') w = 2; weightedSum += e.score * w; weightTotal += w; });
+            let avgScore = weightTotal > 0 ? Math.round(weightedSum / weightTotal) : 0; if (threatCount >= 3) avgScore = Math.max(avgScore, 75); else if (threatCount >= 2) avgScore = Math.max(avgScore, 60); else if (threatCount >= 1) avgScore = Math.max(avgScore, 40);
+            document.getElementById('result').classList.add('active'); document.getElementById('resultTarget').textContent = input.substring(0, 100) + (input.length > 100 ? '...' : '');
+            const scoreNumber = document.getElementById('vtScoreNumber'); const scoreLabel = document.getElementById('vtScoreLabel'); const scoreBadge = document.getElementById('vtScoreBadge'); scoreNumber.textContent = avgScore + '%';
+            if (avgScore < 30) { scoreBadge.style.borderColor = '#00ff88'; scoreBadge.style.color = '#00ff88'; scoreBadge.style.background = 'rgba(0, 255, 136, 0.1)'; scoreLabel.textContent = 'DÜŞÜK RİSK'; } else if (avgScore < 60) { scoreBadge.style.borderColor = '#ffaa00'; scoreBadge.style.color = '#ffaa00'; scoreBadge.style.background = 'rgba(255, 170, 0, 0.1)'; scoreLabel.textContent = 'ORTA RİSK'; } else { scoreBadge.style.borderColor = '#ff3366'; scoreBadge.style.color = '#ff3366'; scoreBadge.style.background = 'rgba(255, 51, 102, 0.1)'; scoreLabel.textContent = 'YÜKSEK RİSK'; }
             if (voiceEnabled && avgScore >= 60) speak('Dikkat! Yüksek risk tespit edildi.');
-            const grid = document.getElementById('enginesGrid');
-            grid.innerHTML = '';
-            document.getElementById('engineCount').textContent = threatCount;
-            engineResults.forEach((e) => {
-                const card = document.createElement('div');
-                card.className = 'engine-card ' + e.verdict;
-                const verdictText = e.verdict === 'danger' ? '🚨 TEHDİT' : e.verdict === 'warning' ? '⚠️ ŞÜPHELİ' : '✅ TEMİZ';
-                const barColor = e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00ff88';
-                card.innerHTML = `<div class="engine-header"><div class="engine-name">${e.name}</div><div class="engine-score">${e.score}%</div></div><div class="engine-verdict ${e.verdict}">${verdictText}</div><div class="engine-bar"><div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div></div>`;
-                grid.appendChild(card);
-            });
-            const alertBox = document.getElementById('alertBox');
-            const alertIcon = document.getElementById('alertIcon');
-            const alertTitle = document.getElementById('alertTitle');
-            const alertText = document.getElementById('alertText');
-            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/17 motor tehdit olarak işaretledi.`; }
-            else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/17 motor şüpheli buldu.`; }
-            else { alertBox.className = 'alert-box safe'; alertBox.style.display = 'flex'; alertIcon.textContent = '✅'; alertTitle.textContent = 'DÜŞÜK RİSK'; alertText.textContent = 'Bu içerik güvenli görünüyor.'; }
+            const grid = document.getElementById('enginesGrid'); grid.innerHTML = ''; document.getElementById('engineCount').textContent = threatCount;
+            engineResults.forEach((e) => { const card = document.createElement('div'); card.className = 'engine-card ' + e.verdict; const verdictText = e.verdict === 'danger' ? '🚨 TEHDİT' : e.verdict === 'warning' ? '⚠️ ŞÜPHELİ' : '✅ TEMİZ'; const barColor = e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00ff88'; card.innerHTML = `<div class="engine-header"><div class="engine-name">${e.name}</div><div class="engine-score">${e.score}%</div></div><div class="engine-verdict ${e.verdict}">${verdictText}</div><div class="engine-bar"><div class="engine-bar-fill" style="width:${e.score}%;background:${barColor};"></div></div>`; grid.appendChild(card); });
+            const alertBox = document.getElementById('alertBox'); const alertIcon = document.getElementById('alertIcon'); const alertTitle = document.getElementById('alertTitle'); const alertText = document.getElementById('alertText');
+            if (avgScore >= 60) { alertBox.className = 'alert-box danger'; alertBox.style.display = 'flex'; alertIcon.textContent = '🚨'; alertTitle.textContent = 'YÜKSEK RİSK TESPİT EDİLDİ!'; alertText.textContent = `${threatCount}/17 motor tehdit olarak işaretledi.`; } else if (avgScore >= 30) { alertBox.className = 'alert-box warning'; alertBox.style.display = 'flex'; alertIcon.textContent = '⚠️'; alertTitle.textContent = 'ORTA RİSK'; alertText.textContent = `${threatCount + warningCount}/17 motor şüpheli buldu.`; } else { alertBox.className = 'alert-box safe'; alertBox.style.display = 'flex'; alertIcon.textContent = '✅'; alertTitle.textContent = 'DÜŞÜK RİSK'; alertText.textContent = 'Bu içerik güvenli görünüyor.'; }
             document.getElementById('detailsContent').innerHTML = `<div class="detail-row"><span class="detail-label">Analiz Edilen</span><span class="detail-value">${isUrl ? 'Link' : 'Metin'}</span></div><div class="detail-row"><span class="detail-label">Uzunluk</span><span class="detail-value">${input.length} karakter</span></div><div class="detail-row"><span class="detail-label">Toplam Motor</span><span class="detail-value">17</span></div><div class="detail-row"><span class="detail-label">Tehdit Tespit Eden</span><span class="detail-value danger">${threatCount}</span></div><div class="detail-row"><span class="detail-label">Şüpheli Bulan</span><span class="detail-value warning">${warningCount}</span></div><div class="detail-row"><span class="detail-label">Ağırlıklı Risk</span><span class="detail-value ${avgScore >= 60 ? 'danger' : avgScore >= 30 ? 'warning' : 'safe'}">${avgScore}%</span></div>`;
-            const allFindings = [];
-            engineResults.forEach(e => { if (e.findings.length > 0) { e.findings.forEach(f => allFindings.push(`${e.name}: ${f}`)); } });
+            const allFindings = []; engineResults.forEach(e => { if (e.findings.length > 0) { e.findings.forEach(f => allFindings.push(`${e.name}: ${f}`)); } });
             document.getElementById('findingsContent').innerHTML = allFindings.length > 0 ? allFindings.map(f => `<div class="detail-row"><span class="detail-label">▸</span><span class="detail-value">${f}</span></div>`).join('') : '<div class="detail-row"><span class="detail-label">Şüpheli unsur tespit edilmedi.</span></div>';
-            let recs = [];
-            if (avgScore >= 60) recs = ['🚫 Bu linke TIKLAMAYIN', '🔐 Şifrelerinizi ASLA girmeyin', '💳 Kart bilgilerinizi paylaşmayın'];
-            else if (avgScore >= 30) recs = ['⚠️ Dikkatli olun', '🔍 Domain adresini kontrol edin'];
-            else recs = ['✅ İçerik güvenli görünüyor', '🛡️ Yine de dikkatli olun'];
+            let recs = []; if (avgScore >= 60) recs = ['🚫 Bu linke TIKLAMAYIN', '🔐 Şifrelerinizi ASLA girmeyin', '💳 Kart bilgilerinizi paylaşmayın']; else if (avgScore >= 30) recs = ['⚠️ Dikkatli olun', '🔍 Domain adresini kontrol edin']; else recs = ['✅ İçerik güvenli görünüyor', '🛡️ Yine de dikkatli olun'];
             document.getElementById('recommendationsContent').innerHTML = recs.map(r => `<div class="detail-row"><span class="detail-label">${r}</span></div>`).join('');
-            const user = DB.getCurrentUser();
-            if (user && user.role !== 'guest') {
-                const s = DB.getUserStats(user.email);
-                s.total++;
-                if (avgScore >= 60) s.threats++;
-                if (engineResults.find(e => e.id === 'camera' && e.verdict === 'danger')) s.camera++;
-                s.scoreSum += avgScore;
-                DB.setUserStats(user.email, s);
-                document.getElementById('quickTotal').textContent = s.total;
-                document.getElementById('quickThreats').textContent = s.threats;
-                document.getElementById('quickCamera').textContent = s.camera;
-            }
-            const feedDomain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0] : input.substring(0, 30) + '...';
-            addFeedItem(feedDomain, avgScore);
-            window.currentAnalysis = { input, isUrl, engineResults, avgScore, threatCount, warningCount };
-            saveRecentScan(input.substring(0, 50), avgScore);
-            if (avgScore >= 60) playThreatSound();
-            else if (avgScore < 30) playSafeSound();
+            const user = DB.getCurrentUser(); if (user && user.role !== 'guest') { const s = DB.getUserStats(user.email); s.total++; if (avgScore >= 60) s.threats++; if (engineResults.find(e => e.id === 'camera' && e.verdict === 'danger')) s.camera++; s.scoreSum += avgScore; DB.setUserStats(user.email, s); document.getElementById('quickTotal').textContent = s.total; document.getElementById('quickThreats').textContent = s.threats; document.getElementById('quickCamera').textContent = s.camera; }
+            const feedDomain = isUrl ? input.replace(/^https?:\/\//i, '').split('/')[0] : input.substring(0, 30) + '...'; addFeedItem(feedDomain, avgScore);
+            window.currentAnalysis = { input, isUrl, engineResults, avgScore, threatCount, warningCount }; saveRecentScan(input.substring(0, 50), avgScore);
+            if (avgScore >= 60) playThreatSound(); else if (avgScore < 30) playSafeSound();
         }
 
-        function switchVtTab(tab, event) {
-            document.querySelectorAll('.vt-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.vt-tab-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(tab + 'Tab').classList.add('active');
-        }
+        function switchVtTab(tab, event) { document.querySelectorAll('.vt-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.vt-tab-content').forEach(c => c.classList.remove('active')); event.target.classList.add('active'); document.getElementById(tab + 'Tab').classList.add('active'); }
 
+        // ===== PDF RAPOR =====
         function downloadReport() {
             if (!window.currentAnalysis) return;
-            const { input, engineResults, avgScore } = window.currentAnalysis;
+            const { input, engineResults, avgScore, threatCount } = window.currentAnalysis;
             const user = DB.getCurrentUser();
-            const report = `PHISHGUARD-TR RAPORU\nTarih: ${new Date().toLocaleString('tr-TR')}\nKullanıcı: ${user?.name || 'Misafir'}\nRisk: ${avgScore}%\n\n${engineResults.map(e => `${e.name}: ${e.score}%`).join('\n')}`;
-            const blob = new Blob([report], { type: 'text/plain;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'PhishGuard-Rapor-' + Date.now() + '.txt';
-            link.click();
+            
+            const pdfContent = document.createElement('div');
+            pdfContent.style.cssText = 'padding: 40px; font-family: Arial, sans-serif; color: #333; background: #fff; width: 800px;';
+            pdfContent.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #00cc66; padding-bottom: 20px;">
+                    <h1 style="color: #05080f; margin: 0; font-size: 28px;">🛡️ PhishGuard-TR</h1>
+                    <p style="color: #666; margin: 5px 0 0 0;">Siber Tehdit Analiz Raporu</p>
+                    <p style="color: #888; font-size: 12px;">TÜBİTAK 2204-A Projesi</p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Tarih:</strong> ${new Date().toLocaleString('tr-TR')}</p>
+                    <p><strong>Kullanıcı:</strong> ${user?.name || 'Misafir'}</p>
+                    <p><strong>Analiz Edilen İçerik:</strong> <span style="color: #666; word-break: break-all;">${input}</span></p>
+                </div>
+
+                <div style="background: ${avgScore >= 60 ? '#ffe6e6' : avgScore >= 30 ? '#fff4e6' : '#e6ffe6'}; border: 2px solid ${avgScore >= 60 ? '#ff3366' : avgScore >= 30 ? '#ffaa00' : '#00cc66'}; padding: 20px; border-radius: 10px; margin-bottom: 30px; text-align: center;">
+                    <h2 style="margin: 0; color: ${avgScore >= 60 ? '#ff3366' : avgScore >= 30 ? '#ffaa00' : '#00cc66'}; font-size: 24px;">
+                        Risk Puanı: %${avgScore}
+                    </h2>
+                    <p style="margin: 10px 0 0 0; font-size: 16px; font-weight: bold;">
+                        ${avgScore >= 60 ? '🚨 YÜKSEK RİSK TESPİT EDİLDİ' : avgScore >= 30 ? '⚠️ ORTA RİSK' : '✅ DÜŞÜK RİSK'}
+                    </p>
+                    <p style="margin: 5px 0 0 0; color: #555;">${threatCount} motor bu içeriği tehdit olarak işaretledi.</p>
+                </div>
+
+                <h3 style="color: #333; border-bottom: 1px solid #ddd; padding-bottom: 10px;">🔬 Analiz Motorları Detayı</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <tr style="background: #f5f5f5;">
+                        <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Motor</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Skor</th>
+                        <th style="padding: 10px; text-align: right; border-bottom: 1px solid #ddd;">Durum</th>
+                    </tr>
+                    ${engineResults.map(e => `
+                        <tr>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee;">${e.name}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: right; font-weight: bold;">%${e.score}</td>
+                            <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: right; color: ${e.verdict === 'danger' ? '#ff3366' : e.verdict === 'warning' ? '#ffaa00' : '#00cc66'}; font-weight: bold;">
+                                ${e.verdict === 'danger' ? 'TEHDİT' : e.verdict === 'warning' ? 'ŞÜPHELİ' : 'TEMİZ'}
+                            </td>
+                        </tr>
+                    `).join('')}
+                </table>
+                
+                <div style="margin-top: 40px; text-align: center; font-size: 11px; color: #888; border-top: 1px solid #ddd; padding-top: 20px;">
+                    Bu rapor PhishGuard-TR platformu tarafından otomatik olarak oluşturulmuştur.<br>
+                    Eğitim ve farkındalık amaçlıdır. Gerçek şifrelerinizi asla şüpheli sitelere girmeyin.
+                </div>
+            `;
+            const opt = { margin: 0, filename: 'PhishGuard-Rapor-' + Date.now() + '.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+            html2pdf().set(opt).from(pdfContent).save();
         }
 
         // ===== CANLI AKIŞ =====
-        const feedItems = [];
-        const sampleThreats = [{ domain: 'garantibbva-onay.xyz', score: 95 }, { domain: 'ziraatbank-giris.tk', score: 92 }, { domain: 'edevlet-onay.tk', score: 88 }, { domain: 'bedava-bitcoin.xyz', score: 85 }, { domain: 'zoom-toplanti.tk', score: 90 }, { domain: 'papara-giris.tk', score: 87 }];
-        function addFeedItem(domain, score) {
-            const feedList = document.getElementById('feedList');
-            if (!feedList) return;
-            const isSafe = score < 30;
-            const item = document.createElement('div');
-            item.className = 'feed-item' + (isSafe ? ' safe' : '');
-            item.innerHTML = `<span class="feed-domain">${domain}</span><span class="feed-score">${score}%</span>`;
-            if (feedItems.length === 0) feedList.innerHTML = '';
-            feedList.insertBefore(item, feedList.firstChild);
-            feedItems.unshift({ domain, score });
-            if (feedItems.length > 10) { feedList.removeChild(feedList.lastChild); feedItems.pop(); }
-        }
+        const feedItems = []; const sampleThreats = [{ domain: 'garantibbva-onay.xyz', score: 95 }, { domain: 'ziraatbank-giris.tk', score: 92 }, { domain: 'edevlet-onay.tk', score: 88 }, { domain: 'bedava-bitcoin.xyz', score: 85 }, { domain: 'zoom-toplanti.tk', score: 90 }, { domain: 'papara-giris.tk', score: 87 }];
+        function addFeedItem(domain, score) { const feedList = document.getElementById('feedList'); if (!feedList) return; const isSafe = score < 30; const item = document.createElement('div'); item.className = 'feed-item' + (isSafe ? ' safe' : ''); item.innerHTML = `<span class="feed-domain">${domain}</span><span class="feed-score">${score}%</span>`; if (feedItems.length === 0) feedList.innerHTML = ''; feedList.insertBefore(item, feedList.firstChild); feedItems.unshift({ domain, score }); if (feedItems.length > 10) { feedList.removeChild(feedList.lastChild); feedItems.pop(); } }
         function startLiveFeed() { setInterval(() => { const threat = sampleThreats[Math.floor(Math.random() * sampleThreats.length)]; addFeedItem(threat.domain, threat.score); }, 10000); }
 
         // ===== GRAFİKLER =====
         let weeklyChart, threatTypeChart, statsWeeklyChart, statsThreatChart, realTrendChart;
-        function initCharts() {
-            const weeklyCtx = document.getElementById('weeklyChart');
-            if (weeklyCtx && !weeklyChart) {
-                weeklyChart = new Chart(weeklyCtx, {
-                    type: 'line',
-                    data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Tehdit', data: [12,19,15,25,22,18,30], borderColor: '#00ff88', backgroundColor: 'rgba(0, 255, 136, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#00ff88', pointBorderColor: '#05080f', pointRadius: 5 }] },
-                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#888', font: { size: 11 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } }
-                });
-            }
-            const typeCtx = document.getElementById('threatTypeChart');
-            if (typeCtx && !threatTypeChart) {
-                threatTypeChart = new Chart(typeCtx, {
-                    type: 'doughnut',
-                    data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [40,25,15,12,8], backgroundColor: ['#ff3366','#ffaa00','#00ccff','#00ff88','#666'], borderColor: '#05080f', borderWidth: 2 }] },
-                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 11 }, padding: 10 } } } }
-                });
-            }
-        }
-        function initStatsCharts() {
-            const weeklyCtx = document.getElementById('statsWeeklyChart');
-            if (weeklyCtx && !statsWeeklyChart) {
-                statsWeeklyChart = new Chart(weeklyCtx, {
-                    type: 'bar',
-                    data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Analiz', data: [45,62,58,78,85,92,110], backgroundColor: 'rgba(0, 255, 136, 0.6)', borderColor: '#00ff88', borderWidth: 2, borderRadius: 8 }] },
-                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#888', font: { size: 12 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } }
-                });
-            }
-            const threatCtx = document.getElementById('statsThreatChart');
-            if (threatCtx && !statsThreatChart) {
-                statsThreatChart = new Chart(threatCtx, {
-                    type: 'polarArea',
-                    data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [45,30,15,8,2], backgroundColor: ['rgba(255, 51, 102, 0.7)','rgba(255, 170, 0, 0.7)','rgba(0, 204, 255, 0.7)','rgba(0, 255, 136, 0.7)','rgba(102, 102, 102, 0.7)'], borderColor: '#05080f', borderWidth: 2 }] },
-                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 11 }, padding: 10 } } }, scales: { r: { ticks: { color: '#888', backdropColor: 'transparent' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } }
-                });
-            }
-        }
-        function loadStatsData() {
-            const users = DB.getUsers();
-            const reports = DB.getReports();
-            let totalAnalyses = 0, totalThreats = 0, totalCamera = 0;
-            users.forEach(u => { const s = DB.getUserStats(u.email); totalAnalyses += s.total; totalThreats += s.threats; totalCamera += s.camera; });
-            document.getElementById('statsTotalAnalyses').textContent = totalAnalyses;
-            document.getElementById('statsTotalThreats').textContent = totalThreats;
-            document.getElementById('statsTotalCamera').textContent = totalCamera;
-            document.getElementById('statsTotalReports').textContent = reports.length;
-        }
+        function initCharts() { const weeklyCtx = document.getElementById('weeklyChart'); if (weeklyCtx && !weeklyChart) { weeklyChart = new Chart(weeklyCtx, { type: 'line', data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Tehdit', data: [12,19,15,25,22,18,30], borderColor: '#00ff88', backgroundColor: 'rgba(0, 255, 136, 0.1)', tension: 0.4, fill: true, pointBackgroundColor: '#00ff88', pointBorderColor: '#05080f', pointRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#888', font: { size: 11 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } } }); } const typeCtx = document.getElementById('threatTypeChart'); if (typeCtx && !threatTypeChart) { threatTypeChart = new Chart(typeCtx, { type: 'doughnut', data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [40,25,15,12,8], backgroundColor: ['#ff3366','#ffaa00','#00ccff','#00ff88','#666'], borderColor: '#05080f', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 11 }, padding: 10 } } } } }); } }
+        function initStatsCharts() { const weeklyCtx = document.getElementById('statsWeeklyChart'); if (weeklyCtx && !statsWeeklyChart) { statsWeeklyChart = new Chart(weeklyCtx, { type: 'bar', data: { labels: ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'], datasets: [{ label: 'Analiz', data: [45,62,58,78,85,92,110], backgroundColor: 'rgba(0, 255, 136, 0.6)', borderColor: '#00ff88', borderWidth: 2, borderRadius: 8 }] }, options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { labels: { color: '#888', font: { size: 12 } } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } } }); } const threatCtx = document.getElementById('statsThreatChart'); if (threatCtx && !statsThreatChart) { statsThreatChart = new Chart(threatCtx, { type: 'polarArea', data: { labels: ['Banka','Devlet','Kripto','Kamera','Diğer'], datasets: [{ data: [45,30,15,8,2], backgroundColor: ['rgba(255, 51, 102, 0.7)','rgba(255, 170, 0, 0.7)','rgba(0, 204, 255, 0.7)','rgba(0, 255, 136, 0.7)','rgba(102, 102, 102, 0.7)'], borderColor: '#05080f', borderWidth: 2 }] }, options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 11 }, padding: 10 } } }, scales: { r: { ticks: { color: '#888', backdropColor: 'transparent' }, grid: { color: 'rgba(0, 255, 136, 0.05)' } } } } }); } }
+        function loadStatsData() { const users = DB.getUsers(); const reports = DB.getReports(); let totalAnalyses = 0, totalThreats = 0, totalCamera = 0; users.forEach(u => { const s = DB.getUserStats(u.email); totalAnalyses += s.total; totalThreats += s.threats; totalCamera += s.camera; }); document.getElementById('statsTotalAnalyses').textContent = totalAnalyses; document.getElementById('statsTotalThreats').textContent = totalThreats; document.getElementById('statsTotalCamera').textContent = totalCamera; document.getElementById('statsTotalReports').textContent = reports.length; }
 
-        // ===== GERÇEK VERİ SETİ GÖRÜNTÜLEME =====
+        // ===== GERÇEK VERİ SETİ =====
         function loadRealThreatData() {
-            const data = realThreatDatabase;
-            const totalEl = document.getElementById('realTotalLinks');
-            if (totalEl) totalEl.textContent = data.metadata.totalLinks;
+            const data = realThreatDatabase; const totalEl = document.getElementById('realTotalLinks'); if (totalEl) totalEl.textContent = data.metadata.totalLinks;
             const grid = document.getElementById('categoryGrid');
-            if (grid) {
-                grid.innerHTML = '';
-                Object.entries(data.categories).forEach(([key, cat]) => {
-                    const card = document.createElement('div');
-                    card.style.cssText = `background:rgba(0,0,0,0.3);border-left:4px solid ${cat.color};border-radius:10px;padding:15px;`;
-                    card.innerHTML = `<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">${cat.name}</div><div style="font-size:24px;font-weight:900;color:${cat.color};font-family:'JetBrains Mono',monospace;">${cat.count}</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">zararlı link</div>`;
-                    grid.appendChild(card);
-                });
-            }
-            const allBrands = [];
-            Object.entries(data.categories).forEach(([catKey, cat]) => {
-                cat.topBrands.forEach(brand => { allBrands.push({ ...brand, category: cat.name, color: cat.color }); });
-            });
-            allBrands.sort((a, b) => b.count - a.count);
+            if (grid) { grid.innerHTML = ''; Object.entries(data.categories).forEach(([key, cat]) => { const card = document.createElement('div'); card.style.cssText = `background:rgba(0,0,0,0.3);border-left:4px solid ${cat.color};border-radius:10px;padding:15px;`; card.innerHTML = `<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">${cat.name}</div><div style="font-size:24px;font-weight:900;color:${cat.color};font-family:'JetBrains Mono',monospace;">${cat.count}</div><div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">zararlı link</div>`; grid.appendChild(card); }); }
+            const allBrands = []; Object.entries(data.categories).forEach(([catKey, cat]) => { cat.topBrands.forEach(brand => { allBrands.push({ ...brand, category: cat.name, color: cat.color }); }); }); allBrands.sort((a, b) => b.count - a.count);
             const brandsList = document.getElementById('topBrandsList');
-            if (brandsList) {
-                brandsList.innerHTML = '';
-                allBrands.slice(0, 10).forEach((brand, i) => {
-                    const item = document.createElement('div');
-                    item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(0,0,0,0.3);border-radius:8px;margin-bottom:6px;border-left:3px solid ' + brand.color + ';';
-                    item.innerHTML = `<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:14px;font-weight:900;color:${brand.color};font-family:'JetBrains Mono',monospace;min-width:24px;">#${i+1}</span><div><div style="font-size:12px;font-weight:700;color:var(--text);">${brand.name}</div><div style="font-size:10px;color:var(--text-dim);">${brand.category}</div></div></div><span style="font-size:14px;font-weight:900;color:${brand.color};font-family:'JetBrains Mono',monospace;">${brand.count}</span>`;
-                    brandsList.appendChild(item);
-                });
-            }
+            if (brandsList) { brandsList.innerHTML = ''; allBrands.slice(0, 10).forEach((brand, i) => { const item = document.createElement('div'); item.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(0,0,0,0.3);border-radius:8px;margin-bottom:6px;border-left:3px solid ' + brand.color + ';'; item.innerHTML = `<div style="display:flex;align-items:center;gap:10px;"><span style="font-size:14px;font-weight:900;color:${brand.color};font-family:'JetBrains Mono',monospace;min-width:24px;">#${i+1}</span><div><div style="font-size:12px;font-weight:700;color:var(--text);">${brand.name}</div><div style="font-size:10px;color:var(--text-dim);">${brand.category}</div></div></div><span style="font-size:14px;font-weight:900;color:${brand.color};font-family:'JetBrains Mono',monospace;">${brand.count}</span>`; brandsList.appendChild(item); }); }
             const trendCtx = document.getElementById('realTrendChart');
-            if (trendCtx && !realTrendChart) {
-                realTrendChart = new Chart(trendCtx, {
-                    type: 'line',
-                    data: {
-                        labels: data.monthlyTrend.map(m => m.month),
-                        datasets: [
-                            { label: 'Banka', data: data.monthlyTrend.map(m => m.banka), borderColor: '#ff3366', backgroundColor: 'rgba(255,51,102,0.1)', tension: 0.4 },
-                            { label: 'Devlet', data: data.monthlyTrend.map(m => m.devlet), borderColor: '#ffaa00', backgroundColor: 'rgba(255,170,0,0.1)', tension: 0.4 },
-                            { label: 'Kripto', data: data.monthlyTrend.map(m => m.kripto), borderColor: '#00ccff', backgroundColor: 'rgba(0,204,255,0.1)', tension: 0.4 },
-                            { label: 'Kamera', data: data.monthlyTrend.map(m => m.kamera), borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', tension: 0.4 },
-                            { label: 'Kargo', data: data.monthlyTrend.map(m => m.kargo), borderColor: '#00ff88', backgroundColor: 'rgba(0,255,136,0.1)', tension: 0.4 }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 10 }, padding: 8 } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0,255,136,0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0,255,136,0.05)' } } } }
-                });
-            }
+            if (trendCtx && !realTrendChart) { realTrendChart = new Chart(trendCtx, { type: 'line', data: { labels: data.monthlyTrend.map(m => m.month), datasets: [ { label: 'Banka', data: data.monthlyTrend.map(m => m.banka), borderColor: '#ff3366', backgroundColor: 'rgba(255,51,102,0.1)', tension: 0.4 }, { label: 'Devlet', data: data.monthlyTrend.map(m => m.devlet), borderColor: '#ffaa00', backgroundColor: 'rgba(255,170,0,0.1)', tension: 0.4 }, { label: 'Kripto', data: data.monthlyTrend.map(m => m.kripto), borderColor: '#00ccff', backgroundColor: 'rgba(0,204,255,0.1)', tension: 0.4 }, { label: 'Kamera', data: data.monthlyTrend.map(m => m.kamera), borderColor: '#9c27b0', backgroundColor: 'rgba(156,39,176,0.1)', tension: 0.4 }, { label: 'Kargo', data: data.monthlyTrend.map(m => m.kargo), borderColor: '#00ff88', backgroundColor: 'rgba(0,255,136,0.1)', tension: 0.4 } ] }, options: { responsive: true, maintainAspectRatio: false, animation: false, plugins: { legend: { position: 'bottom', labels: { color: '#888', font: { size: 10 }, padding: 8 } } }, scales: { y: { beginAtZero: true, ticks: { color: '#888' }, grid: { color: 'rgba(0,255,136,0.05)' } }, x: { ticks: { color: '#888' }, grid: { color: 'rgba(0,255,136,0.05)' } } } } }); }
         }
 
-        // ===== İHBAR =====
-        function submitReport() {
-            const url = document.getElementById('reportUrlInput').value.trim();
-            const note = document.getElementById('reportNoteInput').value.trim();
-            if (!url) { alert('Lütfen bir link girin!'); return; }
-            const user = DB.getCurrentUser();
-            const reports = DB.getReports();
-            reports.push({ url, note, date: new Date().toISOString(), user: user?.name || 'Misafir' });
-            DB.setReports(reports);
-            document.getElementById('reportUrlInput').value = '';
-            document.getElementById('reportNoteInput').value = '';
-            updateReportUI();
-            alert('İhbarınız alındı! Teşekkürler.');
-        }
-        function updateReportUI() {
-            const reports = DB.getReports();
-            const list = document.getElementById('reportList');
-            if (reports.length === 0) { list.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:11px;padding:10px;">Henüz ihbar yok</div>'; return; }
-            list.innerHTML = '';
-            reports.slice().reverse().forEach(r => {
-                const item = document.createElement('div');
-                item.className = 'report-item';
-                item.innerHTML = `<span class="report-item-domain">${r.url}</span><span class="report-item-user">${r.user}</span>`;
-                list.appendChild(item);
-            });
-        }
-
-        // ===== SOHBET =====
+        // ===== İHBAR & SOHBET & ADMIN =====
+        function submitReport() { const url = document.getElementById('reportUrlInput').value.trim(); const note = document.getElementById('reportNoteInput').value.trim(); if (!url) { alert('Lütfen bir link girin!'); return; } const user = DB.getCurrentUser(); const reports = DB.getReports(); reports.push({ url, note, date: new Date().toISOString(), user: user?.name || 'Misafir' }); DB.setReports(reports); document.getElementById('reportUrlInput').value = ''; document.getElementById('reportNoteInput').value = ''; updateReportUI(); alert('İhbarınız alındı! Teşekkürler.'); }
+        function updateReportUI() { const reports = DB.getReports(); const list = document.getElementById('reportList'); if (reports.length === 0) { list.innerHTML = '<div style="text-align:center;color:var(--text-dim);font-size:11px;padding:10px;">Henüz ihbar yok</div>'; return; } list.innerHTML = ''; reports.slice().reverse().forEach(r => { const item = document.createElement('div'); item.className = 'report-item'; item.innerHTML = `<span class="report-item-domain">${r.url}</span><span class="report-item-user">${r.user}</span>`; list.appendChild(item); }); }
         const chatResponses = { 'oltalama': 'Oltalama, saldırganların kendilerini güvenilir bir kurum gibi göstererek bilgilerinizi çalmaya çalıştığı saldırıdır.', 'kamera': 'Kamera izni verdiğinizde site görüntünüzü kaydedebilir.', 'şifre': 'Güçlü şifre en az 12 karakter içermelidir.', 'banka': 'Bankalar asla e-posta ile şifre istemez.', 'link': 'Şüpheli linkleri "Tarama" bölümünde analiz edin.', 'usom': 'USOM, Ulusal Siber Olaylara Müdahale Merkezi\'dir.', 'ml': 'ML modeli, TensorFlow.js ile eğitilmiş bir sinir ağıdır.', 'merhaba': 'Merhaba! Size nasıl yardımcı olabilirim?', 'teşekkür': 'Rica ederim!' };
-        function sendChat() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (!message) return;
-            const messages = document.getElementById('chatMessages');
-            const userMsg = document.createElement('div');
-            userMsg.className = 'chat-message user';
-            userMsg.textContent = message;
-            messages.appendChild(userMsg);
-            input.value = '';
-            messages.scrollTop = messages.scrollHeight;
-            setTimeout(() => {
-                const lower = message.toLowerCase();
-                let response = 'Bu konuda bilgim yok.';
-                for (const [key, value] of Object.entries(chatResponses)) { if (lower.includes(key)) { response = value; break; } }
-                const botMsg = document.createElement('div');
-                botMsg.className = 'chat-message bot';
-                botMsg.textContent = response;
-                messages.appendChild(botMsg);
-                messages.scrollTop = messages.scrollHeight;
-            }, 500);
-        }
+        function sendChat() { const input = document.getElementById('chatInput'); const message = input.value.trim(); if (!message) return; const messages = document.getElementById('chatMessages'); const userMsg = document.createElement('div'); userMsg.className = 'chat-message user'; userMsg.textContent = message; messages.appendChild(userMsg); input.value = ''; messages.scrollTop = messages.scrollHeight; setTimeout(() => { const lower = message.toLowerCase(); let response = 'Bu konuda bilgim yok.'; for (const [key, value] of Object.entries(chatResponses)) { if (lower.includes(key)) { response = value; break; } } const botMsg = document.createElement('div'); botMsg.className = 'chat-message bot'; botMsg.textContent = response; messages.appendChild(botMsg); messages.scrollTop = messages.scrollHeight; }, 500); }
+        function updateAdminPanel() { const users = DB.getUsers(); document.getElementById('adminUsers').textContent = users.length; document.getElementById('adminAnalyses').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).total, 0); document.getElementById('adminReports').textContent = DB.getReports().length; document.getElementById('adminThreats').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).threats, 0); const table = document.getElementById('adminUserTable'); table.innerHTML = ''; users.forEach(u => { const tr = document.createElement('tr'); const date = new Date(u.date).toLocaleDateString('tr-TR'); tr.innerHTML = `<td>${u.name}</td><td>${u.email}</td><td><span class="admin-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}</span></td><td>${date}</td><td>${u.role !== 'admin' ? '<button class="admin-action-btn" onclick="deleteUser(\'' + u.email + '\')">Sil</button>' : '-'}</td>`; table.appendChild(tr); }); }
+        function deleteUser(email) { if (!confirm('Kullanıcıyı silmek istediğinize emin misiniz?')) return; let users = DB.getUsers(); users = users.filter(u => u.email !== email); DB.setUsers(users); updateAdminPanel(); }
 
-        // ===== ADMIN =====
-        function updateAdminPanel() {
-            const users = DB.getUsers();
-            document.getElementById('adminUsers').textContent = users.length;
-            document.getElementById('adminAnalyses').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).total, 0);
-            document.getElementById('adminReports').textContent = DB.getReports().length;
-            document.getElementById('adminThreats').textContent = users.reduce((a, u) => a + DB.getUserStats(u.email).threats, 0);
-            const table = document.getElementById('adminUserTable');
-            table.innerHTML = '';
-            users.forEach(u => {
-                const tr = document.createElement('tr');
-                const date = new Date(u.date).toLocaleDateString('tr-TR');
-                tr.innerHTML = `<td>${u.name}</td><td>${u.email}</td><td><span class="admin-badge ${u.role}">${u.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}</span></td><td>${date}</td><td>${u.role !== 'admin' ? '<button class="admin-action-btn" onclick="deleteUser(\'' + u.email + '\')">Sil</button>' : '-'}</td>`;
-                table.appendChild(tr);
-            });
-        }
-        function deleteUser(email) {
-            if (!confirm('Kullanıcıyı silmek istediğinize emin misiniz?')) return;
-            let users = DB.getUsers();
-            users = users.filter(u => u.email !== email);
-            DB.setUsers(users);
-            updateAdminPanel();
-        }
-
-        // ===== TEMA & SES =====
+        // ===== TEMA & SES & KONFETİ =====
         function toggleTheme() { document.body.classList.toggle('light-mode'); document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? '☀️' : '🌙'; }
         let voiceEnabled = false;
         function toggleVoice() { voiceEnabled = !voiceEnabled; document.getElementById('voiceBtn').textContent = voiceEnabled ? '🔊' : '🔇'; if (voiceEnabled) speak('Sesli uyarı sistemi açıldı'); }
         function speak(text) { if (!voiceEnabled) return; if ('speechSynthesis' in window) { window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'tr-TR'; u.rate = 1; window.speechSynthesis.speak(u); } }
         function playThreatSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 200; o.type = 'sawtooth'; g.gain.setValueAtTime(0.15, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5); o.start(); o.stop(ctx.currentTime + 0.5); } catch(e) {} }
         function playSafeSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const o = ctx.createOscillator(), g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; o.type = 'sine'; g.gain.setValueAtTime(0.1, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3); o.start(); o.stop(ctx.currentTime + 0.3); } catch(e) {} }
+        function launchConfetti() { const colors = ['#00ff88', '#00ccff', '#ffaa00', '#ff3366', '#9c27b0']; for (let i = 0; i < 100; i++) { const c = document.createElement('div'); c.className = 'confetti'; c.style.left = Math.random() * 100 + '%'; c.style.background = colors[Math.floor(Math.random() * colors.length)]; c.style.animationDuration = (Math.random() * 2 + 2) + 's'; c.style.animationDelay = Math.random() * 0.5 + 's'; c.style.width = (Math.random() * 8 + 5) + 'px'; c.style.height = c.style.width; document.body.appendChild(c); setTimeout(() => c.remove(), 4000); } }
 
-        // ===== KONFETİ =====
-        function launchConfetti() {
-            const colors = ['#00ff88', '#00ccff', '#ffaa00', '#ff3366', '#9c27b0'];
-            for (let i = 0; i < 100; i++) {
-                const c = document.createElement('div');
-                c.className = 'confetti';
-                c.style.left = Math.random() * 100 + '%';
-                c.style.background = colors[Math.floor(Math.random() * colors.length)];
-                c.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                c.style.animationDelay = Math.random() * 0.5 + 's';
-                c.style.width = (Math.random() * 8 + 5) + 'px';
-                c.style.height = c.style.width;
-                document.body.appendChild(c);
-                setTimeout(() => c.remove(), 4000);
-            }
-        }
-
-        // ===== YÜKLEME EKRANI =====
-        function runLoadingScreen(callback) {
-            const screen = document.getElementById('loadingScreen');
-            const fill = document.getElementById('loadingBarFill');
-            const text = document.getElementById('loadingText');
-            const percent = document.getElementById('loadingPercent');
-            if (!screen) { callback(); return; }
-            const steps = ['Sistem başlatılıyor...', 'Analiz motorları yükleniyor...', '487 zararlı link yükleniyor...', 'USOM verileri kontrol ediliyor...', 'Türkiye odaklı motor başlatılıyor...', 'TensorFlow.js yükleniyor...', 'Arayüz hazırlanıyor...', 'Hoş geldiniz!'];
-            let i = 0, p = 0;
-            const interval = setInterval(() => {
-                p += 2;
-                fill.style.width = p + '%';
-                percent.textContent = p + '%';
-                text.textContent = steps[Math.min(i, steps.length - 1)];
-                if (p % 15 === 0) i++;
-                if (p >= 100) { clearInterval(interval); setTimeout(() => { screen.classList.add('hidden'); if (callback) callback(); }, 300); }
-            }, 25);
-        }
-
-        // ===== PWA =====
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for (let registration of registrations) { registration.unregister(); }
-            });
-        }
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; showInstallButton(); });
-        function showInstallButton() {
-            const topButtons = document.querySelector('.top-buttons');
-            if (topButtons && !document.getElementById('installBtn')) {
-                const btn = document.createElement('button');
-                btn.id = 'installBtn';
-                btn.className = 'icon-btn';
-                btn.innerHTML = '📲 Uygulamayı Yükle';
-                btn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
-                btn.style.color = '#05080f';
-                btn.style.fontWeight = '800';
-                btn.style.border = 'none';
-                btn.onclick = installPWA;
-                topButtons.insertBefore(btn, topButtons.firstChild);
-            }
-        }
-        function installPWA() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(() => { deferredPrompt = null; }); } }
-        window.addEventListener('appinstalled', () => { const btn = document.getElementById('installBtn'); if (btn) btn.remove(); });
-
-        // ===== HATIRLA =====
-        function loadRemembered() {
-            const email = localStorage.getItem('pg_remember_email');
-            if (email) {
-                const el = document.getElementById('gateLoginEmail');
-                const rm = document.getElementById('rememberMe');
-                if (el) el.value = email;
-                if (rm) rm.checked = true;
-            }
-        }
-
-        // ===== BAŞLANGIÇ =====
+        // ===== YÜKLEME & PWA & BAŞLANGIÇ =====
+        function runLoadingScreen(callback) { const screen = document.getElementById('loadingScreen'); const fill = document.getElementById('loadingBarFill'); const text = document.getElementById('loadingText'); const percent = document.getElementById('loadingPercent'); if (!screen) { callback(); return; } const steps = ['Sistem başlatılıyor...', 'Analiz motorları yükleniyor...', '487 zararlı link yükleniyor...', 'USOM verileri kontrol ediliyor...', 'Türkiye odaklı motor başlatılıyor...', 'TensorFlow.js yükleniyor...', 'Arayüz hazırlanıyor...', 'Hoş geldiniz!']; let i = 0, p = 0; const interval = setInterval(() => { p += 2; fill.style.width = p + '%'; percent.textContent = p + '%'; text.textContent = steps[Math.min(i, steps.length - 1)]; if (p % 15 === 0) i++; if (p >= 100) { clearInterval(interval); setTimeout(() => { screen.classList.add('hidden'); if (callback) callback(); }, 300); } }, 25); }
+        if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(function(registrations) { for (let registration of registrations) { registration.unregister(); } }); }
+        function loadRemembered() { const email = localStorage.getItem('pg_remember_email'); if (email) { const el = document.getElementById('gateLoginEmail'); const rm = document.getElementById('rememberMe'); if (el) el.value = email; if (rm) rm.checked = true; } }
         window.addEventListener('load', () => {
-            try {
-                let users = DB.getUsers();
-                const beforeCount = users.length;
-                users = users.filter(u => u.email !== 'demo@phishguard.tr');
-                if (users.length !== beforeCount) DB.setUsers(users);
-                const current = DB.getCurrentUser();
-                if (current && current.email === 'demo@phishguard.tr') DB.clearCurrentUser();
-            } catch(e) {}
-            
-            runLoadingScreen(() => {
-                const user = DB.getCurrentUser();
-                if (user) openApp();
-                loadRemembered();
-                setTimeout(() => { startLiveFeed(); initCharts(); }, 500);
-                setTimeout(() => { trainMLModel().catch(e => console.log('ML eğitim hatası:', e)); }, 2000);
-            });
+            try { let users = DB.getUsers(); const beforeCount = users.length; users = users.filter(u => u.email !== 'demo@phishguard.tr'); if (users.length !== beforeCount) DB.setUsers(users); const current = DB.getCurrentUser(); if (current && current.email === 'demo@phishguard.tr') DB.clearCurrentUser(); } catch(e) {}
+            runLoadingScreen(() => { const user = DB.getCurrentUser(); if (user) openApp(); loadRemembered(); setTimeout(() => { startLiveFeed(); initCharts(); }, 500); setTimeout(() => { trainMLModel().catch(e => console.log('ML eğitim hatası:', e)); }, 2000); });
         });
     </script>
 </body>
