@@ -61,14 +61,16 @@
         /* GİRİŞ EKRANI */
         .gate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 50%, #0a1a2e 0%, #05080f 60%, #000000 100%); z-index: 9999; display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.4s, visibility 0.4s; overflow: hidden; }
         .gate.hidden { opacity: 0; visibility: hidden; }
-        .gate::before { content: ''; position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vw; background: radial-gradient(circle, transparent 30%, rgba(0, 255, 136, 0.05) 50%, transparent 70%); transform: translate(-50%, -50%) scale(0); z-index: 0; pointer-events: none; animation: radarSweep 4s linear infinite; }
+        
+        /* EFEKTLER (Z-index'ler düzeltildi) */
+        .gate::before { content: ''; position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vw; background: radial-gradient(circle, transparent 30%, rgba(0, 255, 136, 0.05) 50%, transparent 70%); transform: translate(-50%, -50%) scale(0); z-index: 1; pointer-events: none; animation: radarSweep 4s linear infinite; }
         @keyframes radarSweep { 0% { transform: translate(-50%, -50%) scale(0); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
         .gate::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px); background-size: 60px 60px; z-index: 0; pointer-events: none; }
         
-        /* VAKKOS EDITION EFEKTLERİ */
         #gateMatrixCanvas { position: absolute; inset: 0; z-index: 0; opacity: 0.15; pointer-events: none; }
+        #particleCanvas { position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
         .bg-huge-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 25vw; font-weight: 900; color: rgba(0, 255, 136, 0.02); white-space: nowrap; pointer-events: none; z-index: 0; font-family: 'Inter', sans-serif; letter-spacing: -1vw; }
-        .scanline { position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: linear-gradient(to bottom, transparent, rgba(0, 255, 136, 0.2), transparent); z-index: 1; pointer-events: none; animation: scanline 6s linear infinite; }
+        .scanline { position: absolute; top: 0; left: 0; width: 100%; height: 10px; background: linear-gradient(to bottom, transparent, rgba(0, 255, 136, 0.2), transparent); z-index: 2; pointer-events: none; animation: scanline 6s linear infinite; }
         @keyframes scanline { 0% { top: -10px; } 100% { top: 100%; } }
 
         .gate-tubitak { position: absolute; top: 25px; left: 25px; z-index: 10; display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: rgba(10, 15, 30, 0.8); border: 1px solid rgba(0, 255, 136, 0.2); border-radius: 12px; backdrop-filter: blur(10px); }
@@ -87,7 +89,7 @@
         .gate-clock-time { font-size: 18px; font-weight: 900; color: #00ff88; }
         .gate-clock-date { font-size: 10px; color: #888; margin-top: 3px; letter-spacing: 0.5px; }
         
-        .gate-card { position: relative; z-index: 1; background: linear-gradient(145deg, rgba(15, 22, 41, 0.95), rgba(10, 15, 30, 0.98)); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 24px; padding: 40px; max-width: 440px; width: 100%; box-shadow: 0 0 50px rgba(0, 255, 136, 0.1), inset 0 0 20px rgba(0, 255, 136, 0.05), 0 20px 60px rgba(0, 0, 0, 0.5); text-align: center; max-height: 90vh; overflow-y: auto; }
+        .gate-card { position: relative; z-index: 999 !important; background: linear-gradient(145deg, rgba(15, 22, 41, 0.95), rgba(10, 15, 30, 0.98)); border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 24px; padding: 40px; max-width: 440px; width: 100%; box-shadow: 0 0 50px rgba(0, 255, 136, 0.1), inset 0 0 20px rgba(0, 255, 136, 0.05), 0 20px 60px rgba(0, 0, 0, 0.5); text-align: center; max-height: 90vh; overflow-y: auto; }
         .gate-card::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px; background: linear-gradient(90deg, transparent, #00ff88, transparent); border-radius: 24px 24px 0 0; }
         
         .gate-logo { width: 76px; height: 76px; margin: 0 auto 18px; border-radius: 20px; background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 204, 102, 0.05)); border: 1px solid rgba(0, 255, 136, 0.3); display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 0 40px rgba(0, 255, 136, 0.1); position: relative; }
@@ -498,7 +500,7 @@
     <div class="gate" id="gate">
         <!-- Arka Plan Efektleri -->
         <canvas id="gateMatrixCanvas"></canvas>
-        <div class="bg-huge-text">CYBER SECURITY</div>
+        <div class="bg-huge-text">PHISHGUARD</div>
         <div class="scanline"></div>
 
         <div class="gate-tubitak">
@@ -508,7 +510,7 @@
             </div>
         </div>
 
-        <div class="gate-version">v27.0 <span>• Vakkos Edition</span></div>
+        <div class="gate-version">v28.0 <span>• Ultimate Edition</span></div>
 
         <div class="gate-clock">
             <div class="gate-clock-time" id="gateClock">--:--:--</div>
@@ -593,7 +595,7 @@
             <div class="top-bar">
                 <div class="top-bar-left">
                     <span class="live-dot"></span>
-                    <span>CANLI SİSTEM • v27</span>
+                    <span>CANLI SİSTEM • v28</span>
                     <span id="clock">--:--:--</span>
                     <span id="mlStatus" style="color:var(--warning);">🧠 ML: Yükleniyor...</span>
                 </div>
@@ -1088,7 +1090,7 @@
         </div>
     </div>
         <script>
-        // ===== MATRIX (Giriş ekranındayken durduruldu) =====
+        // ===== MATRIX (Arka Plan) =====
         const canvas = document.getElementById('matrix');
         const ctx = canvas.getContext('2d');
         function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1114,26 +1116,23 @@
         setInterval(drawMatrix, 100);
         window.addEventListener('resize', () => { resizeCanvas(); columns = canvas.width / fontSize; drops = Array(Math.floor(columns)).fill(1); });
 
-        // ===== GİRİŞ EKRANI MATRIX EFEKTİ (VAKKOS EDITION) =====
+        // ===== GİRİŞ EKRANI MATRIX EFEKTİ =====
         function initGateMatrix() {
             const gateCanvas = document.getElementById('gateMatrixCanvas');
             if (!gateCanvas) return;
             const gCtx = gateCanvas.getContext('2d');
             gateCanvas.width = window.innerWidth;
             gateCanvas.height = window.innerHeight;
-            
             const gChars = '01アイウエオカキクケコサシスセソABCDEF';
             const gFontSize = 16;
             const gColumns = gateCanvas.width / gFontSize;
             const gDrops = Array(Math.floor(gColumns)).fill(1);
-            
             function drawGateMatrix() {
                 if (!document.getElementById('gate').classList.contains('hidden')) {
                     gCtx.fillStyle = 'rgba(5, 8, 15, 0.1)';
                     gCtx.fillRect(0, 0, gateCanvas.width, gateCanvas.height);
                     gCtx.fillStyle = '#00ff88';
                     gCtx.font = gFontSize + 'px monospace';
-                    
                     for (let i = 0; i < gDrops.length; i++) {
                         const text = gChars[Math.floor(Math.random() * gChars.length)];
                         gCtx.fillText(text, i * gFontSize, gDrops[i] * gFontSize);
@@ -1158,19 +1157,15 @@
             let height = pCanvas.height = window.innerHeight;
             let particles = [];
             const particleCount = 40;
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 1.5 + 0.5 });
-            }
+            for (let i = 0; i < particleCount; i++) { particles.push({ x: Math.random() * width, y: Math.random() * height, vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5, radius: Math.random() * 1.5 + 0.5 }); }
             function animateParticles() {
                 if (document.getElementById('gate').classList.contains('hidden')) return;
                 requestAnimationFrame(animateParticles);
                 pCtx.clearRect(0, 0, width, height);
-                pCtx.fillStyle = 'rgba(0, 255, 136, 0.4)';
-                pCtx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
+                pCtx.fillStyle = 'rgba(0, 255, 136, 0.4)'; pCtx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
                 particles.forEach((p, index) => {
                     p.x += p.vx; p.y += p.vy;
-                    if (p.x < 0 || p.x > width) p.vx *= -1;
-                    if (p.y < 0 || p.y > height) p.vy *= -1;
+                    if (p.x < 0 || p.x > width) p.vx *= -1; if (p.y < 0 || p.y > height) p.vy *= -1;
                     pCtx.beginPath(); pCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); pCtx.fill();
                     for (let j = index + 1; j < particles.length; j++) {
                         const p2 = particles[j]; const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
@@ -1194,16 +1189,11 @@
 
         // ===== SİTE İÇİ ARAMA =====
         const searchDatabase = [
-            { title: '🔍 Tarama Sekmesi', desc: 'Link, metin veya e-posta analiz et', view: 'scan' },
-            { title: '🧰 Araçlar Sekmesi', desc: 'Hash kontrol, şifre analizi, QR kod', view: 'tools' },
-            { title: '📁 Dosya Hash Tarayıcısı', desc: 'Dosya yükle, hash hesapla', view: 'tools' },
-            { title: '🗺️ Harita Sekmesi', desc: 'Türkiye siber tehdit haritası', view: 'map' },
-            { title: '📢 İhbar Sistemi', desc: 'Şüpheli link ihbar et', view: 'report' },
-            { title: '💬 Siber Güvenlik Asistanı', desc: 'Siber güvenlik hakkında soru sor', view: 'chat' },
-            { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' },
-            { title: 'ℹ️ Hakkında', desc: 'Proje hakkında bilgi', view: 'about' },
-            { title: '📖 Rehber', desc: 'Nasıl kullanılır?', view: 'guide' },
-            { title: '📊 İstatistik', desc: 'Kullanım istatistikleri ve veri seti', view: 'stats' }
+            { title: '🔍 Tarama Sekmesi', desc: 'Link, metin veya e-posta analiz et', view: 'scan' }, { title: '🧰 Araçlar Sekmesi', desc: 'Hash kontrol, şifre analizi, QR kod', view: 'tools' },
+            { title: '📁 Dosya Hash Tarayıcısı', desc: 'Dosya yükle, hash hesapla', view: 'tools' }, { title: '🗺️ Harita Sekmesi', desc: 'Türkiye siber tehdit haritası', view: 'map' },
+            { title: '📢 İhbar Sistemi', desc: 'Şüpheli link ihbar et', view: 'report' }, { title: '💬 Siber Güvenlik Asistanı', desc: 'Siber güvenlik hakkında soru sor', view: 'chat' },
+            { title: '🎓 Eğitim Modülü', desc: 'Siber güvenlik eğitimi ve mini test', view: 'edu' }, { title: 'ℹ️ Hakkında', desc: 'Proje hakkında bilgi', view: 'about' },
+            { title: '📖 Rehber', desc: 'Nasıl kullanılır?', view: 'guide' }, { title: '📊 İstatistik', desc: 'Kullanım istatistikleri ve veri seti', view: 'stats' }
         ];
         function performSearch() {
             const query = document.getElementById('searchOverlayInput').value.toLowerCase().trim(); const results = document.getElementById('searchResults');
